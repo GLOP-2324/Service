@@ -1,1 +1,1 @@
-# ShopLoc
+# ShopLoc Project
