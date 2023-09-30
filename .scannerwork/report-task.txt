@@ -1,0 +1,6 @@
+projectKey=glop
+serverUrl=http://localhost:9001
+serverVersion=10.2.1.78527
+dashboardUrl=http://localhost:9001/dashboard?id=glop
+ceTaskId=AYroAzsFCEqh5P_io4Vs
+ceTaskUrl=http://localhost:9001/api/ce/task?id=AYroAzsFCEqh5P_io4Vs
