@@ -20,8 +20,8 @@ jobs:
         run: |
           docker build -t my-backend-app .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker tag my-backend-app $DOCKER_USERNAME/my-backend-app:latest
-          docker push $DOCKER_USERNAME/my-backend-app:latest
+          docker tag my-backend-app $DOCKER_USERNAME/glop23-24:latest
+          docker push $DOCKER_USERNAME/glop23-24:latest
 
   deploy:
     needs: build
