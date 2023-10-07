@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Adjust to your default branch name
+      - main  #prod
 
 jobs:
   build:
@@ -20,8 +20,8 @@ jobs:
         run: |
           docker build -t my-backend-app .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker tag my-backend-app $DOCKER_USERNAME/glop23-24:latest
-          docker push $DOCKER_USERNAME/glop23-24:latest
+          docker tag my-backend-app $DOCKER_USERNAME/glop23-24:backend
+          docker push $DOCKER_USERNAME/glop23-24:backend
 
   deploy:
     needs: build
