@@ -18,10 +18,10 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          docker build -t backend .
+          docker build -t my-backend-app .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker tag backend $DOCKER_USERNAME/glop23-24:backend
-          docker push $DOCKER_USERNAME/glop23-24:backend
+          docker tag my-backend-app $DOCKER_USERNAME/my-backend-app:latest
+          docker push $DOCKER_USERNAME/my-backend-app:latest
 
   deploy:
     needs: build
