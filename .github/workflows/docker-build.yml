@@ -55,7 +55,7 @@ jobs:
         run: |
             max_retries=5  # Set the maximum number of retries here
             for i in $(seq 1 $max_retries); do
-              if curl -sSf http://localhost:8080/actuator/health -o /dev/null; then
+              if curl -sSf http://localhost:8080/ -o /dev/null; then
                 echo "Backend started successfully."
                 exit 0  # Exit with a success status code
               else
