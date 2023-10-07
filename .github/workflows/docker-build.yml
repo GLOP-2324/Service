@@ -1,0 +1,55 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Adjust to your default branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and push Docker image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker build -t my-backend-app .
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker tag my-backend-app $DOCKER_USERNAME/my-backend-app:latest
+          docker push $DOCKER_USERNAME/my-backend-app:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Start Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml up -d
+
+      - name: Wait for backend to start
+        run: |
+          until curl -sSf http://localhost:8080/actuator/health -o /dev/null; do
+            echo "Waiting for backend to start..."
+            sleep 5
+          done
+
+      - name: Deployed successfully
+        run: echo "Deployment successful."
+
+      - name: Clean up
+        run: docker-compose -f docker-compose.yml down
