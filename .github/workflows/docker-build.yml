@@ -18,10 +18,10 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          docker build -t my-backend-app .
+          docker build -t BACKEND .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker tag my-backend-app $DOCKER_USERNAME/my-backend-app:latest
-          docker push $DOCKER_USERNAME/my-backend-app:latest
+          docker tag BACKEND $DOCKER_USERNAME/glop23-24:BACKEND
+          docker push $DOCKER_USERNAME/glop23-24:BACKEND
 
   deploy:
     needs: build
@@ -41,12 +41,26 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml up -d
 
+      
+
+  Post-deploy:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
       - name: Wait for backend to start
         run: |
-          until curl -sSf http://localhost:8080/actuator/health -o /dev/null; do
-            echo "Waiting for backend to start..."
-            sleep 5
-          done
+            max_retries=5  # Set the maximum number of retries here
+            for i in $(seq 1 $max_retries); do
+              if curl -sSf http://localhost:8080/actuator/health -o /dev/null; then
+                echo "Backend started successfully."
+                exit 0  # Exit with a success status code
+              else
+                echo "Waiting for backend to start (Retry $i)..."
+                sleep 5
+              fi
+            done
+            echo "Maximum retries exceeded. Backend did not start successfully."
+            exit 1  # Exit with a failure status code
 
       - name: Deployed successfully
         run: echo "Deployment successful."
