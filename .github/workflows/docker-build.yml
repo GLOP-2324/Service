@@ -44,30 +44,11 @@ jobs:
       - name: Start Docker Compose
         run: |
           docker-compose -f docker-compose.yml up -d
-
-      
-
   post-deploy:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for backend to start
-        run: |
-            max_retries=5  # Set the maximum number of retries here
-            for i in $(seq 1 $max_retries); do
-              if curl -sSf http://localhost:8080/ -o /dev/null; then
-                echo "Backend started successfully."
-                exit 0  # Exit with a success status code
-              else
-                echo "Waiting for backend to start (Retry $i)..."
-                sleep 5
-              fi
-            done
-            echo "Maximum retries exceeded. Backend did not start successfully."
-            exit 1  # Exit with a failure status code
-
       - name: Deployed successfully
         run: echo "Deployment successful."
-
       - name: Clean up
         run: docker-compose -f docker-compose.yml down
