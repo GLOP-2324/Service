@@ -43,7 +43,7 @@ jobs:
 
     - name: Start Docker Compose
       run: |
-        docker-compose -f docker-compose.yml up -d
+        docker-compose -f docker-compose up -d
   post-deploy:
     needs: deploy
     runs-on: ubuntu-latest
@@ -51,4 +51,4 @@ jobs:
     - name: Deployed successfully
       run: echo "Deployment successful."
     - name: Clean up
-      run: docker-compose -f docker-compose.yml down
+      run: docker-compose -f docker-compose down
