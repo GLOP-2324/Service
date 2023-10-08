@@ -32,23 +32,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Docker Compose
-        run: |
+    - name: Set up Docker Compose
+      run: |
           sudo apt-get -y update
           sudo apt-get -y install docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      - name: Start Docker Compose
-        run: |
-          docker-compose -f docker-compose.yml up -d
+    - name: Start Docker Compose
+      run: |
+        docker-compose -f docker-compose.yml up -d
   post-deploy:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Deployed successfully
-        run: echo "Deployment successful."
-      - name: Clean up
-        run: docker-compose -f docker-compose.yml down
+    - name: Deployed successfully
+      run: echo "Deployment successful."
+    - name: Clean up
+      run: docker-compose -f docker-compose.yml down
