@@ -29,3 +29,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/glop23-24:backend
+      -
+        name: Create Database Dump
+        run:  docker exec postgres pg_dump -U postgres -d techlab > backup.sql
