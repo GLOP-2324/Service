@@ -1,0 +1,19 @@
+databaseChangeLog:
+      - changeSet:
+              id: create_tables
+              author: Techlab
+              changes:
+                    - sql: CREATE TABLE exemple(
+                            id Integer ,
+                            tag VARCHAR(2000),
+                            PRIMARY KEY(id)
+                            );
+
+
+
+
+
+
+
+
+
