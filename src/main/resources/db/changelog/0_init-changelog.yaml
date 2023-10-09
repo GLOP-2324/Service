@@ -5,7 +5,7 @@ databaseChangeLog:
               changes:
                     - sql: CREATE TABLE exemple(
                             id Integer ,
-                            tag VARCHAR(2000)
+                            tag VARCHAR(2000),
                             PRIMARY KEY(id)
                             );
 
