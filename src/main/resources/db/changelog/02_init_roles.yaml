@@ -1,0 +1,12 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 01_insert_data_into_roles
+      comment: Ajout des types de roles
+      author: Nadine
+      context: data
+      changes:
+        - loadData:
+            tableName: role
+            quotchar: '"'
+            file: db/changelog/csv/roles.csv

@@ -1,0 +1,60 @@
+databaseChangeLog:
+  -  changeSet:
+       id: create_tables
+       author: Techlab
+       changes:
+         -  createTable:
+              tableName: role
+              columns:
+                -  column:
+                     name:  role_id
+                     type:  int
+                     autoIncrement:  true
+                     constraints:
+                       primaryKey:  true
+                       nullable:  false
+                -  column:
+                     name:  role_name
+                     type:  varchar(50)
+                     constraints:
+                       nullable: false
+                       unique: true
+         - createTable:
+             tableName: account
+             columns:
+               - column:
+                   name: account_id
+                   type: int
+                   autoIncrement: true
+                   constraints:
+                     primaryKey: true
+                     nullable: false
+               - column:
+                   name: firstname
+                   type: varchar(50)
+                   constraints:
+                     nullable: false
+               - column:
+                   name: lastname
+                   type: varchar(50)
+                   constraints:
+                     nullable: false
+               - column:
+                   name: email
+                   type: varchar(250)
+                   constraints:
+                     nullable: false
+                     unique: true
+               - column:
+                   name: password
+                   type: varchar(250)
+                   constraints:
+                     nullable: false
+               - column:
+                   name: role_id
+                   type: int
+                   constraints:
+                     nullable: false
+                     foreignKeyName: fk_role_id
+                     references: role(role_id)
+
