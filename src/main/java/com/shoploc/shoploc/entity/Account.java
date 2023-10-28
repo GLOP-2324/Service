@@ -13,11 +13,17 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long account_id;
+    @Column(nullable = false)
     private String firstname;
+    @Column(nullable = false)
     private String lastname;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
-    private Long role_id;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public void setPassword(String password) {
         this.password = password;
@@ -27,4 +33,7 @@ public class Account {
         return account_id;
     }
 
+    public String getEmail() {
+        return email;
+    }
 }
