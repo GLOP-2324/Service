@@ -29,22 +29,24 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void createAccount(Account account) throws InsertionFailedException {
-        String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        StringBuilder password = new StringBuilder();
-        for (int i=0; i<20; i++){
-            password.append(characters.charAt((int) Math.floor(Math.random()*characters.length())));
-        }
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(account.getEmail());
-        message.setSubject("Votre compte ShopLoc a été créé");
-        message.setText("Voici vos identifiants ShopLoc\n   Login : "+account.getEmail()+"\n  Mot de passe : "+password);
-        this.javaMailSender.send(message);
-
-        account.setPassword(bCryptPasswordEncoder.encode(password));
-        this.accountRepository.save(account);
-        if (accountRepository.findById(account.getAccount_id()).isEmpty()){
+        if (accountRepository.findByEmail(account.getEmail()).isPresent()){
             throw new InsertionFailedException("Ce compte existe déja");
+        }
+        else{
+            String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder password = new StringBuilder();
+            for (int i=0; i<20; i++){
+                password.append(characters.charAt((int) Math.floor(Math.random()*characters.length())));
+            }
+
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(account.getEmail());
+            message.setSubject("Votre compte ShopLoc a été créé");
+            message.setText("Voici vos identifiants ShopLoc\n   Login : "+account.getEmail()+"\n  Mot de passe : "+password);
+            this.javaMailSender.send(message);
+
+            account.setPassword(bCryptPasswordEncoder.encode(password));
+            this.accountRepository.save(account);
         }
     }
 

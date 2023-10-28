@@ -17,7 +17,7 @@ public class Account {
     private String firstname;
     @Column(nullable = false)
     private String lastname;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String email;
     @Column(nullable = false)
     private String password;
@@ -35,5 +35,11 @@ public class Account {
 
     public String getEmail() {
         return email;
+    }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }
