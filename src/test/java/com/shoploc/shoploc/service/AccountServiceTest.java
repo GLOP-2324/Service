@@ -20,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @SpringBootTest
 @ActiveProfiles("test")
 @Sql("/insertData.sql")
@@ -46,14 +48,32 @@ public class AccountServiceTest {
     }
 
     @Test
-    void modifyPass_doSucess() throws ModificationFailedException {
+    void modifyPasswordAccount_success() throws ModificationFailedException {
         long accountId = 1L;
         String newPassword = "testPass";
-        Account account = new Account();
-        account.setAccount_id(accountId);
-        Mockito.when(accountRepository.getReferenceById(1l)).thenReturn(account);
-        Mockito.when(bCryptPasswordEncoder.encode(newPassword)).thenReturn("encodedPassword");
+        String encodedPassword = "encodedPassword";
 
-        Mockito.verify(account).getPassword();}
+        // Mock interactions with dependencies
+        Mockito.when(bCryptPasswordEncoder.encode(newPassword)).thenReturn(encodedPassword);
+        Account mockAccount = new Account();
+        Mockito.when(accountRepository.getReferenceById(accountId)).thenReturn(mockAccount);
+
+        // Perform the method under test
+        accountService.modifyPasswordAccount(accountId, newPassword);
+
+        // Verify that the password was set on the mock account
+        Mockito.verify(bCryptPasswordEncoder).encode(newPassword);
+        Mockito.verify(accountRepository).getReferenceById(accountId);
+    }
+    @Test
+    void modifyPasswordAccount_error()  {
+        long accountId = 1L;
+        String newPassword = "testPass";
+        Mockito.when(accountRepository.getReferenceById(accountId)).thenThrow(new RuntimeException("Mail invalid"));
+
+        assertThrows(ModificationFailedException.class, () -> {
+            accountService.modifyPasswordAccount(accountId, newPassword);
+        });
+    }
 
 }
