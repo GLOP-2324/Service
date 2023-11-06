@@ -32,7 +32,7 @@ public class AccountController {
 
     @PostMapping("/modifyAccountPassword")
     public ResponseEntity<String> modifyAccountPassword(@RequestParam int id, @RequestParam String mail, @RequestParam String password) throws ModificationFailedException {
-        this.accountService.modifyPasswordAccount(id,mail,password);
+        this.accountService.modifyPasswordAccount(id,password);
         return ResponseEntity.status(HttpStatus.OK).body("Le mot de passe à été modifié avec succès");
     }
 }

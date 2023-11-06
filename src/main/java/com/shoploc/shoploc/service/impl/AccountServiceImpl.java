@@ -34,13 +34,7 @@ public class AccountServiceImpl implements AccountService {
             throw new InsertionFailedException("Ce compte existe déja");
         }
         else{
-            String password = RandomStringUtils.random(20, true, true);
-            /*System.out.println(pass);
-            String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder password = new StringBuilder();
-            for (int i=0; i<20; i++){
-                password.append(characters.charAt((int) Math.floor(Math.random()*characters.length())));
-            }*/
+            String password = RandomStringUtils.random(8, true, true);
             sendMessageByEmail(account,password);
 
             account.setPassword(bCryptPasswordEncoder.encode(password));
@@ -48,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
         }
     }
     @Override
-    public void modifyPasswordAccount(int id, String mail, String password) throws ModificationFailedException {
+    public void modifyPasswordAccount(int id, String password) throws ModificationFailedException {
         String encodedPassword = bCryptPasswordEncoder.encode(password);
         try{
             this.accountRepository.getReferenceById((long) id).setPassword(encodedPassword);
