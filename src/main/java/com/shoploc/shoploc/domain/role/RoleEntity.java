@@ -1,4 +1,4 @@
-package com.shoploc.shoploc.entity;
+package com.shoploc.shoploc.domain.role;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Data
 @Table(name="role")
-public class Role {
+public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long role_id;

@@ -1,10 +1,7 @@
-package com.shoploc.shoploc.service.impl;
+package com.shoploc.shoploc.domain.account;
 
-import com.shoploc.shoploc.entity.Account;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
-import com.shoploc.shoploc.repository.AccountRepository;
-import com.shoploc.shoploc.service.AccountService;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +14,9 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class AccountServiceImpl implements AccountService {
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private AccountRepository accountRepository;
-    private JavaMailSender javaMailSender;
+    private  BCryptPasswordEncoder bCryptPasswordEncoder;
+    private  AccountRepository accountRepository;
+    private  JavaMailSender javaMailSender;
 
     @Autowired
     public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, JavaMailSender javaMailSender) {
@@ -29,7 +26,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void createAccount(Account account) throws InsertionFailedException {
+    public void createAccount(AccountEntity account) throws InsertionFailedException {
         if (accountRepository.findByEmail(account.getEmail()).isPresent()){
             throw new InsertionFailedException("Ce compte existe déja");
         }
@@ -52,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void sendMessageByEmail(Account account,String password) {
+    public void sendMessageByEmail(AccountEntity account, String password) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(account.getEmail());
         message.setSubject("Votre compte ShopLoc a été créé");

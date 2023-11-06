@@ -1,13 +1,13 @@
-package com.shoploc.shoploc.entity;
+package com.shoploc.shoploc.domain.account;
 
+import com.shoploc.shoploc.domain.role.RoleEntity;
 import jakarta.persistence.*;
-import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Transactional
 @Table(name="account")
-public class Account {
+public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -27,7 +27,7 @@ public class Account {
     private String password;
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private Role role;
+    private RoleEntity role;
 
     public Long getAccount_id() {
         return account_id;
@@ -69,11 +69,11 @@ public class Account {
         this.password = password;
     }
 
-    public Role getRole() {
+    public RoleEntity getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(RoleEntity role) {
         this.role = role;
     }
 }
