@@ -42,10 +42,10 @@ public class AccountServiceImpl implements AccountService {
         }
     }
     @Override
-    public void modifyPasswordAccount(int id, String password) throws ModificationFailedException {
+    public void modifyPasswordAccount(long id, String password) throws ModificationFailedException {
         String encodedPassword = bCryptPasswordEncoder.encode(password);
         try{
-            this.accountRepository.getReferenceById((long) id).setPassword(encodedPassword);
+            this.accountRepository.getReferenceById(id).setPassword(encodedPassword);
         } catch (Exception e) {
             throw new ModificationFailedException("Mail invalide");
         }
