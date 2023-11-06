@@ -1,0 +1,11 @@
+package com.shoploc.shoploc.service;
+
+import com.shoploc.shoploc.entity.Account;
+import com.shoploc.shoploc.exception.InsertionFailedException;
+import com.shoploc.shoploc.exception.ModificationFailedException;
+
+public interface AccountService {
+    void createAccount(Account account) throws InsertionFailedException;
+
+    void modifyPasswordAccount(int id, String mail, String password) throws ModificationFailedException;
+}
