@@ -7,6 +7,7 @@ import com.shoploc.shoploc.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,10 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body("Le compte à été crée avec succès");
     }
 
-    @PostMapping("/modifyAccountPassword")
-    public ResponseEntity<String> modifyAccountPassword(@RequestParam int id, @RequestParam String mail, @RequestParam String password) throws ModificationFailedException {
+    @PatchMapping("/modifyAccountPassword")
+    public ResponseEntity<String> modifyAccountPassword(@RequestParam long id, @RequestParam String mail, @RequestParam String password) throws ModificationFailedException {
         this.accountService.modifyPasswordAccount(id,password);
         return ResponseEntity.status(HttpStatus.OK).body("Le mot de passe à été modifié avec succès");
     }
+
 }

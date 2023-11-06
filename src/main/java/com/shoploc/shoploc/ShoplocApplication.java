@@ -10,14 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class ShoplocApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(ShoplocApplication.class, args);
-	}
-
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ShoplocApplication.class, args);
+    }
 
 }

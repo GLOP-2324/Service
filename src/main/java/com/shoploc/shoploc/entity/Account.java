@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Table(name="account")
 public class Account {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long account_id;
     @Column(nullable = false)
     private String firstname;
@@ -31,6 +31,10 @@ public class Account {
 
     public Long getAccount_id() {
         return account_id;
+    }
+
+    public void setAccount_id(Long account_id) {
+        this.account_id = account_id;
     }
 
     public String getEmail() {
