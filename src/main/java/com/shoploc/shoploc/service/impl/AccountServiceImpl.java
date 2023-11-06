@@ -6,6 +6,7 @@ import com.shoploc.shoploc.exception.ModificationFailedException;
 import com.shoploc.shoploc.repository.AccountRepository;
 import com.shoploc.shoploc.service.AccountService;
 import jakarta.transaction.Transactional;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,23 +34,19 @@ public class AccountServiceImpl implements AccountService {
             throw new InsertionFailedException("Ce compte existe déja");
         }
         else{
+            String password = RandomStringUtils.random(20, true, true);
+            /*System.out.println(pass);
             String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             StringBuilder password = new StringBuilder();
             for (int i=0; i<20; i++){
                 password.append(characters.charAt((int) Math.floor(Math.random()*characters.length())));
-            }
-
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(account.getEmail());
-            message.setSubject("Votre compte ShopLoc a été créé");
-            message.setText("Voici vos identifiants ShopLoc\n   Login : "+account.getEmail()+"\n  Mot de passe : "+password);
-            this.javaMailSender.send(message);
+            }*/
+            sendMessageByEmail(account,password);
 
             account.setPassword(bCryptPasswordEncoder.encode(password));
             this.accountRepository.save(account);
         }
     }
-
     @Override
     public void modifyPasswordAccount(int id, String mail, String password) throws ModificationFailedException {
         String encodedPassword = bCryptPasswordEncoder.encode(password);
@@ -58,5 +55,14 @@ public class AccountServiceImpl implements AccountService {
         } catch (Exception e) {
             throw new ModificationFailedException("Mail invalide");
         }
+    }
+
+    @Override
+    public void sendMessageByEmail(Account account,String password) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(account.getEmail());
+        message.setSubject("Votre compte ShopLoc a été créé");
+        message.setText("Voici vos identifiants ShopLoc\n   Login : "+account.getEmail()+"\n  Mot de passe : "+password);
+        this.javaMailSender.send(message);
     }
 }

@@ -19,7 +19,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=postgres
 
   postgres:
-    image: postgres:16
+    image: postgres
     restart: always
     environment:
       - POSTGRES_PASSWORD=postgres
@@ -27,3 +27,12 @@ services:
       - POSTGRES_DB=techlab
     ports:
       - "5433:5432"
+  postgres-test:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=test
+    ports:
+      - "5435:5432"
