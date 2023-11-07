@@ -33,10 +33,12 @@ public class AccountServiceTest {
     private JavaMailSender javaMailSender;
     @InjectMocks
     private AccountServiceImpl accountService;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
+
     @Test
     void createAccount_doSuccess() throws InsertionFailedException {
         AccountEntity account = new AccountEntity();
@@ -60,8 +62,9 @@ public class AccountServiceTest {
         Mockito.verify(bCryptPasswordEncoder).encode(newPassword);
         Mockito.verify(accountRepository).getReferenceById(accountId);
     }
+
     @Test
-    void modifyPasswordAccount_error()  {
+    void modifyPasswordAccount_error() {
         long accountId = 1L;
         String newPassword = "testPass";
         Mockito.when(accountRepository.getReferenceById(accountId)).thenThrow(new RuntimeException("Mail invalid"));
