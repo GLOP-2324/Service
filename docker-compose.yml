@@ -14,7 +14,7 @@ services:
       timeout: 5s
       retries: 3
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5433/techlab
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5435/techlab
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
 
