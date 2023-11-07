@@ -5,7 +5,9 @@ on:
     branches:
       - "main"
       - "dev"
-
+  pull_request:
+    branches:
+      - "*"
 jobs:
   test:
     name: test and analyse
