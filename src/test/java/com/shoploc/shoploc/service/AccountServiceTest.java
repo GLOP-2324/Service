@@ -21,7 +21,6 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@ActiveProfiles("test")
 @Sql("/insertData.sql")
 public class AccountServiceTest {
 
