@@ -38,7 +38,6 @@ jobs:
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=GLOP-2324_Service
   build:
     runs-on: ubuntu-latest
-    needs: test
     steps:
       -
         name: Checkout

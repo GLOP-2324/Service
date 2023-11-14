@@ -1,23 +1,5 @@
 version: '3'
 services:
-  backend:
-    build:
-      dockerfile: Dockerfile
-      context: ../Service
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    healthcheck:
-      test: [ "CMD", "my-health-check-script.sh" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5433/techlab
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-
   postgres:
     image: postgres
     restart: always
