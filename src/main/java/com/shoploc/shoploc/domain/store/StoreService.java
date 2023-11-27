@@ -1,7 +1,6 @@
-package com.shoploc.shoploc.service;
+package com.shoploc.shoploc.domain.store;
 
-import com.shoploc.shoploc.entity.Product;
-import com.shoploc.shoploc.entity.Store;
+import com.shoploc.shoploc.domain.store.Store;
 
 import java.util.List;
 import java.util.Optional;

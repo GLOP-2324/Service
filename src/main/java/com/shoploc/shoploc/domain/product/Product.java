@@ -1,4 +1,4 @@
-package com.shoploc.shoploc.entity;
+package com.shoploc.shoploc.domain.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

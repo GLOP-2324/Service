@@ -1,18 +1,22 @@
-package com.shoploc.shoploc.service;
+package com.shoploc.shoploc.domain.product;
 
-import com.shoploc.shoploc.entity.Product;
-import com.shoploc.shoploc.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
+
     private ProductRepository productRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
 
     @Override
     public List<Product> getAllProducts() {
@@ -20,8 +24,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> getById(Long id) {
-        return productRepository.findById(id);
+    public Product getById(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent())
+            return productRepository.findById(id).get();
+        else return null;
     }
 
     @Override
@@ -35,13 +42,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long id, String name, String description, Double price) {
+    public Product updateProduct(Long id, Product product) {
         Product existingProduct = productRepository.findById(id).orElse(null);
 
         if (existingProduct != null) {
-            existingProduct.setName(name);
-            existingProduct.setDescription(description);
-            existingProduct.setPrice(price);
+            existingProduct.setName(product.getName());
+            existingProduct.setDescription(product.getDescription());
+            existingProduct.setPrice(product.getPrice());
             return productRepository.save(existingProduct);
         }
 
@@ -49,7 +56,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        productRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        if(productRepository.findById(id).isPresent()){
+                productRepository.deleteById(id);
+                return true;
+        }
+        else return false;
     }
 }

@@ -1,7 +1,5 @@
-package com.shoploc.shoploc.service;
+package com.shoploc.shoploc.domain.store;
 
-import com.shoploc.shoploc.entity.Store;
-import com.shoploc.shoploc.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
