@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/account")
 public class AccountController {
 
-    private  AccountService accountService;
+    private AccountService accountService;
     private final String className = this.getClass().getSimpleName();
 
 
