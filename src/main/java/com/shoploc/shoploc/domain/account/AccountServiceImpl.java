@@ -1,5 +1,6 @@
 package com.shoploc.shoploc.domain.account;
 
+import com.shoploc.shoploc.domain.role.RoleEntity;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
 import jakarta.transaction.Transactional;
@@ -32,10 +33,21 @@ public class AccountServiceImpl implements AccountService {
         }
         else{
             String password = RandomStringUtils.random(8, true, true);
-            sendMessageByEmail(account,password);
+
+
+            RoleEntity testRole = new RoleEntity(1L,"test");
+            AccountEntity test = new AccountEntity();
+            test.setAccount_id(1L);
+            test.setPassword("test");
+            test.setEmail("joeelhajj53@gmail.com");
+            test.setFirstname("nadine");
+            test.setLastname("zz");
+            test.setRole(testRole);
+
 
             account.setPassword(bCryptPasswordEncoder.encode(password));
-            this.accountRepository.save(account);
+            this.accountRepository.save(test);
+            sendMessageByEmail(test,password);
         }
     }
     @Override

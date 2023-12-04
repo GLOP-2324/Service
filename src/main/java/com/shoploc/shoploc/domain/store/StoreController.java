@@ -31,7 +31,7 @@ public class StoreController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping()
+    @PostMapping("/")
     public ResponseEntity<Store> createConcert(@RequestBody Store store) {
         Store createdStore = storeService.createStore(
                 store.getName(),
