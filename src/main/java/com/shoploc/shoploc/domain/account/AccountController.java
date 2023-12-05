@@ -9,11 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@CrossOrigin(origins = "*")
-@RequestMapping("/shoploc")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/account")
 public class AccountController {
 
-    private  AccountService accountService;
+    private AccountService accountService;
     private final String className = this.getClass().getSimpleName();
 
 
@@ -22,16 +22,22 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping("/createAccount")
+    @PostMapping("/")
     public ResponseEntity<String> createAccount(@RequestBody AccountEntity account) throws InsertionFailedException {
         this.accountService.createAccount(account);
         return ResponseEntity.status(HttpStatus.OK).body("Le compte à été crée avec succès");
     }
 
-    @PatchMapping("/modifyAccountPassword")
-    public ResponseEntity<String> modifyAccountPassword(@RequestParam long id, @RequestParam String mail, @RequestParam String password) throws ModificationFailedException {
-        this.accountService.modifyPasswordAccount(id,password);
-        return ResponseEntity.status(HttpStatus.OK).body("Le mot de passe à été modifié avec succès");
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> modifyAccountPassword(
+            @PathVariable long id,
+            @RequestBody AccountEntity account
+    ) throws ModificationFailedException {
+        if (id != account.getAccount_id()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mismatched IDs in path and request body");
+        }
+        this.accountService.modifyPasswordAccount(id, account.getPassword());
+        return ResponseEntity.status(HttpStatus.OK).body("Le mot de passe a été modifié avec succès");
     }
 
 }
