@@ -12,8 +12,8 @@ target/
 .settings
 .springBeans
 .sts4-cache
-.postgres-data
-.postgres-test-data
+.postgres_data
+.postgres_test_data
 ### IntelliJ IDEA ###
 .idea
 *.iws
