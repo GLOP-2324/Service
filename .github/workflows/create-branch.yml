@@ -1,0 +1,17 @@
+name: Create Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Branch
+        run: |
+          branch_name="feature-$(date +%Y%m%d%H%M%S)"
+          git checkout -b $branch_name
+          git push origin $branch_name
