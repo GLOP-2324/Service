@@ -1,8 +1,11 @@
 package com.shoploc.shoploc.domain.account;
 
 import com.shoploc.shoploc.domain.role.RoleEntity;
+import com.shoploc.shoploc.domain.role.RoleRepository;
+import com.shoploc.shoploc.dto.AccountDTO;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
+import com.shoploc.shoploc.mapper.AccountMapper;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,37 +20,31 @@ public class AccountServiceImpl implements AccountService {
 
     private  BCryptPasswordEncoder bCryptPasswordEncoder;
     private  AccountRepository accountRepository;
+    private RoleRepository roleRepository;
     private  JavaMailSender javaMailSender;
+    private AccountMapper accountMapper;
 
     @Autowired
-    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, JavaMailSender javaMailSender) {
+    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, AccountMapper accountMapper) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountRepository = accountRepository;
+        this.roleRepository = roleRepository;
         this.javaMailSender = javaMailSender;
+        this.accountMapper = accountMapper;
     }
 
     @Override
-    public void createAccount(AccountEntity account) throws InsertionFailedException {
+    public void createAccount(AccountEntity account, Integer roleId) throws InsertionFailedException {
         if (accountRepository.findByEmail(account.getEmail()).isPresent()){
             throw new InsertionFailedException("Ce compte existe déja");
         }
         else{
             String password = RandomStringUtils.random(8, true, true);
-
-
-            RoleEntity testRole = new RoleEntity(1L,"test");
-            AccountEntity test = new AccountEntity();
-            test.setAccount_id(1L);
-            test.setPassword("test");
-            test.setEmail("joeelhajj53@gmail.com");
-            test.setFirstname("nadine");
-            test.setLastname("zz");
-            test.setRole(testRole);
-
-
+            RoleEntity role = this.roleRepository.getReferenceById(Long.valueOf(roleId));
+            account.setRole(role);
             account.setPassword(bCryptPasswordEncoder.encode(password));
-            this.accountRepository.save(test);
-            sendMessageByEmail(test,password);
+            this.accountRepository.save(account);
+            sendMessageByEmail(account,password);
         }
     }
     @Override

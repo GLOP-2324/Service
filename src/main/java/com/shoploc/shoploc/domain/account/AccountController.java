@@ -1,5 +1,6 @@
 package com.shoploc.shoploc.domain.account;
 
+import com.shoploc.shoploc.dto.AccountDTO;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class AccountController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createAccount(@RequestBody AccountEntity account) throws InsertionFailedException {
-        this.accountService.createAccount(account);
+    public ResponseEntity<String> createAccount(@RequestBody AccountEntity account, @RequestParam Integer roleId) throws InsertionFailedException {
+        this.accountService.createAccount(account,roleId);
         return ResponseEntity.status(HttpStatus.OK).body("Le compte à été crée avec succès");
     }
 
