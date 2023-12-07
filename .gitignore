@@ -12,13 +12,16 @@ target/
 .settings
 .springBeans
 .sts4-cache
-.postgres_data
-.postgres_test_data
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
+
+# Ignore Docker volume data directories
+/postgres_data/
+/postgres_test_data/
 
 ### NetBeans ###
 /nbproject/private/
