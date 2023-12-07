@@ -19,6 +19,10 @@ target/
 *.iml
 *.ipr
 
+# Ignore Docker volume data directories
+/postgres_data/
+/postgres_test_data/
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

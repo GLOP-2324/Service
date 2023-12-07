@@ -43,7 +43,7 @@ public class AccountServiceTest {
     void createAccount_doSuccess() throws InsertionFailedException {
         AccountEntity account = new AccountEntity();
         account.setEmail("test@example.com");
-        accountService.createAccount(account);
+        accountService.createAccount(account,1);
         Mockito.verify(accountRepository).save(account);
     }
 

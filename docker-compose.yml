@@ -9,6 +9,9 @@ services:
       - POSTGRES_DB=techlab
     ports:
       - "5433:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
   postgres-test:
     image: postgres
     restart: always
@@ -18,3 +21,9 @@ services:
       - POSTGRES_DB=test
     ports:
       - "5435:5432"
+    volumes:
+      - ./postgres_test_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  postgres_test_data:

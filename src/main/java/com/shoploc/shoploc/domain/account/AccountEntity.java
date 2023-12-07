@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Transactional
 @Table(name="account")
 public class AccountEntity {
     @Id
