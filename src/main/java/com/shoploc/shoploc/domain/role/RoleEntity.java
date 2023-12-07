@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Transactional
 @Data
 @Table(name="role")
 public class RoleEntity {

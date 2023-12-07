@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 public class AccountServiceImpl implements AccountService {
 
     private  BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -34,9 +33,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void createAccount(AccountEntity account, Integer roleId) throws InsertionFailedException {
+    public void createAccount(AccountEntity account, Integer roleId) throws InsertionFailedException  {
         if (accountRepository.findByEmail(account.getEmail()).isPresent()){
-            throw new InsertionFailedException("Ce compte existe déja");
+            throw new InsertionFailedException("This account already exists");
         }
         else{
             String password = RandomStringUtils.random(8, true, true);
@@ -47,13 +46,14 @@ public class AccountServiceImpl implements AccountService {
             sendMessageByEmail(account,password);
         }
     }
+
     @Override
     public void modifyPasswordAccount(long id, String password) throws ModificationFailedException {
         String encodedPassword = bCryptPasswordEncoder.encode(password);
         try{
             this.accountRepository.getReferenceById(id).setPassword(encodedPassword);
         } catch (Exception e) {
-            throw new ModificationFailedException("Mail invalide");
+            throw new ModificationFailedException("Invalid email");
         }
     }
 
