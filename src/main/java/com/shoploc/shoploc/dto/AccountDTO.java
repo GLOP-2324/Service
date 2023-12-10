@@ -9,6 +9,25 @@ public class AccountDTO {
     private String email;
     private String password;
     private RoleEntity role;
+    private Integer roleId;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
 
     public String getFirstname() {
         return firstname;

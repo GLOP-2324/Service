@@ -1,8 +1,10 @@
 package com.shoploc.shoploc.domain.account;
 
 import com.shoploc.shoploc.dto.AccountDTO;
+import com.shoploc.shoploc.dto.CredentialsDTO;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
+import com.shoploc.shoploc.exception.ObjectNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +42,18 @@ public class AccountController {
         this.accountService.modifyPasswordAccount(id, account.getPassword());
         return ResponseEntity.status(HttpStatus.OK).body("Le mot de passe a été modifié avec succès");
     }
+
+    @PostMapping("/signIn")
+    public ResponseEntity<AccountDTO> signIn(@RequestBody CredentialsDTO credentials) throws ObjectNotExistException {
+        AccountDTO account = accountService.signIn(credentials);
+        return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+
+    @PostMapping("/validateToken")
+    public ResponseEntity<AccountDTO> validateToken(@RequestParam String token) throws ObjectNotExistException {
+        AccountDTO account = accountService.validateToken(token);
+        return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+
 
 }
