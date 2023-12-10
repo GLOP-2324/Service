@@ -2,6 +2,7 @@ package com.shoploc.shoploc.service;
 
 
 import com.shoploc.shoploc.domain.account.AccountEntity;
+import com.shoploc.shoploc.domain.role.RoleRepository;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
 import com.shoploc.shoploc.domain.account.AccountRepository;
@@ -29,6 +30,8 @@ public class AccountServiceTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Mock
     private AccountRepository accountRepository;
+    @Mock
+    private RoleRepository roleRepository;
     @Mock
     private JavaMailSender javaMailSender;
     @InjectMocks
