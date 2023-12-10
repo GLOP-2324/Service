@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
-@Transactional
 public class AccountServiceImpl implements AccountService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -64,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             this.accountRepository.getReferenceById(id).setPassword(encodedPassword);
         } catch (Exception e) {
-            throw new ModificationFailedException("Mail invalide");
+            throw new ModificationFailedException("Invalid email");
         }
     }
 

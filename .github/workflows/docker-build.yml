@@ -1,10 +1,14 @@
 name: CI/CD
 
 on:
-  push:
-    branches:
-      - "main"
-      - "dev"
+    workflow_run:
+      workflows: [ "create-branch" ]
+      types:
+        - completed
+    push:
+      branches:
+        - "*"
+
 
 jobs:
   test:
