@@ -73,8 +73,7 @@ jobs:
     steps:
       - name: Debug
         run:
-            echo "Working Directory:
-              $(pwd), Repository Contents: $(ls)"
+            echo "Working Directory:$(pwd), Repository Contents:$(ls)"
       - #Set the production profile
         name: Set production profile
         run: |
