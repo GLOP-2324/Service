@@ -8,10 +8,6 @@ on:
     push:
       branches:
         - "*"
-env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-  IP_BE_ADDRESS: ${{ secrets.IP_BE_ADDRESS }}
 
 jobs:
   test:
@@ -44,6 +40,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=GLOP-2324_Service
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       -
@@ -68,17 +65,12 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/glop23-24:backend
   deploy:
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Debug
-        run:
-            echo "Working Directory:$(pwd), Repository Contents:$(ls)"
-      - name: Set file permissions
-        run: chmod +rw ./src/main/resources/application.properties
       - #Set the production profile
         name: Set production profile
         run: |
