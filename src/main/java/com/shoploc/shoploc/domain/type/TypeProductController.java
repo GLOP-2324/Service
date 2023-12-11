@@ -1,16 +1,17 @@
 package com.shoploc.shoploc.domain.type;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/typeProduct")
-@CrossOrigin(origins = "http://localhost:4200")
 public class TypeProductController {
 
     private TypeProductService typeProductService;
 
+    @Autowired
     public TypeProductController(TypeProductService typeProductService) {
         this.typeProductService = typeProductService;
     }

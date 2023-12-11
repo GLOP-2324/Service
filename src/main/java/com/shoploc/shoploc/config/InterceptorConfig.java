@@ -15,7 +15,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(headerInterceptor)
-                .addPathPatterns("/account/password/**"); // Spécifiez les URL sur lesquelles l'intercepteur doit être appliqué
+                .addPathPatterns("/account/password/**","/typeProduct/**"); // Spécifiez les URL sur lesquelles l'intercepteur doit être appliqué
     }
 
 }
