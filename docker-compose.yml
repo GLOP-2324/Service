@@ -1,5 +1,9 @@
 version: '3'
 services:
+  shoploc-be:
+    image: joehj/glop23-24:backend
+    ports:
+      - "80:8080"
   postgres:
     image: postgres
     restart: always
