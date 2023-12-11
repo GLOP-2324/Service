@@ -26,7 +26,7 @@ public class StoreController {
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/test/")
+    @GetMapping("/")
     public ResponseEntity<List<Store>> getAllStores() {
         List<Store> stores = storeService.getAllStores();
         if(stores != null ) {
