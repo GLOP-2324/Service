@@ -1,9 +1,11 @@
 package com.shoploc.shoploc.domain.store;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.shoploc.shoploc.domain.product.Product;
+import jakarta.persistence.*;
+
+import java.io.File;
+import java.util.Set;
+
 
 @Entity
 public class Store {
@@ -12,9 +14,20 @@ public class Store {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
+    @OneToMany
+    @JoinTable(
+            name = "store_product",
+            joinColumns = @JoinColumn(name = "store_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products;
+
     private String name;
 
     private String address;
+
+    private File image;
+
 
     public Long getId() {
         return id;
@@ -38,5 +51,22 @@ public class Store {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public Set<Product> setProducts(Product product) {
+        products.add(product);
+        return products;
+    }
+
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
     }
 }

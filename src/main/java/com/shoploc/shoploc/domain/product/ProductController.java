@@ -35,9 +35,12 @@ public class ProductController {
     @PostMapping("/")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.createProduct(
-                product.getName(),
+                product.getLibelle(),
                 product.getDescription(),
-                product.getPrice()
+                product.getPrice(),
+                product.getType(),
+                product.getImage(),
+                product.getStore()
         );
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
@@ -46,7 +49,7 @@ public class ProductController {
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         boolean deleted = productService.deleteById(id);
         if(deleted)
-        return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
         else
             return ResponseEntity.notFound().build();
     }
