@@ -81,7 +81,7 @@ public class AccountServiceImpl implements AccountService {
 
         AccountEntity account = this.accountRepository.findByEmail(credentials.getEmail());
         AccountDTO accountToLogIn = accountMapper.toAccountDto(account);
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+      //  BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (bCryptPasswordEncoder.matches(credentials.getPassword(), account.getPassword())) {
             accountToLogIn.setToken(createToken(accountToLogIn));
             accountToLogIn.setRoleId(Math.toIntExact((account.getRole().getRole_id())));

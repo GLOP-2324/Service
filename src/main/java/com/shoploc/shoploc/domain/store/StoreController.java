@@ -22,7 +22,7 @@ public class StoreController {
         return storeService.getById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping("/test")
     public ResponseEntity<List<Store>> getAllStores() {
         List<Store> stores = storeService.getAllStores();
         if(stores != null ) {
