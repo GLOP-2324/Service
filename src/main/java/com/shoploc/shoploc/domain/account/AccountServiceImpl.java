@@ -30,9 +30,6 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
     private RoleRepository roleRepository;
     private JavaMailSender javaMailSender;
-    private AccountMapper accountMapper;
-    @Value("${security.jwt.token.secret-key:secret-key}")
-    private String secretKey;
 
     @Autowired
     public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, AccountMapper accountMapper) {
@@ -40,7 +37,6 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.javaMailSender = javaMailSender;
-        this.accountMapper = accountMapper;
     }
 
     @Override
@@ -75,55 +71,5 @@ public class AccountServiceImpl implements AccountService {
         message.setText("Voici vos identifiants ShopLoc\n   Login : " + account.getEmail() + "\n  Mot de passe : " + password);
         this.javaMailSender.send(message);
     }
-
-    @Override
-    public AccountDTO signIn(CredentialsDTO credentials) throws ObjectNotExistException {
-
-        AccountEntity account = this.accountRepository.findByEmail(credentials.getEmail());
-        AccountDTO accountToLogIn = accountMapper.toAccountDto(account);
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        if (bCryptPasswordEncoder.matches(credentials.getPassword(), account.getPassword())) {
-            accountToLogIn.setToken(createToken(accountToLogIn));
-            accountToLogIn.setRoleId(Math.toIntExact((account.getRole().getRole_id())));
-            accountToLogIn.setPassword("Tu ne trouveras rien ici :) ");
-            return accountToLogIn;
-        }
-        throw new ObjectNotExistException("Identifiant et/ou mot de passe incorrect");
-    }
-
-    private String createToken(AccountDTO account) {
-        Claims claims = Jwts.claims().setSubject(account.getEmail());
-
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + 3600000); // 1 hour
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
-    }
-
-    @Override
-    public AccountDTO validateToken(String token) throws ObjectNotExistException {
-        try {
-            String login = Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
-            AccountEntity account = this.accountRepository.findByEmail(login);
-            AccountDTO accountToLogIn = accountMapper.toAccountDto(account);
-            accountToLogIn.setToken(createToken(accountToLogIn));
-            accountToLogIn.setPassword("Tu ne trouveras rien ici :) ");
-            return accountToLogIn;
-        }
-        catch (JwtException e) {
-            throw new ObjectNotExistException("Invalid token:" + e);
-        }
-    }
-
-
 }
 
