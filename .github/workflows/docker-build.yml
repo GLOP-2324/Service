@@ -74,10 +74,7 @@ jobs:
       - #Set the production profile
         name: Set production profile
         run: |
-              sed -i 's/spring.profiles.active=dev/spring.profiles.active=prod/g' ./shoploc-be/src/main/resources/application.properties
-      - name: Set production profile
-        run: |
-              sed -i 's/spring.profiles.active=dev/spring.profiles.active=prod/g' ./shoploc-be/src/main/resources/application.properties
+              sed -i 's/spring.profiles.active=dev/spring.profiles.active=prod/g' ./src/main/resources/application.properties
 
       # Install VPN to access OpenStack with univ lille credentials
       - name: Install OpenVPN Client
