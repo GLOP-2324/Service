@@ -1,13 +1,13 @@
 name: CI/CD
 
 on:
-    workflow_run:
-      workflows: [ "create-branch" ]
-      types:
-        - completed
-    push:
-      branches:
-        - "*"
+  workflow_run:
+    workflows: [ "create-branch" ]
+    types:
+      - completed
+  push:
+    branches:
+      - "*"
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
@@ -47,20 +47,16 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
-      -
-        name: Login to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -78,7 +74,7 @@ jobs:
       - #Set the production profile
         name: Set production profile
         run: |
-              sed -i 's/spring.profiles.active=dev/spring.profiles.active=prod/g' ./src/main/resources/application.properties
+          sed -i 's/spring.profiles.active=dev/spring.profiles.active=prod/g' ./src/main/resources/application.properties
 
       # Install VPN to access OpenStack with univ lille credentials
       - name: Install OpenVPN Client
