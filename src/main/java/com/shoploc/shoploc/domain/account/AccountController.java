@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
     private AccountService accountService;
-    private final String className = this.getClass().getSimpleName();
 
 
     @Autowired
@@ -31,7 +30,7 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body("Le compte à été crée avec succès");
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("password/{id}")
     public ResponseEntity<String> modifyAccountPassword(
             @PathVariable long id,
             @RequestBody AccountEntity account
@@ -42,18 +41,4 @@ public class AccountController {
         this.accountService.modifyPasswordAccount(id, account.getPassword());
         return ResponseEntity.status(HttpStatus.OK).body("Le mot de passe a été modifié avec succès");
     }
-
-    @PostMapping("/signIn")
-    public ResponseEntity<AccountDTO> signIn(@RequestBody CredentialsDTO credentials) throws ObjectNotExistException {
-        AccountDTO account = accountService.signIn(credentials);
-        return new ResponseEntity<>(account, HttpStatus.OK);
-    }
-
-    @PostMapping("/validateToken")
-    public ResponseEntity<AccountDTO> validateToken(@RequestParam String token) throws ObjectNotExistException {
-        AccountDTO account = accountService.validateToken(token);
-        return new ResponseEntity<>(account, HttpStatus.OK);
-    }
-
-
 }
