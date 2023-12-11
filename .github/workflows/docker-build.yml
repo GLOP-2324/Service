@@ -74,6 +74,8 @@ jobs:
       - name: Debug
         run:
             echo "Working Directory:$(pwd), Repository Contents:$(ls)"
+      - name: Set file permissions
+        run: chmod +rw ./src/main/resources/application.properties
       - #Set the production profile
         name: Set production profile
         run: |
