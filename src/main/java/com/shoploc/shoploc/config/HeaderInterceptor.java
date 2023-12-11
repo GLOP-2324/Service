@@ -14,6 +14,7 @@ public class HeaderInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String token = request.getHeader("Authorization");
+        System.out.println("Authorization Header: " + token);
 
         if (token != null && token.startsWith("Bearer ")) {
             // Token présent, autorisez la requête à continuer vers les méthodes du contrôleur
