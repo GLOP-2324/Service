@@ -112,5 +112,5 @@ jobs:
           ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.IP_BE_ADDRESS }} 'sudo docker pull ${{ secrets.DOCKER_USERNAME }}/glop23-24:backend'
       - name: Run new shoploc-be-container
         run: |
-          ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.IP_BE_ADDRESS }} 'sudo docker run ${{ secrets.DOCKER_USERNAME }}/glop23-24:backend'
+          ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.IP_BE_ADDRESS }} 'sudo docker run -d ${{ secrets.DOCKER_USERNAME }}/glop23-24:backend'
 
