@@ -71,10 +71,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug
+        run:
+            echo "Working Directory:
+              $(pwd), Repository Contents: $(ls)"
       - #Set the production profile
         name: Set production profile
         run: |
-              sed -i 's/spring.profiles.active=dev/spring.profiles.active=prod/g' src/main/resources/application.properties
+              sed -i 's/spring.profiles.active=dev/spring.profiles.active=prod/g' /src/main/resources/application.properties
 
       # Install VPN to access OpenStack with univ lille credentials
       - name: Install OpenVPN Client
