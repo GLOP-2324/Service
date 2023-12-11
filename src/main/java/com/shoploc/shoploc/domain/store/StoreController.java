@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/store")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StoreController {
     private StoreService storeService;
     public StoreController (StoreService storeService) {
