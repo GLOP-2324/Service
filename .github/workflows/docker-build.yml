@@ -103,9 +103,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Set permissions for private key
-        run:
-          chmod 600 shoploc.pem
+      - name: Stop and Remove Existing Container
+        run: |
+          ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker stop container_name || true'
+          ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker rm container_name || true'
 
       # Deploy shoploc-be on OpenStack instance.
       - name: Pull shoploc-be docker image
