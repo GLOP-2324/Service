@@ -77,15 +77,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Install VPN to access OpenStack with univ lille credentials
-      - name: Install OpenVPN Client
-        run: sudo apt-get update && sudo apt-get install openvpn
-
-      - name: Download VPN Configuration
-        run: |
-          wget https://infotuto.univ-lille.fr/fileadmin/user_upload/infotuto/images/DSI/Fichiers_telechargeables/Clients_VPN/ULILLE_VPN_ETUDIANT_Linux_v4.zip
-          unzip ULILLE_VPN_ETUDIANT_Linux_v4.zip
-
       - name: OpenVPN-Connect
         uses: kota65535/github-openvpn-connect-action@v2.1.0
         with:
@@ -119,4 +110,8 @@ jobs:
       - name: Run new shoploc-be-container
         run: |
           ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker run -d --name backend-container -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/glop23-24:backend'
-
+      #Delete unused images
+      - name: Delete unused images
+        run: |
+          ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker docker image prune -a '
+    
