@@ -77,6 +77,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install OpenVPN Client
+        run: sudo apt-get update && sudo apt-get install openvpn
+
+      - name: Download VPN Configuration
+        run: |
+          wget https://infotuto.univ-lille.fr/fileadmin/user_upload/infotuto/images/DSI/Fichiers_telechargeables/Clients_VPN/ULILLE_VPN_ETUDIANT_Linux_v4.zip
+          unzip ULILLE_VPN_ETUDIANT_Linux_v4.zip
+          
       - name: OpenVPN-Connect
         uses: kota65535/github-openvpn-connect-action@v2.1.0
         with:
