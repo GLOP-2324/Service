@@ -34,7 +34,7 @@ public class StoreController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Store> createConcert(@RequestBody Store store) {
+    public ResponseEntity<Store> createStore(@RequestBody Store store) {
         Store createdStore = storeService.createStore(
                 store.getName(),
                 store.getAddress(),
