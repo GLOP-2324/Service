@@ -10,6 +10,8 @@ public interface StoreRepository  extends JpaRepository<Store,Long> {
 
     Optional<Store> findById (Long id);
 
+    Store findByEmail (String email);
+
     void deleteById (Long id);
 
 }

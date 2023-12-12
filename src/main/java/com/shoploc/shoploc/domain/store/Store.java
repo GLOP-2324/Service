@@ -28,6 +28,7 @@ public class Store {
 
     private File image;
 
+    private String email;
 
     public Long getId() {
         return id;
@@ -68,5 +69,13 @@ public class Store {
 
     public void setImage(File image) {
         this.image = image;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
