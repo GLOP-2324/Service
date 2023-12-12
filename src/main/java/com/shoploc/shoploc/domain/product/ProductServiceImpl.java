@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(price);
         product.setImage(image);
         product.setType(type);
-        Store storeActual = storeRepository.findById(store.getId()).orElse(null);
+        Store storeActual = storeRepository.findByEmail(store.getEmail());
         product.setStore(storeActual);
         product.getType().setProducts(product);
         storeActual.setProducts(product);
