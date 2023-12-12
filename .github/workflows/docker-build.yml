@@ -121,5 +121,5 @@ jobs:
       #Delete unused images
       - name: Delete unused images
         run: |
-          ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker image prune -a '
+          ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker image prune -af '
     
