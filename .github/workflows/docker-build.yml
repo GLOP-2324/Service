@@ -110,6 +110,7 @@ jobs:
         run: |
           ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker stop backend-container || true'
           ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker rm backend-container || true'
+          continue-on-error: true
 
       # Deploy shoploc-be on OpenStack instance.
       - name: Pull shoploc-be docker image
