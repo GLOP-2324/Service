@@ -38,7 +38,7 @@ public class TypeProduct {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public List<Product> setProducts(Product product) {
+        return products;
     }
 }

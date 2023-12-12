@@ -4,6 +4,7 @@ package com.shoploc.shoploc.domain.product;
 import com.shoploc.shoploc.domain.store.Store;
 import com.shoploc.shoploc.domain.store.StoreRepository;
 import com.shoploc.shoploc.domain.type.TypeProduct;
+import com.shoploc.shoploc.domain.type.TypeProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private StoreRepository storeRepository;
+
+    @Autowired
+    private TypeProductRepository typeProductRepository;
     private ProductRepository productRepository;
+
 
     public ProductServiceImpl(ProductRepository productRepository){
         this.productRepository = productRepository;
@@ -45,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
         product.setType(type);
         Store storeActual = storeRepository.findById(store.getId()).orElse(null);
         product.setStore(storeActual);
+        product.getType().setProducts(product);
         storeActual.setProducts(product);
 
         return productRepository.save(product);
