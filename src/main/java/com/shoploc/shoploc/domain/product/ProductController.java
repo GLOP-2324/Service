@@ -1,5 +1,6 @@
 package com.shoploc.shoploc.domain.product;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 public class ProductController {
     private ProductService productService;
 
+    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
@@ -35,9 +37,12 @@ public class ProductController {
     @PostMapping("/")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.createProduct(
-                product.getName(),
+                product.getLibelle(),
                 product.getDescription(),
-                product.getPrice()
+                product.getPrice(),
+                product.getType(),
+                product.getImage(),
+                product.getStore()
         );
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
@@ -46,7 +51,7 @@ public class ProductController {
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         boolean deleted = productService.deleteById(id);
         if(deleted)
-        return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
         else
             return ResponseEntity.notFound().build();
     }

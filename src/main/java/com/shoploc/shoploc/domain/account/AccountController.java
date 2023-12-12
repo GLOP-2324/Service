@@ -1,10 +1,8 @@
 package com.shoploc.shoploc.domain.account;
 
-import com.shoploc.shoploc.dto.AccountDTO;
-import com.shoploc.shoploc.dto.CredentialsDTO;
+
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
-import com.shoploc.shoploc.exception.ObjectNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/account")
 public class AccountController {
 

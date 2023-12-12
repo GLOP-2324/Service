@@ -1,25 +1,27 @@
 package com.shoploc.shoploc.domain.store;
-
-import com.shoploc.shoploc.domain.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/store")
 public class StoreController {
     private StoreService storeService;
+
+    @Autowired
     public StoreController (StoreService storeService) {
         this.storeService = storeService;
     }
 
     @GetMapping("/{id}")
-    public Optional<Store> getByStore(@PathVariable Long id) {
-        return storeService.getById(id);
+    public ResponseEntity<Store> getByStore(@PathVariable Long id) {
+        if (storeService.getById(id) != null) {
+            return new ResponseEntity<>(storeService.getById(id),HttpStatus.OK);
+        }
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/")
@@ -35,22 +37,28 @@ public class StoreController {
     public ResponseEntity<Store> createConcert(@RequestBody Store store) {
         Store createdStore = storeService.createStore(
                 store.getName(),
-                store.getAddress()
+                store.getAddress(),
+                store.getImage()
         );
         return new ResponseEntity<>(createdStore, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStoreById(@PathVariable Long id) {
-        storeService.deleteById(id);
+    public ResponseEntity<Void> deleteStoreById(@PathVariable Long id) {
+        boolean deleted = storeService.deleteById(id);
+        if (deleted)
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
-    public Store updateStore (@PathVariable Long id, @RequestBody Store store) {
-        return storeService.updateStore(id,
-                store.getName(),
-                store.getAddress()
-        );
+    public ResponseEntity<Store> updateStore (@PathVariable Long id, @RequestBody Store store) {
+        Store storeToUpdate = storeService.updateStore(id, store);
+        if (storeToUpdate != null) {
+            return new ResponseEntity<>(storeToUpdate, HttpStatus.OK);
+        }
+        else return ResponseEntity.notFound().build();
     }
 
 }
