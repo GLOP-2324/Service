@@ -23,9 +23,9 @@ public class TypeProductServiceImpl implements TypeProductService {
     public TypeProduct createType(String libelle) {
         TypeProduct typeProduct = new TypeProduct();
         typeProduct.setLibelle(libelle);
+        typeProductRepository.save(typeProduct);
 
-        return typeProductRepository.save(typeProduct);
-
+        return typeProduct;
     }
 
     @Override
