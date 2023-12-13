@@ -1,9 +1,12 @@
 package com.shoploc.shoploc.domain.store;
+import com.shoploc.shoploc.domain.account.AccountEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -15,7 +18,15 @@ public class StoreController {
     public StoreController (StoreService storeService) {
         this.storeService = storeService;
     }
-
+    @GetMapping("email/{email}")
+    public ResponseEntity<Store> getStoreByEmail(@PathVariable String email) {
+        Store store = storeService.findByEmail(email);
+        if (store != null) {
+            return ResponseEntity.ok(store);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Store> getByStore(@PathVariable Long id) {
         if (storeService.getById(id) != null) {
@@ -34,13 +45,15 @@ public class StoreController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Store> createStore(@RequestBody Store store) {
-        Store createdStore = storeService.createStore(
-                store.getName(),
-                store.getAddress(),
-                store.getImage()
+    public ResponseEntity<Void> createStore(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("name") String name,
+            @RequestParam("email") String email
+    ) throws IOException {
+         storeService.createStore(
+              name,email,image
         );
-        return new ResponseEntity<>(createdStore, HttpStatus.CREATED);
+        return new ResponseEntity<>( HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

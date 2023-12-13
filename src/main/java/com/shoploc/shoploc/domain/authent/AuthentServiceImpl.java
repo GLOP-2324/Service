@@ -10,6 +10,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,8 +33,9 @@ public class AuthentServiceImpl implements AuthentService {
     }
 
     @Override
+    @Transactional
     public AccountDTO signIn(CredentialsDTO credentials) throws ObjectNotExistException {
-
+        System.out.println(credentials.getEmail());
         AccountEntity account = this.accountRepository.findByEmail(credentials.getEmail());
         AccountDTO accountToLogIn = accountMapper.toAccountDto(account);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();

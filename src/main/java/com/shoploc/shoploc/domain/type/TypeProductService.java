@@ -7,4 +7,6 @@ public interface TypeProductService {
     List<TypeProduct> getAllTypes();
     TypeProduct createType(String libelle);
 
+    TypeProduct getById(Integer id);
+
 }

@@ -28,6 +28,8 @@ public class AccountEntity {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
+    @Lob
+    private String image;
     public Long getAccount_id() {
         return account_id;
     }
@@ -74,5 +76,13 @@ public class AccountEntity {
 
     public void setRole(RoleEntity role) {
         this.role = role;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

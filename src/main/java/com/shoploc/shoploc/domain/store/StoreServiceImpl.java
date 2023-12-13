@@ -1,9 +1,14 @@
 package com.shoploc.shoploc.domain.store;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.shoploc.shoploc.domain.account.AccountEntity;
+import com.shoploc.shoploc.domain.product.Product;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +36,17 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store createStore(String name, String address, File image) {
-        Store store = new Store();
+    public void createStore(String name, String email, MultipartFile image) throws IOException {
+        List<Product> products = new ArrayList<>();
+        Store store= new Store();
+        String base64Image = convertToBase64(image);
         store.setName(name);
-        store.setAddress(address);
-        store.setImage(image);
-        return storeRepository.save(store);
+        store.setEmail(email);
+        store.setProducts(products);
+        store.setImage(base64Image);
+        storeRepository.save(store);
     }
+
 
     @Override
     public Store updateStore(Long id, Store store) {
@@ -60,5 +69,16 @@ public class StoreServiceImpl implements StoreService {
             return true;
         }
         else return false;
+    }
+
+    @Override
+    @Transactional
+    public Store findByEmail(String email) {
+        return storeRepository.findByEmail(email);
+    }
+
+    private String convertToBase64(MultipartFile file) throws IOException {
+        byte[] byteContent = file.getBytes();
+        return Base64.getEncoder().encodeToString(byteContent);
     }
 }

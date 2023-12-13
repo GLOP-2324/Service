@@ -8,14 +8,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    List<Product> getAllProducts();
+    List<Product> getAllProducts(Integer idStore);
 
     Product getById(Long id);
 
-    Product createProduct (String libelle, String description, Double price, TypeProduct type, File image, Store store);
+    Product createProduct (Product product);
 
     Product updateProduct (Long id, Product product);
 
     boolean deleteById (Long id);
+
 
 }

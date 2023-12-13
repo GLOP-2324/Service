@@ -28,5 +28,10 @@ public class TypeProductServiceImpl implements TypeProductService {
 
     }
 
+    @Override
+    public TypeProduct getById(Integer id) {
+        return typeProductRepository.findById(id).orElse(null);
+    }
+
 
 }
