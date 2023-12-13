@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -23,8 +24,10 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
 
-    public ProductServiceImpl(ProductRepository productRepository){
+    @Autowired
+    public ProductServiceImpl(ProductRepository productRepository, StoreRepository storeRepository){
         this.productRepository = productRepository;
+        this.storeRepository = storeRepository;
     }
 
     @Override
@@ -53,7 +56,8 @@ public class ProductServiceImpl implements ProductService {
         product.getType().setProducts(product);
         storeActual.setProducts(product);
 
-        return productRepository.save(product);
+        productRepository.save(product);
+        return product;
     }
 
     @Override

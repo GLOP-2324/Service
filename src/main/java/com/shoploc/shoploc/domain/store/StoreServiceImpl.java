@@ -36,7 +36,9 @@ public class StoreServiceImpl implements StoreService {
         store.setName(name);
         store.setAddress(address);
         store.setImage(image);
-        return storeRepository.save(store);
+        storeRepository.save(store);
+
+        return store;
     }
 
     @Override

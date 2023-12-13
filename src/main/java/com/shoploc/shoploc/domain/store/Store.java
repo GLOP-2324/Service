@@ -4,6 +4,7 @@ import com.shoploc.shoploc.domain.product.Product;
 import jakarta.persistence.*;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -30,6 +31,9 @@ public class Store {
 
     private String email;
 
+    public Store () {
+        this.products = new HashSet<>();
+    }
     public Long getId() {
         return id;
     }
