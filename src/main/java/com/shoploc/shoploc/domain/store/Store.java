@@ -4,6 +4,7 @@ import com.shoploc.shoploc.domain.product.Product;
 import jakarta.persistence.*;
 
 import java.io.File;
+import java.util.List;
 import java.util.Set;
 
 
@@ -12,29 +13,25 @@ public class Store {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @OneToMany
-    @JoinTable(
-            name = "store_product",
-            joinColumns = @JoinColumn(name = "store_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private Set<Product> products;
+    private List<Product> products;
 
     private String name;
 
     private String address;
 
-    private File image;
+    @Lob
+    private String image;
 
     private String email;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,20 +51,19 @@ public class Store {
         this.address = address;
     }
 
-    public Set<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public Set<Product> setProducts(Product product) {
-        products.add(product);
-        return products;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
-    public File getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(File image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -77,5 +73,11 @@ public class Store {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Store() {
+
+    }
+    public Store(Integer id) {
+        this.id = id;
     }
 }

@@ -5,6 +5,7 @@ import com.shoploc.shoploc.domain.store.Store;
 import com.shoploc.shoploc.domain.store.StoreRepository;
 import com.shoploc.shoploc.domain.type.TypeProduct;
 import com.shoploc.shoploc.domain.type.TypeProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return (List<Product>) productRepository.findAll();
+    @Transactional
+    public List<Product> getAllProducts(Integer idStore) {
+        return (List<Product>) productRepository.findByStoreId(idStore);
     }
 
     @Override
@@ -41,19 +43,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(String libelle, String description, Double price, TypeProduct type, File image, Store store) {
-        Product product = new Product();
-        product.setLibelle(libelle);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setImage(image);
-        product.setType(type);
-        Store storeActual = storeRepository.findByEmail(store.getEmail());
-        product.setStore(storeActual);
-        product.getType().setProducts(product);
-        storeActual.setProducts(product);
+    @Transactional
+    public Product createProduct(Product product) {
+        Product newProduct = new Product();
+        newProduct.setLibelle(product.getLibelle());
+        newProduct.setDescription(product.getDescription());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setImage(product.getImage());
+        newProduct.setStore(product.getStore());
+        newProduct.setType(product.getType());
 
-        return productRepository.save(product);
+        return productRepository.save(newProduct);
     }
 
     @Override

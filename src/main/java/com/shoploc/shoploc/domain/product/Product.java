@@ -5,7 +5,6 @@ import com.shoploc.shoploc.domain.type.TypeProduct;
 import jakarta.persistence.*;
 
 import java.io.File;
-import java.util.Set;
 
 @Entity
 public class Product {
@@ -19,16 +18,15 @@ public class Product {
     private String description;
 
     private double price;
-
     @Lob
-    private File image;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
     private TypeProduct type;
 
     @ManyToOne
-    @JoinColumn(name = "products")
+    @JoinColumn(name = "store_id")
     private Store store;
 
 
@@ -64,10 +62,10 @@ public class Product {
         this.price = price;
     }
 
-    public File getImage() {
+    public String getImage() {
         return image;
     }
-    public void setImage(File image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -86,4 +84,16 @@ public class Product {
     public void setStore(Store store) {
         this.store = store;
     }
+
+    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store) {
+        this.id = id;
+        this.libelle = libelle;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+        this.type = type;
+        this.store = store;
+    }
+
+    public Product(){}
 }

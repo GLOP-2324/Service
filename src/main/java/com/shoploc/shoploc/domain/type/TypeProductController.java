@@ -1,6 +1,7 @@
 package com.shoploc.shoploc.domain.type;
 
 import com.shoploc.shoploc.domain.product.Product;
+import com.shoploc.shoploc.domain.store.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,13 @@ public class TypeProductController {
     public TypeProductController(TypeProductService typeProductService) {
         this.typeProductService = typeProductService;
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<TypeProduct> getByStore(@PathVariable Integer id) {
+        if (typeProductService.getById(id) != null) {
+            return new ResponseEntity<>(typeProductService.getById(id),HttpStatus.OK);
+        }
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
     @PostMapping("/")
     public ResponseEntity<TypeProduct> createTypeProduct(@RequestBody TypeProduct typeProduct) {
         TypeProduct createdTypeProduct = typeProductService.createType(

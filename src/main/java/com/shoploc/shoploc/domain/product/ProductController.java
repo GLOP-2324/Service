@@ -1,20 +1,38 @@
 package com.shoploc.shoploc.domain.product;
 
+import com.shoploc.shoploc.domain.store.Store;
+import com.shoploc.shoploc.domain.store.StoreService;
+import com.shoploc.shoploc.domain.type.TypeProduct;
+import com.shoploc.shoploc.domain.type.TypeProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
     private ProductService productService;
+    private TypeProductService typeProductService;
+    private StoreService storeService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,TypeProductService typeProductService,StoreService storeService) {
         this.productService = productService;
+        this.typeProductService = typeProductService;
+        this.storeService = storeService;
     }
 
     @GetMapping("/{id}")
@@ -25,27 +43,48 @@ public class ProductController {
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    @GetMapping("/allProducts/{id}")
+    public ResponseEntity<List<Product>> getAllProducts(@PathVariable int id) {
+        List<Product> products = productService.getAllProducts(id);
         if(products != null ) {
-            return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+            return new ResponseEntity<>(productService.getAllProducts(id), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
     @PostMapping("/")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product createdProduct = productService.createProduct(
-                product.getLibelle(),
-                product.getDescription(),
-                product.getPrice(),
-                product.getType(),
-                product.getImage(),
-                product.getStore()
-        );
+    public ResponseEntity<Product> createProduct(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("libelle") String libelle,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("type") Integer typeId,
+            @RequestParam("store") Long storeId
+    ) throws IOException {
+
+        Product product = new Product();
+        product.setLibelle(libelle);
+        product.setDescription(description);
+        product.setPrice(price);
+
+        String base64Image = convertToBase64(image);
+        System.out.println(base64Image+"imageeeeeeeeeee");
+        product.setImage(base64Image);
+
+        TypeProduct type = typeProductService.getById(typeId);
+        Store store = storeService.getById(storeId);
+        product.setType(type);
+        product.setStore(store);
+
+
+        Product createdProduct = productService.createProduct(product);
+
+        System.out.println("Product created: " + createdProduct);
+
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
@@ -63,5 +102,9 @@ public class ProductController {
             return new ResponseEntity<>(productToUpdate,HttpStatus.OK);
         }
         else return ResponseEntity.notFound().build();
+    }
+    private String convertToBase64(MultipartFile file) throws IOException {
+        byte[] byteContent = file.getBytes();
+        return Base64.getEncoder().encodeToString(byteContent);
     }
 }

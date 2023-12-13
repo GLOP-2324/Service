@@ -1,28 +1,30 @@
 package com.shoploc.shoploc.domain.type;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoploc.shoploc.domain.product.Product;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class TypeProduct {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     private String libelle;
 
-    @OneToMany(mappedBy = "type")
+    @OneToMany
     private List<Product> products;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,7 +40,12 @@ public class TypeProduct {
         return products;
     }
 
-    public List<Product> setProducts(Product product) {
-        return products;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
+
+    public TypeProduct(Integer id) {
+        this.id = id;
+    }
+    public TypeProduct(){}
 }

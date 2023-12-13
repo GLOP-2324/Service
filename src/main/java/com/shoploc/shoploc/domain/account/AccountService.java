@@ -2,9 +2,12 @@ package com.shoploc.shoploc.domain.account;
 
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface AccountService {
-    void createAccount(AccountEntity accountEntity, Integer roleId)  throws InsertionFailedException ;
+    void createAccount(String firstname,String lastname,String email, Integer roleId, MultipartFile image) throws InsertionFailedException, IOException;
 
     void modifyPasswordAccount(long id, String password) throws ModificationFailedException;
 

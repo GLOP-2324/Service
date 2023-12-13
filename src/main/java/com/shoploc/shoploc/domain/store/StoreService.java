@@ -1,10 +1,10 @@
 package com.shoploc.shoploc.domain.store;
 
-import com.shoploc.shoploc.domain.store.Store;
+import com.shoploc.shoploc.domain.account.AccountEntity;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface StoreService {
 
@@ -12,9 +12,11 @@ public interface StoreService {
 
     Store getById(Long id);
 
-    Store createStore (String name, String address, File image);
+    void createStore (String name, String email, MultipartFile image) throws IOException;
 
     Store updateStore (Long id, Store store);
 
     boolean deleteById (Long id);
+
+    Store findByEmail(String email);
 }

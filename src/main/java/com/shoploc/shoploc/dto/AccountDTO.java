@@ -11,6 +11,7 @@ public class AccountDTO {
     private RoleEntity role;
     private Integer roleId;
     private String token;
+    private byte[] image;
 
     public String getToken() {
         return token;
@@ -71,5 +72,11 @@ public class AccountDTO {
         this.role = role;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
 
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 }
