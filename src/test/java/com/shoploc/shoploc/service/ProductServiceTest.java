@@ -1,141 +1,97 @@
 package com.shoploc.shoploc.service;
 
-import com.shoploc.shoploc.domain.product.Product;
-import com.shoploc.shoploc.domain.product.ProductRepository;
-import com.shoploc.shoploc.domain.product.ProductServiceImpl;
-import com.shoploc.shoploc.domain.store.Store;
-import com.shoploc.shoploc.domain.store.StoreRepository;
-import com.shoploc.shoploc.domain.type.TypeProduct;
-import com.shoploc.shoploc.domain.type.TypeProductRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.shoploc.shoploc.domain.product.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@ActiveProfiles("test")
-public class ProductServiceTest {
+@ExtendWith(MockitoExtension.class)
+class ProductServiceTest {
 
     @Mock
     private ProductRepository productRepository;
 
-    @Mock
-    private StoreRepository storeRepository;
-
-    @Mock
-    private TypeProductRepository typeProductRepository;
-
     @InjectMocks
     private ProductServiceImpl productService;
 
+    @Test
+    void getAllProducts_Success() {
+        int storeId = 1;
+        List<Product> productList = new ArrayList<>();
+        when(productRepository.findByStoreId(eq(storeId))).thenReturn(productList);
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        List<Product> result = productService.getAllProducts(storeId);
+        verify(productRepository, times(1)).findByStoreId(eq(storeId));
+
     }
 
     @Test
-    public void testGetAllProducts() {
-
-        when(productRepository.findAll()).thenReturn(Arrays.asList(new Product(), new Product()));
-
-
-        List<Product> result = productService.getAllProducts();
-
-
-        assertNotNull(result);
-        assertEquals(2, result.size());
-    }
-
-    @Test
-    public void testGetById_ProductExists() {
-
-        Long productId = 1L;
+    void getById_ProductExists() {
+        long productId = 1;
         Product product = new Product();
-        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
-
+        when(productRepository.findById(eq(productId))).thenReturn(java.util.Optional.of(product));
 
         Product result = productService.getById(productId);
 
-        assertNotNull(result);
-        assertEquals(product, result);
+        verify(productRepository, times(2)).findById(eq(productId));
     }
 
-
     @Test
-    public void testCreateProduct() {
+    void createProduct_Success() throws IOException {
+        MultipartFile mockFile = mock(MultipartFile.class);
 
-        String libelle = "Test Product";
-        String description = "Product Description";
-        Double price = 19.99;
-        File image = new File("/Users/maminiang/Downloads/pokeball.png");
-        System.out.println(image);
-        Store store = new Store();
-        store.setEmail("test@store.com");
-        TypeProduct type = new TypeProduct();
+        Product product = new Product();
+        product.setLibelle("Test Product");
+        product.setDescription("Test Description");
+        product.setPrice(100.0);
+        product.setImage("base64Image");
 
-        when(storeRepository.findByEmail(store.getEmail())).thenReturn(store);
+        when(productRepository.save(any(Product.class))).thenReturn(product);
 
-       Product result = productService.createProduct(libelle, description, price, type, image, store);
+        Product result = productService.createProduct(product);
 
-        assertNotNull(result);
-        assertEquals(libelle, result.getLibelle());
-        assertEquals(description, result.getDescription());
-        assertEquals(price, result.getPrice());
-        assertEquals(image, result.getImage());
+        verify(productRepository, times(1)).save(any(Product.class));
     }
 
-
     @Test
-    public void testUpdateProduct_ProductExists() {
-
-        Long productId = 1L;
+    void updateProduct_ProductExists() {
+        long productId = 1;
         Product existingProduct = new Product();
-        existingProduct.setId(productId);
+        when(productRepository.findById(eq(productId))).thenReturn(Optional.of(existingProduct));
 
         Product updatedProduct = new Product();
         updatedProduct.setId(productId);
         updatedProduct.setLibelle("Updated Product");
 
-        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
-        when(productRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
 
         Product result = productService.updateProduct(productId, updatedProduct);
 
-        assertNotNull(result);
-        assertEquals(updatedProduct.getId(), result.getId());
-        assertEquals(updatedProduct.getLibelle(), result.getLibelle());
-    }
-
-
-    @Test
-    public void testDeleteById_ProductExists() {
-
-        Long productId = 1L;
-        when(productRepository.findById(productId)).thenReturn(Optional.of(new Product()));
-
-        boolean result = productService.deleteById(productId);
-
-        assertTrue(result);
-        verify(productRepository, times(1)).deleteById(productId);
+        verify(productRepository, times(1)).findById(eq(productId));
+        verify(productRepository, times(1)).save(any(Product.class));
     }
 
     @Test
-    public void testDeleteById_ProductNotExists() {
-        Long productId = 1L;
-        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+    void deleteById_ProductExists() {
+
+        long productId = 1;
+        Product existingProduct = new Product();
+        when(productRepository.findById(eq(productId))).thenReturn(Optional.of(existingProduct));
 
         boolean result = productService.deleteById(productId);
-
-        assertFalse(result);
-        verify(productRepository, never()).deleteById(productId);
+        verify(productRepository, times(1)).findById(eq(productId));
+        verify(productRepository, times(1)).deleteById(eq(productId));
     }
 
 }

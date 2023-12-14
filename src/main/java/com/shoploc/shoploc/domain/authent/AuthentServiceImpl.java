@@ -67,7 +67,8 @@ public class AuthentServiceImpl implements AuthentService {
         }
     }
 
-    private String createToken(AccountDTO account) {
+    public String createToken(AccountDTO account) {
+
         Claims claims = Jwts.claims().setSubject(account.getEmail());
 
         Date now = new Date();
@@ -80,5 +81,6 @@ public class AuthentServiceImpl implements AuthentService {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
+
 
 }
