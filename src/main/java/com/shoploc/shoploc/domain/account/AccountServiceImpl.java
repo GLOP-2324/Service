@@ -53,19 +53,26 @@ public class AccountServiceImpl implements AccountService {
         if (accountRepository.findByEmail(email) != null){
             throw new InsertionFailedException("Ce compte existe déja");
         } else {
-            String base64Image = convertToBase64(image);
+
             String encodedPassword = RandomStringUtils.random(8, true, true);
             RoleEntity role = this.roleRepository.getReferenceById(Long.valueOf(roleId));
 
             AccountEntity accountEntity= new AccountEntity();
             accountEntity.setFirstname(firstname);
             accountEntity.setLastname(lastname);
-            accountEntity.setImage(base64Image);
+
             accountEntity.setRole(role);
             accountEntity.setEmail(email);
             accountEntity.setPassword(bCryptPasswordEncoder.encode(encodedPassword));
             if(role.getRole_id()==2){
                 storeService.createStore(firstname, email, image);
+            }
+            if(image==null){
+                accountEntity.setImage(null);
+            }
+            else{
+                String base64Image = convertToBase64(image);
+                accountEntity.setImage(base64Image);
             }
             this.accountRepository.save(accountEntity);
             sendMessageByEmail(accountEntity, encodedPassword);

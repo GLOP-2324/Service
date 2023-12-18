@@ -33,7 +33,7 @@ public class AccountController {
                                                 @RequestParam ("lastname")String lastname,
                                                 @RequestParam ("email")String email,
                                                 @RequestParam ("roleId")Integer roleId,
-                                                @RequestParam("image") MultipartFile image) throws InsertionFailedException, IOException {
+                                                @RequestParam(name="image",required=false) MultipartFile image) throws InsertionFailedException, IOException {
 
         System.out.println(image+"****************************************************************");
         this.accountService.createAccount(firstname,lastname,email,roleId,image);
