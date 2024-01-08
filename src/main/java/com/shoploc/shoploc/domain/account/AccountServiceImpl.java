@@ -80,10 +80,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void modifyPasswordAccount(long id, String password) throws ModificationFailedException {
+    public void modifyPasswordAccount(String email, String password) throws ModificationFailedException {
         String encodedPassword = bCryptPasswordEncoder.encode(password);
         try {
-            this.accountRepository.getReferenceById(id).setPassword(encodedPassword);
+            AccountEntity account =  this.accountRepository.findByEmail(email);
+            account.setPassword(encodedPassword);
+            this.accountRepository.save(account);
         } catch (Exception e) {
             throw new ModificationFailedException("Invalid email");
         }

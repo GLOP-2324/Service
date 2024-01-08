@@ -40,15 +40,10 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body("Le compte à été crée avec succès");
     }
 
-    @PatchMapping("password/{id}")
-    public ResponseEntity<String> modifyAccountPassword(
-            @PathVariable long id,
-            @RequestBody AccountEntity account
-    ) throws ModificationFailedException {
-        if (id != account.getAccount_id()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mismatched IDs in path and request body");
-        }
-        this.accountService.modifyPasswordAccount(id, account.getPassword());
+    @PostMapping("/password")
+    public ResponseEntity<String> modifyAccountPassword(@RequestBody AccountEntity account) throws ModificationFailedException {
+
+        this.accountService.modifyPasswordAccount(account.getEmail(),account.getPassword());
         return ResponseEntity.status(HttpStatus.OK).body("Le mot de passe a été modifié avec succès");
     }
     private String convertToBase64(MultipartFile file) throws IOException {

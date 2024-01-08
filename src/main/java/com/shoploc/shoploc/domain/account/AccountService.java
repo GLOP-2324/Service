@@ -9,7 +9,7 @@ import java.io.IOException;
 public interface AccountService {
     void createAccount(String firstname,String lastname,String email, Integer roleId, MultipartFile image) throws InsertionFailedException, IOException;
 
-    void modifyPasswordAccount(long id, String password) throws ModificationFailedException;
+    void modifyPasswordAccount(String email, String password) throws ModificationFailedException;
 
     void sendMessageByEmail(AccountEntity account, String password) throws InsertionFailedException;
 
