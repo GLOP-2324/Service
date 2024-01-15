@@ -20,4 +20,9 @@ public class ClientController {
             return cardService.creditOrDebutClient(id,amount);
     }
 
+    @PostMapping("{id}")
+    public ResponseEntity<ClientEntity> addFidelityPoints(@PathVariable Long id,@RequestParam Integer amount){
+        return clientService.addPoints(id,amount);
+    }
+
 }

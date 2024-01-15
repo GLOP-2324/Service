@@ -14,9 +14,9 @@ public class ClientEntity extends AccountEntity {
    @OneToOne
    private CardEntity cardEntity;
 
-   private float fidelityPoints;
+   private Integer fidelityPoints;
 
-    public ClientEntity(String firstname, String lastname, String email, String password, RoleEntity role, String image,boolean status_vfp, CardEntity cardEntity, float fidelityPoints) {
+    public ClientEntity(String firstname, String lastname, String email, String password, RoleEntity role, String image,boolean status_vfp, CardEntity cardEntity, Integer fidelityPoints) {
         super(firstname,lastname,email,password,role,image);
         this.status_vfp = status_vfp;
         this.cardEntity = cardEntity;

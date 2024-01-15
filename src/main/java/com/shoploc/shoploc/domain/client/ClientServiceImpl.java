@@ -14,6 +14,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ResponseEntity<ClientEntity> addPoints(Long id, Integer amount) {
-        return null;
+        var client = clientRepository.findById(id);
+        if(client.isPresent())
+        {
+            client.get().setFidelityPoints(client.get().getFidelityPoints() + amount);
+        }
+        return ResponseEntity.ok(clientRepository.save(client.get()));
     }
 }
