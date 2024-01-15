@@ -1,9 +1,7 @@
 package com.shoploc.shoploc.domain.account;
 
-import com.shoploc.shoploc.domain.card.Card;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import jakarta.persistence.*;
-import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name="account")
