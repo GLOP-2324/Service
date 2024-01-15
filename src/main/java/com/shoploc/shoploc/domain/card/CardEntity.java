@@ -1,12 +1,11 @@
 package com.shoploc.shoploc.domain.card;
 
-import com.shoploc.shoploc.domain.account.AccountEntity;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
-public class Card {
+public class CardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
