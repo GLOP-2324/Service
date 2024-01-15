@@ -58,7 +58,6 @@ public class AccountServiceImpl implements AccountService {
         } else {
 
             String encodedPassword = RandomStringUtils.random(8, true, true);
-
             RoleEntity role = this.roleRepository.getReferenceById(Long.valueOf(roleId));
 
             AccountEntity accountEntity= new AccountEntity();
