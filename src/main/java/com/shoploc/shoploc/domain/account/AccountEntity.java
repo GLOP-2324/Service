@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long account_id;
     @Column(nullable = false)
 
@@ -87,4 +86,15 @@ public class AccountEntity {
         this.image = image;
     }
 
+    public AccountEntity() {
+    }
+
+    public AccountEntity(String firstname, String lastname, String email, String password, RoleEntity role, String image) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.image = image;
+    }
 }

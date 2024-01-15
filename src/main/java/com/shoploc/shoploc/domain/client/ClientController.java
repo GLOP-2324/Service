@@ -1,25 +1,23 @@
 package com.shoploc.shoploc.domain.client;
 
+import com.shoploc.shoploc.domain.card.CardService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/client")
 public class ClientController {
     private  ClientService clientService;
 
-    public ClientController(ClientService clientService){
+    private CardService cardService;
+
+    public ClientController(ClientService clientService,CardService cardService){
         this.clientService = clientService;
+        this.cardService=cardService;
     }
-    @PostMapping("{id}")
-    public ResponseEntity<ClientEntity> creditClient(){
-            return clientService.creditClient();
+    @PostMapping("{id}/card")
+    public ResponseEntity<ClientEntity> creditClient(@PathVariable Long id, @RequestParam Integer amount){
+            return cardService.creditOrDebutClient(id,amount);
     }
 
-    @PostMapping()
-    public ResponseEntity<ClientEntity> debitClient(){
-        return clientService.debitClient();
-    }
 }
