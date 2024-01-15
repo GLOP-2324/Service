@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -43,37 +45,37 @@ public class AccountServiceTest {
     }
 
     @Test
-    void createAccount_doSuccess() throws InsertionFailedException {
+    void createAccount_doSuccess() throws InsertionFailedException, IOException {
         AccountEntity account = new AccountEntity();
         account.setEmail("test@example.com");
-        accountService.createAccount(account,1);
+        accountService.createAccount("Nadine","Saadi","nad@yahoo.com",1,null);
         Mockito.verify(accountRepository).save(account);
     }
 
     @Test
     void modifyPasswordAccount_success() throws ModificationFailedException {
-        long accountId = 1L;
+        String mail = "nad@yahoo.com";
         String newPassword = "testPass";
         String encodedPassword = "encodedPassword";
 
         Mockito.when(bCryptPasswordEncoder.encode(newPassword)).thenReturn(encodedPassword);
         AccountEntity mockAccount = new AccountEntity();
-        Mockito.when(accountRepository.getReferenceById(accountId)).thenReturn(mockAccount);
+        Mockito.when(accountRepository.findByEmail(mail)).thenReturn(mockAccount);
 
-        accountService.modifyPasswordAccount(accountId, newPassword);
+        accountService.modifyPasswordAccount(mail, newPassword);
 
         Mockito.verify(bCryptPasswordEncoder).encode(newPassword);
-        Mockito.verify(accountRepository).getReferenceById(accountId);
+        Mockito.verify(accountRepository).findByEmail(mail);
     }
 
     @Test
     void modifyPasswordAccount_error() {
-        long accountId = 1L;
+        String mail = "nad@yahoo.com";
         String newPassword = "testPass";
-        Mockito.when(accountRepository.getReferenceById(accountId)).thenThrow(new RuntimeException("Mail invalid"));
+        Mockito.when(accountRepository.findByEmail(mail)).thenThrow(new RuntimeException("Mail invalid"));
 
         assertThrows(ModificationFailedException.class, () -> {
-            accountService.modifyPasswordAccount(accountId, newPassword);
+            accountService.modifyPasswordAccount(mail, newPassword);
         });
     }
 

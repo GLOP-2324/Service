@@ -1,5 +1,6 @@
 package com.shoploc.shoploc.domain.account;
 
+import com.shoploc.shoploc.domain.card.Card;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import jakarta.persistence.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +25,14 @@ public class AccountEntity {
     @Column(nullable = false)
 
     private String password;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
     @Lob
     private String image;
+
     public Long getAccount_id() {
         return account_id;
     }
@@ -85,4 +88,5 @@ public class AccountEntity {
     public void setImage(String image) {
         this.image = image;
     }
+
 }

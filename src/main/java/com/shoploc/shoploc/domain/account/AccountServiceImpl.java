@@ -1,5 +1,6 @@
 package com.shoploc.shoploc.domain.account;
 
+import com.shoploc.shoploc.domain.card.CardService;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import com.shoploc.shoploc.domain.role.RoleRepository;
 import com.shoploc.shoploc.domain.store.Store;
@@ -37,15 +38,17 @@ public class AccountServiceImpl implements AccountService {
     private RoleRepository roleRepository;
 
     private StoreService storeService;
+    private CardService cardService;
     private JavaMailSender javaMailSender;
 
     @Autowired
-    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, AccountMapper accountMapper,StoreService storeService) {
+    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, AccountMapper accountMapper,StoreService storeService,CardService cardService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.storeService = storeService;
         this.javaMailSender = javaMailSender;
+        this.cardService = cardService;
     }
 
     @Override
@@ -55,6 +58,7 @@ public class AccountServiceImpl implements AccountService {
         } else {
 
             String encodedPassword = RandomStringUtils.random(8, true, true);
+
             RoleEntity role = this.roleRepository.getReferenceById(Long.valueOf(roleId));
 
             AccountEntity accountEntity= new AccountEntity();
@@ -67,6 +71,7 @@ public class AccountServiceImpl implements AccountService {
             if(role.getRole_id()==2){
                 storeService.createStore(firstname, email, image);
             }
+
             if(image==null){
                 accountEntity.setImage(null);
             }
@@ -75,6 +80,9 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setImage(base64Image);
             }
             this.accountRepository.save(accountEntity);
+            if(role.getRole_id()==3){
+                cardService.createCard(accountEntity);
+            }
             sendMessageByEmail(accountEntity, encodedPassword);
         }
     }
