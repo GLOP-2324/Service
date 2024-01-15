@@ -3,6 +3,7 @@ package com.shoploc.shoploc.domain.product;
 import com.shoploc.shoploc.domain.store.Store;
 import com.shoploc.shoploc.domain.type.TypeProduct;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.io.File;
 
@@ -18,6 +19,16 @@ public class Product {
     private String description;
 
     private double price;
+
+    public Integer getFidelityPoints() {
+        return fidelityPoints;
+    }
+
+    public void setFidelityPoints(Integer fidelityPoints) {
+        this.fidelityPoints = fidelityPoints;
+    }
+
+    private Integer fidelityPoints;
     @Lob
     private String image;
 
@@ -28,6 +39,16 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
+
+    public Boolean getBenefitsActivated() {
+        return benefitsActivated;
+    }
+
+    public void setBenefitsActivated(Boolean benefitsActivated) {
+        this.benefitsActivated = benefitsActivated;
+    }
+
+    private Boolean benefitsActivated = false;
 
 
     public Long getId() {
@@ -85,7 +106,7 @@ public class Product {
         this.store = store;
     }
 
-    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store) {
+    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store, Integer fidelityPoints, Boolean benefitsActivated) {
         this.id = id;
         this.libelle = libelle;
         this.description = description;
@@ -93,6 +114,8 @@ public class Product {
         this.image = image;
         this.type = type;
         this.store = store;
+        this.benefitsActivated = benefitsActivated;
+        this.fidelityPoints = fidelityPoints;
     }
 
     public Product(){}

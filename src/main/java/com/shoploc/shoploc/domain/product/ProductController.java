@@ -60,14 +60,13 @@ public class ProductController {
             @RequestParam("description") String description,
             @RequestParam("price") double price,
             @RequestParam("type") Integer typeId,
-            @RequestParam("store") Long storeId
+            @RequestParam("store") Long storeId,
+            @RequestParam("fidelityPoints") Integer fidelityPoints
     ) throws IOException {
-
         Product product = new Product();
         product.setLibelle(libelle);
         product.setDescription(description);
         product.setPrice(price);
-
         String base64Image = convertToBase64(image);
         System.out.println(base64Image+"imageeeeeeeeeee");
         product.setImage(base64Image);
@@ -76,16 +75,12 @@ public class ProductController {
         Store store = storeService.getById(storeId);
         product.setType(type);
         product.setStore(store);
-
-
+        product.setFidelityPoints(fidelityPoints);
         Product createdProduct = productService.createProduct(product);
-
         System.out.println("Product created: " + createdProduct);
 
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         boolean deleted = productService.deleteById(id);

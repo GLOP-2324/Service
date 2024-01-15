@@ -3,23 +3,12 @@ package com.shoploc.shoploc.domain.account;
 import com.shoploc.shoploc.domain.card.CardService;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import com.shoploc.shoploc.domain.role.RoleRepository;
-import com.shoploc.shoploc.domain.store.Store;
-import com.shoploc.shoploc.domain.store.StoreRepository;
 import com.shoploc.shoploc.domain.store.StoreService;
-import com.shoploc.shoploc.dto.AccountDTO;
-import com.shoploc.shoploc.dto.CredentialsDTO;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
-import com.shoploc.shoploc.exception.ObjectNotExistException;
 import com.shoploc.shoploc.mapper.AccountMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Date;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -36,7 +24,6 @@ public class AccountServiceImpl implements AccountService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private AccountRepository accountRepository;
     private RoleRepository roleRepository;
-
     private StoreService storeService;
     private CardService cardService;
     private JavaMailSender javaMailSender;
