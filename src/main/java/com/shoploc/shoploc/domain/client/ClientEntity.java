@@ -47,11 +47,11 @@ public class ClientEntity extends AccountEntity {
         this.cardEntity = cardEntity;
     }
 
-    public float getFidelityPoints() {
+    public Integer getFidelityPoints() {
         return fidelityPoints;
     }
 
-    public void setFidelityPoints(float fidelityPoints) {
+    public void setFidelityPoints(Integer fidelityPoints) {
         this.fidelityPoints = fidelityPoints;
     }
 
