@@ -58,6 +58,7 @@ public class AccountServiceImpl implements AccountService {
         } else {
 
             String encodedPassword = RandomStringUtils.random(8, true, true);
+
             RoleEntity role = this.roleRepository.getReferenceById(Long.valueOf(roleId));
 
             AccountEntity accountEntity= new AccountEntity();
@@ -66,7 +67,6 @@ public class AccountServiceImpl implements AccountService {
 
             accountEntity.setRole(role);
             accountEntity.setEmail(email);
-            accountEntity.setPoint(0);
             accountEntity.setPassword(bCryptPasswordEncoder.encode(encodedPassword));
             if(role.getRole_id()==2){
                 storeService.createStore(firstname, email, image);

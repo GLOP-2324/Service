@@ -18,8 +18,8 @@ public class CardServiceImpl implements CardService {
         Card card = new Card();
         card.setDate(new Date());
         card.setMontant(0);
-        card.setAccount(accountEntity);
-        accountEntity.setCard(card);
+        // card.setAccount(accountEntity);
+        //accountEntity.setCard(card);
         cardRepository.save(card);
     }
 }

@@ -26,17 +26,12 @@ public class AccountEntity {
 
     private String password;
 
-    private int point;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
     @Lob
     private String image;
-
-    @OneToOne
-    @JoinColumn(name = "card_id", referencedColumnName = "id")
-    private Card card;
 
     public Long getAccount_id() {
         return account_id;
@@ -94,19 +89,4 @@ public class AccountEntity {
         this.image = image;
     }
 
-    public Card getCard() {
-        return card;
-    }
-
-    public void setCard(Card card) {
-        this.card = card;
-    }
-
-    public int getPoint() {
-        return point;
-    }
-
-    public void setPoint(int point) {
-        this.point = point;
-    }
 }
