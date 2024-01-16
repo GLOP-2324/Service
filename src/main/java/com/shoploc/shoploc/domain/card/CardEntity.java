@@ -14,10 +14,6 @@ public class CardEntity {
 
     private double montant;
 
-    /*
-    @OneToOne(mappedBy = "card", cascade = CascadeType.ALL)
-    private AccountEntity account;
-*/
     public Long getId() {
         return id;
     }
@@ -42,11 +38,11 @@ public class CardEntity {
         this.montant = montant;
     }
 
-    /* public AccountEntity getAccount() {
-        return account;
+    public CardEntity() {
     }
 
-    public void setAccount(AccountEntity account) {
-        this.account = account;
-    }*/
+    public CardEntity(Long id, double montant) {
+        this.id = id;
+        this.montant = montant;
+    }
 }
