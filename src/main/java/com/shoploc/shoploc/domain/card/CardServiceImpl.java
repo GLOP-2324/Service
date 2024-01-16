@@ -34,8 +34,8 @@ public class CardServiceImpl implements CardService {
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
 
-            // Check if the client already has a card
-            if (clientToUpdate.getCardEntity() != null) {
+            // Check if the client already has a card with money
+            if (clientToUpdate.getCardEntity() != null && clientToUpdate.getCardEntity().getMontant()!= 0) {
                 CardEntity card = new CardEntity(clientToUpdate.getCardEntity().getId(), clientToUpdate.getCardEntity().getMontant() + amount);
                 clientToUpdate.setCardEntity(card);
             } else {
