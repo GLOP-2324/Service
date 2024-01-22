@@ -7,7 +7,6 @@ import com.shoploc.shoploc.domain.type.TypeProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,7 +60,9 @@ public class ProductController {
             @RequestParam("price") double price,
             @RequestParam("type") Integer typeId,
             @RequestParam("store") Long storeId,
-            @RequestParam("fidelityPoints") Integer fidelityPoints
+            @RequestParam("points") Integer fidelityPoints,
+            @RequestParam(name="id",required=false) Integer id
+
     ) throws IOException {
         Product product = new Product();
         product.setLibelle(libelle);
@@ -70,16 +71,20 @@ public class ProductController {
         String base64Image = convertToBase64(image);
         System.out.println(base64Image+"imageeeeeeeeeee");
         product.setImage(base64Image);
-
         TypeProduct type = typeProductService.getById(typeId);
         Store store = storeService.getById(storeId);
         product.setType(type);
         product.setStore(store);
         product.setFidelityPoints(fidelityPoints);
-        Product createdProduct = productService.createProduct(product);
-        System.out.println("Product created: " + createdProduct);
 
-        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+        if (id==null){
+            Product createdProduct = productService.createProduct(product);
+            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+        }
+        else{
+            Product updatedProduct = productService.updateProduct(Long.valueOf(id),product);
+            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+        }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
