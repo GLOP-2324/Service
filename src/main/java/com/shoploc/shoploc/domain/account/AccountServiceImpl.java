@@ -1,6 +1,7 @@
 package com.shoploc.shoploc.domain.account;
 
 import com.shoploc.shoploc.domain.card.CardService;
+import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import com.shoploc.shoploc.domain.role.RoleRepository;
 import com.shoploc.shoploc.domain.store.StoreService;
@@ -67,7 +68,8 @@ public class AccountServiceImpl implements AccountService {
             }
             this.accountRepository.save(accountEntity);
             if(role.getRole_id()==3){
-                cardService.createCard(accountEntity);
+                AccountEntity client = new ClientEntity(firstname,lastname,email,encodedPassword,role,accountEntity.getImage());
+                cardService.createCard(client);
             }
             sendMessageByEmail(accountEntity, encodedPassword);
         }

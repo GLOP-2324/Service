@@ -2,6 +2,7 @@ package com.shoploc.shoploc.domain.client;
 
 import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.card.CardEntity;
+import com.shoploc.shoploc.domain.role.RoleEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 
@@ -13,12 +14,21 @@ public class ClientEntity extends AccountEntity {
    @OneToOne
    private CardEntity cardEntity;
 
-   private float fidelityPoints;
+   private Integer fidelityPoints;
 
-    public ClientEntity(boolean status_vfp, CardEntity cardEntity, float fidelityPoints) {
+    public ClientEntity(String firstname, String lastname, String email, String password, RoleEntity role, String image,boolean status_vfp, CardEntity cardEntity, Integer fidelityPoints) {
+        super(firstname,lastname,email,password,role,image);
         this.status_vfp = status_vfp;
         this.cardEntity = cardEntity;
         this.fidelityPoints = fidelityPoints;
+    }
+
+    public ClientEntity(String firstname, String lastname, String email, String encodedPassword, RoleEntity role,String image) {
+        super(firstname,lastname,email,encodedPassword,role,image);
+    }
+
+    public ClientEntity() {
+
     }
 
     public boolean isStatus_vfp() {
@@ -37,14 +47,12 @@ public class ClientEntity extends AccountEntity {
         this.cardEntity = cardEntity;
     }
 
-    public float getFidelityPoints() {
+    public Integer getFidelityPoints() {
         return fidelityPoints;
     }
 
-    public void setFidelityPoints(float fidelityPoints) {
+    public void setFidelityPoints(Integer fidelityPoints) {
         this.fidelityPoints = fidelityPoints;
     }
 
-    public ClientEntity() {
-    }
 }
