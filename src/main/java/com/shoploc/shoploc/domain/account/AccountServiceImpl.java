@@ -81,9 +81,10 @@ public class AccountServiceImpl implements AccountService {
             }
             this.accountRepository.save(accountEntity);
             if(role.getRole_id()==3){
-                AccountEntity client = new ClientEntity(firstname,lastname,email,encodedPassword,role,accountEntity.getImage());
+                ClientEntity client = new ClientEntity(firstname,lastname,email,encodedPassword,role,accountEntity.getImage());
                 cardService.createCard(client);
             }
+            System.out.println(encodedPassword + " debug 1");
             sendMessageByEmail(accountEntity, encodedPassword);
         }
     }

@@ -5,8 +5,10 @@ import com.shoploc.shoploc.domain.card.CardEntity;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="client")
 public class ClientEntity extends AccountEntity {
 
    private boolean status_vfp;
