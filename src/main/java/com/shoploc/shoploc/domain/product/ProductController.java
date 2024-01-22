@@ -60,8 +60,8 @@ public class ProductController {
             @RequestParam("price") double price,
             @RequestParam("type") Integer typeId,
             @RequestParam("store") Long storeId,
-            @RequestParam("points") Integer fidelityPoints,
-            @RequestParam(name="id",required=false) Integer id
+            @RequestParam("points") Integer points,
+            @RequestParam(name="productId",required=false) Integer id
 
     ) throws IOException {
         Product product = new Product();
@@ -75,7 +75,7 @@ public class ProductController {
         Store store = storeService.getById(storeId);
         product.setType(type);
         product.setStore(store);
-        product.setFidelityPoints(fidelityPoints);
+        product.setPoints(points);
 
         if (id==null){
             Product createdProduct = productService.createProduct(product);

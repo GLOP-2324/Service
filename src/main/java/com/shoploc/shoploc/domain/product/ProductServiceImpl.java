@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setImage(product.getImage());
             existingProduct.setStore(product.getStore());
             existingProduct.setBenefitsActivated(product.getBenefitsActivated());
-            existingProduct.setFidelityPoints(product.getFidelityPoints());
+            existingProduct.setPoints(product.getPoints());
             return productRepository.save(existingProduct);
         }
 

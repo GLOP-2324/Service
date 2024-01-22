@@ -3,9 +3,7 @@ package com.shoploc.shoploc.domain.product;
 import com.shoploc.shoploc.domain.store.Store;
 import com.shoploc.shoploc.domain.type.TypeProduct;
 import jakarta.persistence.*;
-import lombok.Builder;
 
-import java.io.File;
 
 @Entity
 public class Product {
@@ -20,15 +18,15 @@ public class Product {
 
     private double price;
 
-    public Integer getFidelityPoints() {
-        return fidelityPoints;
+    public Integer getPoints() {
+        return points;
     }
 
-    public void setFidelityPoints(Integer fidelityPoints) {
-        this.fidelityPoints = fidelityPoints;
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
-    private Integer fidelityPoints;
+    private Integer points;
     @Lob
     private String image;
 
@@ -106,7 +104,7 @@ public class Product {
         this.store = store;
     }
 
-    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store, Integer fidelityPoints, Boolean benefitsActivated) {
+    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store, Integer points, Boolean benefitsActivated) {
         this.id = id;
         this.libelle = libelle;
         this.description = description;
@@ -115,7 +113,7 @@ public class Product {
         this.type = type;
         this.store = store;
         this.benefitsActivated = benefitsActivated;
-        this.fidelityPoints = fidelityPoints;
+        this.points = points;
     }
 
     public Product(){}
