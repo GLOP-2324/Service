@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface CardService {
     void createCard (AccountEntity accountEntity);
 
-    ResponseEntity<ClientEntity> creditOrDebutClient(Long id, Integer amount);
+    ResponseEntity<ClientEntity> debitCard(Long id, Integer amount);
+
+    ResponseEntity<ClientEntity> creditCard(Long id, Integer amount);
 
 }
