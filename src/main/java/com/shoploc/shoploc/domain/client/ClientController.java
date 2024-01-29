@@ -7,22 +7,25 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/client")
 public class ClientController {
-    private  ClientService clientService;
+    private ClientService clientService;
 
     private CardService cardService;
 
-    public ClientController(ClientService clientService,CardService cardService){
+    public ClientController(ClientService clientService, CardService cardService) {
         this.clientService = clientService;
-        this.cardService=cardService;
+        this.cardService = cardService;
     }
+
+
+    /*
+    When charging the card we put charging to true, when buying we set it to false
+    Post 1/card?amount=2&charging=true
+    * */
     @PostMapping("{id}/card")
-    public ResponseEntity<ClientEntity> creditClient(@PathVariable Long id, @RequestParam Integer amount){
-            return cardService.creditOrDebutClient(id,amount);
+    public ResponseEntity<ClientEntity> creditClient(@PathVariable Long id, @RequestParam Integer amount, @RequestParam boolean charging) {
+        if (charging)
+            return cardService.creditCard(id, amount);
+        else
+            return cardService.debitCard(id, amount);
     }
-
-    @PostMapping("{id}")
-    public ResponseEntity<ClientEntity> addFidelityPoints(@PathVariable Long id,@RequestParam Integer amount){
-        return clientService.addPoints(id,amount);
-    }
-
 }

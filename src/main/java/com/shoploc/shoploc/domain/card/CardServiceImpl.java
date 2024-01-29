@@ -27,26 +27,33 @@ public class CardServiceImpl implements CardService {
         card.setMontant(0);
         cardRepository.save(card);
     }
+
+
     @Override
-    public ResponseEntity<ClientEntity> creditOrDebutClient(Long id, Integer amount) {
+    public ResponseEntity<ClientEntity> debitCard(Long id, Integer amount) {
         var optionalClient = clientRepository.findById(id);
-
-        if (optionalClient.isPresent()) {
+        if (optionalClient.isPresent()){
             ClientEntity clientToUpdate = optionalClient.get();
-
-            // Check if the client already has a card with money
-            if (clientToUpdate.getCardEntity() != null && clientToUpdate.getCardEntity().getMontant()!= 0) {
-                CardEntity card = new CardEntity(clientToUpdate.getCardEntity().getId(), clientToUpdate.getCardEntity().getMontant() + amount);
-                clientToUpdate.setCardEntity(card);
-            } else {
-                CardEntity card = new CardEntity();
-                card.setMontant(amount);
-                clientToUpdate.setCardEntity(card);
-            }
+            CardEntity card = new CardEntity(id, clientToUpdate.getCardEntity().getMontant() - amount);
+            clientToUpdate.setCardEntity(card);
+            clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
             ClientEntity updatedClient = clientRepository.save(clientToUpdate);
             return ResponseEntity.ok(updatedClient);
-        } else {
-            return ResponseEntity.badRequest().build();
         }
+        else return ResponseEntity.badRequest().build();
+    }
+
+    @Override
+    public ResponseEntity<ClientEntity> creditCard(Long id, Integer amount) {
+        var optionalClient = clientRepository.findById(id);
+        if (optionalClient.isPresent()) {
+            ClientEntity clientToUpdate = optionalClient.get();
+                CardEntity card = new CardEntity(id, clientToUpdate.getCardEntity().getMontant() + amount);
+                clientToUpdate.setCardEntity(card);
+                ClientEntity updatedClient = clientRepository.save(clientToUpdate);
+                return ResponseEntity.ok(updatedClient);
+
+        }
+        else return ResponseEntity.badRequest().build();
     }
 }
