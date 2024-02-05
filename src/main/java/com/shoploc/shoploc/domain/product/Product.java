@@ -17,7 +17,6 @@ public class Product {
 
     private String description;
     //todo qte
-
     private double price;
     @Lob
     private String image;
@@ -29,7 +28,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
-
 
     public Long getId() {
         return id;
@@ -86,7 +84,7 @@ public class Product {
         this.store = store;
     }
 
-    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store) {
+    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store,Integer quantity) {
         this.id = id;
         this.libelle = libelle;
         this.description = description;

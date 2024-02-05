@@ -2,6 +2,7 @@ package com.shoploc.shoploc.domain.account;
 
 import com.shoploc.shoploc.domain.card.CardService;
 import com.shoploc.shoploc.domain.client.ClientEntity;
+import com.shoploc.shoploc.domain.client.ClientRepository;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import com.shoploc.shoploc.domain.role.RoleRepository;
 import com.shoploc.shoploc.domain.store.Store;
@@ -42,14 +43,16 @@ public class AccountServiceImpl implements AccountService {
     private CardService cardService;
     private JavaMailSender javaMailSender;
 
+    private ClientRepository clientRepository;
     @Autowired
-    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, AccountMapper accountMapper,StoreService storeService,CardService cardService) {
+    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, StoreService storeService,CardService cardService,ClientRepository clientRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.storeService = storeService;
         this.javaMailSender = javaMailSender;
         this.cardService = cardService;
+        this.clientRepository =clientRepository;
     }
 
     @Override
@@ -79,10 +82,11 @@ public class AccountServiceImpl implements AccountService {
                 String base64Image = convertToBase64(image);
                 accountEntity.setImage(base64Image);
             }
-            this.accountRepository.save(accountEntity);
+            //this.accountRepository.save(accountEntity);
             if(role.getRole_id()==3){
                 ClientEntity client = new ClientEntity(firstname,lastname,email,encodedPassword,role,accountEntity.getImage());
                 cardService.createCard(client);
+                this.clientRepository.save(client);
             }
             System.out.println(encodedPassword + " debug 1");
             sendMessageByEmail(accountEntity, encodedPassword);
