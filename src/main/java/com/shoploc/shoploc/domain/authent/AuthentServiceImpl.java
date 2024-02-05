@@ -33,7 +33,6 @@ public class AuthentServiceImpl implements AuthentService {
     }
 
     @Override
-    @Transactional
     public AccountDTO signIn(CredentialsDTO credentials) throws ObjectNotExistException {
         System.out.println(credentials.getEmail());
         AccountEntity account = this.accountRepository.findByEmail(credentials.getEmail());

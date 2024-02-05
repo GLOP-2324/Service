@@ -64,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
             String encodedPassword = RandomStringUtils.random(8, true, true);
             RoleEntity role = this.roleRepository.getReferenceById(Long.valueOf(roleId));
 
-            AccountEntity accountEntity= new AccountEntity();
+            ClientEntity accountEntity= new ClientEntity();
             accountEntity.setFirstname(firstname);
             accountEntity.setLastname(lastname);
 
@@ -86,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
             if(role.getRole_id()==3){
                 ClientEntity client = new ClientEntity(firstname,lastname,email,encodedPassword,role,accountEntity.getImage());
                 cardService.createCard(client);
-                this.clientRepository.save(client);
+                this.clientRepository.save(accountEntity);
             }
             System.out.println(encodedPassword + " debug 1");
             sendMessageByEmail(accountEntity, encodedPassword);

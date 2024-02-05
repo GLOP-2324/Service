@@ -1,5 +1,6 @@
 package com.shoploc.shoploc.domain.store;
 
+import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.product.Product;
 import jakarta.persistence.*;
 
@@ -9,10 +10,9 @@ import java.util.Set;
 
 
 @Entity
-public class Store {
+@Table(name = "store")
+public class Store extends AccountEntity {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
     @OneToMany
