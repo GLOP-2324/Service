@@ -47,7 +47,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public ResponseEntity<ClientEntity> creditCard(String email, AchatEntity achatEntity) {
+    public ResponseEntity<ClientEntity> creditCard(String email) {
         int amount = 0 ;
         var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()) {

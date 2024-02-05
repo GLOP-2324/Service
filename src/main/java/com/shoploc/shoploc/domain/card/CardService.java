@@ -11,6 +11,6 @@ public interface CardService {
 
     ResponseEntity<ClientEntity> debitCard(String email, AchatEntity achatEntity);
 
-    ResponseEntity<ClientEntity> creditCard(String email, AchatEntity achatEntity);
+    ResponseEntity<ClientEntity> creditCard(String email);
 
 }
