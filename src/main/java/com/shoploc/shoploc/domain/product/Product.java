@@ -16,6 +16,7 @@ public class Product {
     private String libelle;
 
     private String description;
+    //todo qte
 
     private double price;
     @Lob
