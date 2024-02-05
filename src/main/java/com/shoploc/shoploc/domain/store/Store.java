@@ -11,8 +11,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "store")
-public class Store extends AccountEntity {
-
+public class Store {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToMany
@@ -21,7 +22,7 @@ public class Store extends AccountEntity {
     private String name;
 
     private String address;
-//todo : longitude and lan
+    //todo : longitude and lan
     @Lob
     private String image;
 
@@ -74,9 +75,11 @@ public class Store extends AccountEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public Store() {
 
     }
+
     public Store(Integer id) {
         this.id = id;
     }

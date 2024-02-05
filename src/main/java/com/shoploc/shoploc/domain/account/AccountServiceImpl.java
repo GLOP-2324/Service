@@ -82,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
                 String base64Image = convertToBase64(image);
                 accountEntity.setImage(base64Image);
             }
-            //this.accountRepository.save(accountEntity);
+             this.accountRepository.save(accountEntity);
             if(role.getRole_id()==3){
                 ClientEntity client = new ClientEntity(firstname,lastname,email,encodedPassword,role,accountEntity.getImage());
                 cardService.createCard(client);
