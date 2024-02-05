@@ -1,5 +1,6 @@
 package com.shoploc.shoploc.domain.client;
 
+import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.card.CardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +22,20 @@ public class ClientController {
     When charging the card we put charging to true, when buying we set it to false
     Post 1/card?amount=2&charging=true
     * */
-    @PostMapping("{id}/card")
-    public ResponseEntity<ClientEntity> creditClient(@PathVariable Long id, @RequestParam Integer amount, @RequestParam boolean charging) {
+ /*   @PostMapping("{email}/card")
+    public ResponseEntity<ClientEntity> creditClient(@PathVariable String email, @RequestParam Integer amount, @RequestParam boolean charging) {
         if (charging)
-            return cardService.creditCard(id, amount);
+            return cardService.creditCard(email, amount);
         else
-            return cardService.debitCard(id, amount);
+            return cardService.debitCard(email, amount);
     }
+*/
+    @PostMapping("{email}/card")
+    public ResponseEntity<ClientEntity> creditClient(@PathVariable String email, @RequestBody AchatEntity achatEntity, @RequestParam boolean charging) {
+        if (charging)
+            return cardService.creditCard(email, achatEntity);
+        else
+            return cardService.debitCard(email, achatEntity);
+    }
+    //todo buy with credit card
 }

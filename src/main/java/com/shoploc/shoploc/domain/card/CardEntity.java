@@ -45,4 +45,9 @@ public class CardEntity {
         this.id = id;
         this.montant = montant;
     }
+
+    public CardEntity(String email, double montant) {
+        this.id = id;
+        this.montant = montant;
+    }
 }

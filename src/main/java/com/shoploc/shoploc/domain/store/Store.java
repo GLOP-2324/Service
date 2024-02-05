@@ -21,7 +21,7 @@ public class Store {
     private String name;
 
     private String address;
-
+//todo : longitude and lan
     @Lob
     private String image;
 

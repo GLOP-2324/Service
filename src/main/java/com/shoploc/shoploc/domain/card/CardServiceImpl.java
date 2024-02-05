@@ -1,6 +1,7 @@
 package com.shoploc.shoploc.domain.card;
 
 import com.shoploc.shoploc.domain.account.AccountEntity;
+import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,13 @@ public class CardServiceImpl implements CardService {
 
 
     @Override
-    public ResponseEntity<ClientEntity> debitCard(Long id, Integer amount) {
-        var optionalClient = clientRepository.findById(id);
+    public ResponseEntity<ClientEntity> debitCard(String email, AchatEntity achatEntity) {
+        int amount = 0;
+        //todo
+        var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()){
             ClientEntity clientToUpdate = optionalClient.get();
-            CardEntity card = new CardEntity(id, clientToUpdate.getCardEntity().getMontant() - amount);
+            CardEntity card = new CardEntity(clientToUpdate.getAccount_id(), clientToUpdate.getCardEntity().getMontant() - amount);
             clientToUpdate.setCardEntity(card);
             clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
             ClientEntity updatedClient = clientRepository.save(clientToUpdate);
@@ -44,11 +47,12 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public ResponseEntity<ClientEntity> creditCard(Long id, Integer amount) {
-        var optionalClient = clientRepository.findById(id);
+    public ResponseEntity<ClientEntity> creditCard(String email, AchatEntity achatEntity) {
+        int amount = 0 ;
+        var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
-                CardEntity card = new CardEntity(id, clientToUpdate.getCardEntity().getMontant() + amount);
+                CardEntity card = new CardEntity(clientToUpdate.getAccount_id(), clientToUpdate.getCardEntity().getMontant() + amount);
                 clientToUpdate.setCardEntity(card);
                 ClientEntity updatedClient = clientRepository.save(clientToUpdate);
                 return ResponseEntity.ok(updatedClient);
