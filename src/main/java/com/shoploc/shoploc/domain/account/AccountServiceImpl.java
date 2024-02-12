@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void createAccount(String firstname,String lastname,String email ,Integer roleId,MultipartFile image,Integer longitude,Integer latitude) throws InsertionFailedException, IOException {
+    public void createAccount(String firstname,String lastname,String email ,Integer roleId,MultipartFile image,Double longitude,Double latitude) throws InsertionFailedException, IOException {
         if (accountRepository.findByEmail(email) != null){
             throw new InsertionFailedException("Ce compte existe déja");
         } else {
