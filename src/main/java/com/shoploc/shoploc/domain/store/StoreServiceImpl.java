@@ -36,7 +36,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public void createStore(String name, String email, MultipartFile image,Integer longitude,Integer latitude) throws IOException {
+    public void createStore(String name, String email, MultipartFile image,Double longitude,Double latitude) throws IOException {
         List<Product> products = new ArrayList<>();
         Store store= new Store();
         String base64Image = convertToBase64(image);
