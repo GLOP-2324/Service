@@ -52,6 +52,7 @@ public class StoreController {
     ) throws IOException {
          storeService.createStore(
               name,email,image,0.0,0.0
+
         );
         return new ResponseEntity<>( HttpStatus.CREATED);
     }
