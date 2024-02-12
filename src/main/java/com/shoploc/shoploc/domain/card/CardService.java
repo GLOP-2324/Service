@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CardService {
-    void createCard (AccountEntity accountEntity);
+    CardEntity createCard (AccountEntity accountEntity);
 
     ResponseEntity<ClientEntity> debitCard(String email, AchatEntity achatEntity);
 

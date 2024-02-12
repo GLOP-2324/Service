@@ -4,11 +4,13 @@ import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -23,11 +25,12 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void createCard(AccountEntity accountEntity) {
+    @Transactional
+    public CardEntity createCard(AccountEntity accountEntity) {
         CardEntity card = new CardEntity();
         card.setDate(new Date());
         card.setMontant(0);
-        cardRepository.save(card);
+        return cardRepository.save(card);
     }
 
     @Override
@@ -40,13 +43,17 @@ public class CardServiceImpl implements CardService {
         var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
-            CardEntity card = new CardEntity(clientToUpdate.getAccount_id(), clientToUpdate.getCardEntity().getMontant() - amount);
-            clientToUpdate.setCardEntity(card);
-            clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
-            ClientEntity updatedClient = clientRepository.save(clientToUpdate);
-            return ResponseEntity.ok(updatedClient);
+            Optional<CardEntity> clientCard = cardRepository.findById(clientToUpdate.getCardEntity().getId());
+            if (clientCard.get().getMontant() > 0) {
+                clientCard.get().setMontant(clientCard.get().getMontant() - amount);
+                cardRepository.save(clientCard.get());
+                clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
+                ClientEntity updatedClient = clientRepository.save(clientToUpdate);
+                return ResponseEntity.ok(updatedClient);
+            } else return ResponseEntity.badRequest().build();
         } else return ResponseEntity.badRequest().build();
     }
+
 
     @Override
     public ResponseEntity<ClientEntity> creditCard(String email) {
