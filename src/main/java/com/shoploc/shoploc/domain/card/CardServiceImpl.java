@@ -33,8 +33,11 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public ResponseEntity<ClientEntity> debitCard(String email, AchatEntity achatEntity) {
+        var products = achatEntity.getCartItems();
         int amount = 0;
-        //todo
+        for(var product : products) {
+            amount+=product.getPrice();
+        }
         var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()){
             ClientEntity clientToUpdate = optionalClient.get();
