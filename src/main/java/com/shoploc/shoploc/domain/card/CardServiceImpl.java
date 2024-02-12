@@ -30,38 +30,35 @@ public class CardServiceImpl implements CardService {
         cardRepository.save(card);
     }
 
-
     @Override
     public ResponseEntity<ClientEntity> debitCard(String email, AchatEntity achatEntity) {
         var products = achatEntity.getCartItems();
         int amount = 0;
-        for(var product : products) {
-            amount+=product.getPrice();
+        for (var product : products) {
+            amount += product.getPrice();
         }
         var optionalClient = clientRepository.findByEmail(email);
-        if (optionalClient.isPresent()){
+        if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
             CardEntity card = new CardEntity(clientToUpdate.getAccount_id(), clientToUpdate.getCardEntity().getMontant() - amount);
             clientToUpdate.setCardEntity(card);
             clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
             ClientEntity updatedClient = clientRepository.save(clientToUpdate);
             return ResponseEntity.ok(updatedClient);
-        }
-        else return ResponseEntity.badRequest().build();
+        } else return ResponseEntity.badRequest().build();
     }
 
     @Override
     public ResponseEntity<ClientEntity> creditCard(String email) {
-        int amount = 0 ;
+        int amount = 0;
         var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
-                CardEntity card = new CardEntity(clientToUpdate.getAccount_id(), clientToUpdate.getCardEntity().getMontant() + amount);
-                clientToUpdate.setCardEntity(card);
-                ClientEntity updatedClient = clientRepository.save(clientToUpdate);
-                return ResponseEntity.ok(updatedClient);
+            CardEntity card = new CardEntity(clientToUpdate.getAccount_id(), clientToUpdate.getCardEntity().getMontant() + amount);
+            clientToUpdate.setCardEntity(card);
+            ClientEntity updatedClient = clientRepository.save(clientToUpdate);
+            return ResponseEntity.ok(updatedClient);
 
-        }
-        else return ResponseEntity.badRequest().build();
+        } else return ResponseEntity.badRequest().build();
     }
 }

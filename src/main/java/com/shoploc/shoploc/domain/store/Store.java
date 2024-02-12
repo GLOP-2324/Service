@@ -21,12 +21,29 @@ public class Store {
 
     private String name;
 
-    private String address;
+    private Integer longitude;
+    private Integer latitude;
     //todo : longitude and lan
     @Lob
     private String image;
 
     private String email;
+
+    public Integer getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Integer longitude) {
+        this.longitude = longitude;
+    }
+
+    public Integer getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Integer latitude) {
+        this.latitude = latitude;
+    }
 
     public Integer getId() {
         return id;
@@ -44,13 +61,6 @@ public class Store {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public List<Product> getProducts() {
         return products;
@@ -79,7 +89,6 @@ public class Store {
     public Store() {
 
     }
-
     public Store(Integer id) {
         this.id = id;
     }

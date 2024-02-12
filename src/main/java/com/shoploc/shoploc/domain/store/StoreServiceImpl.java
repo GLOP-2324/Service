@@ -36,12 +36,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public void createStore(String name, String email, MultipartFile image) throws IOException {
+    public void createStore(String name, String email, MultipartFile image,Integer longitude,Integer latitude) throws IOException {
         List<Product> products = new ArrayList<>();
         Store store= new Store();
         String base64Image = convertToBase64(image);
         store.setName(name);
         store.setEmail(email);
+        store.setLatitude(latitude);
+        store.setLongitude(longitude);
         store.setProducts(products);
         store.setImage(base64Image);
         storeRepository.save(store);
@@ -54,7 +56,8 @@ public class StoreServiceImpl implements StoreService {
 
         if (existingStore != null) {
             existingStore.setName(store.getName());
-            existingStore.setAddress(store.getAddress());
+            existingStore.setLatitude(existingStore.getLatitude());
+            existingStore.setLongitude(existingStore.getLongitude());
             existingStore.setImage(store.getImage());
             return storeRepository.save(existingStore);
         }

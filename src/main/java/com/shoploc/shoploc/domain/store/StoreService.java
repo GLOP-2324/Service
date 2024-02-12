@@ -12,7 +12,7 @@ public interface StoreService {
 
     Store getById(Long id);
 
-    void createStore (String name, String email, MultipartFile image) throws IOException;
+    void createStore (String name, String email, MultipartFile image,Integer longitude,Integer latitude) throws IOException;
 
     Store updateStore (Long id, Store store);
 

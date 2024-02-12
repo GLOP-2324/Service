@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface AccountService {
-    void createAccount(String firstname,String lastname,String email, Integer roleId, MultipartFile image) throws InsertionFailedException, IOException;
+    void createAccount(String firstname,String lastname,String email, Integer roleId, MultipartFile image,Integer longitude,Integer latitude) throws InsertionFailedException, IOException;
 
     void modifyPasswordAccount(String email, String password) throws ModificationFailedException;
 
