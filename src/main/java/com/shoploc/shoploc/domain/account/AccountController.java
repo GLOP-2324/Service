@@ -33,10 +33,12 @@ public class AccountController {
                                                 @RequestParam ("lastname")String lastname,
                                                 @RequestParam ("email")String email,
                                                 @RequestParam ("roleId")Integer roleId,
-                                                @RequestParam(name="image",required=false) MultipartFile image) throws InsertionFailedException, IOException {
+                                                @RequestParam(name="image",required=false) MultipartFile image,
+                                                @RequestParam(name="longitude",required = false) Integer longitude,
+                                                @RequestParam(name = "latitude",required = false)Integer latitude) throws InsertionFailedException, IOException {
 
         System.out.println(image+"****************************************************************");
-        this.accountService.createAccount(firstname,lastname,email,roleId,image);
+        this.accountService.createAccount(firstname,lastname,email,roleId,image,longitude,latitude);
         return ResponseEntity.status(HttpStatus.OK).body("Le compte à été crée avec succès");
     }
 
