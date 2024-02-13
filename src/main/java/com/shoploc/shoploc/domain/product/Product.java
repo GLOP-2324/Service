@@ -4,7 +4,6 @@ import com.shoploc.shoploc.domain.store.Store;
 import com.shoploc.shoploc.domain.type.TypeProduct;
 import jakarta.persistence.*;
 
-import java.io.File;
 
 @Entity
 public class Product {
@@ -18,6 +17,16 @@ public class Product {
     private String description;
     //todo qte
     private double price;
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    private Integer points;
     @Lob
     private String image;
 
@@ -28,6 +37,17 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
+
+    public Boolean getBenefitsActivated() {
+        return benefitsActivated;
+    }
+
+    public void setBenefitsActivated(Boolean benefitsActivated) {
+        this.benefitsActivated = benefitsActivated;
+    }
+
+    private Boolean benefitsActivated = false;
+
 
     public Long getId() {
         return id;
@@ -84,7 +104,7 @@ public class Product {
         this.store = store;
     }
 
-    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store,Integer quantity) {
+    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store, Integer points, Boolean benefitsActivated) {
         this.id = id;
         this.libelle = libelle;
         this.description = description;
@@ -92,6 +112,8 @@ public class Product {
         this.image = image;
         this.type = type;
         this.store = store;
+        this.benefitsActivated = benefitsActivated;
+        this.points = points;
     }
 
     public Product(){}
