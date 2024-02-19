@@ -5,7 +5,6 @@ import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -55,14 +54,14 @@ public class CardServiceImpl implements CardService {
     }
 
 
+
     @Override
-    public ResponseEntity<ClientEntity> creditCard(String email) {
-        int amount = 0;
+    public ResponseEntity<ClientEntity> creditCard(String email, Double amount) {
         var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
-            CardEntity card = new CardEntity(clientToUpdate.getAccount_id(), clientToUpdate.getCardEntity().getMontant() + amount);
-            clientToUpdate.setCardEntity(card);
+            Optional<CardEntity> card = cardRepository.findById(clientToUpdate.getCardEntity().getId());
+            card.get().setMontant(card.get().getMontant() + amount);
             ClientEntity updatedClient = clientRepository.save(clientToUpdate);
             return ResponseEntity.ok(updatedClient);
 
