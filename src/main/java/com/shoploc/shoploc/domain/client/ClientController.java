@@ -2,6 +2,7 @@ package com.shoploc.shoploc.domain.client;
 
 import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.card.CardService;
+import com.shoploc.shoploc.domain.historique.HistoriqueAchatService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +13,12 @@ public class ClientController {
 
     private CardService cardService;
 
-    public ClientController(ClientService clientService, CardService cardService) {
+    private HistoriqueAchatService historiqueAchatService;
+
+    public ClientController(ClientService clientService, CardService cardService, HistoriqueAchatService historiqueAchatService) {
         this.clientService = clientService;
         this.cardService = cardService;
+        this.historiqueAchatService = historiqueAchatService;
     }
 
 
@@ -31,11 +35,13 @@ public class ClientController {
     }
 */
     @PostMapping("{email}/card")
-    public ResponseEntity<ClientEntity> creditClient(@PathVariable String email,@RequestParam Double amount, @RequestBody AchatEntity achatEntity) {
-        if (amount!=null)
-            return cardService.creditCard(email,amount);
-        else
+    public ResponseEntity<ClientEntity> creditClient(@PathVariable String email, @RequestParam Double amount, @RequestBody AchatEntity achatEntity) {
+        if (amount != null)
+            return cardService.creditCard(email, amount);
+        else {
+            this.historiqueAchatService.fillHistory(achatEntity);
             return cardService.buy(email, achatEntity);
+        }
     }
     //todo buy with credit card
 }

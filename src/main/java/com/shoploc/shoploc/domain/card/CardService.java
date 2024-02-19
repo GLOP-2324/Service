@@ -13,6 +13,8 @@ public interface CardService {
 
     ResponseEntity<ClientEntity> buy(String email, AchatEntity achatEntity);
 
+    void fillHistory(AchatEntity achatEntity);
+
     ResponseEntity<ClientEntity> creditCard(String email, Double amount);
 
 }
