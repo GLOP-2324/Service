@@ -35,7 +35,7 @@ public class ClientController {
         if (achatEntity == null && amount!=null)
             return cardService.creditCard(email,amount);
         else
-            return cardService.debitCard(email, achatEntity);
+            return cardService.buy(email, achatEntity);
     }
     //todo buy with credit card
 }

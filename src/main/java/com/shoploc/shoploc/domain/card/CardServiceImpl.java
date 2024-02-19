@@ -33,25 +33,41 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public ResponseEntity<ClientEntity> debitCard(String email, AchatEntity achatEntity) {
-        var products = achatEntity.getCartItems();
-        int amount = 0;
-        for (var product : products) {
-            amount += product.getPrice();
-        }
-        var optionalClient = clientRepository.findByEmail(email);
-        if (optionalClient.isPresent()) {
-            ClientEntity clientToUpdate = optionalClient.get();
-            Optional<CardEntity> clientCard = cardRepository.findById(clientToUpdate.getCardEntity().getId());
-            if (clientCard.get().getMontant() > 0) {
-                clientCard.get().setMontant(clientCard.get().getMontant() - amount);
-                cardRepository.save(clientCard.get());
-                clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
-                ClientEntity updatedClient = clientRepository.save(clientToUpdate);
-                return ResponseEntity.ok(updatedClient);
-            } else return ResponseEntity.badRequest().build();
-        } else return ResponseEntity.badRequest().build();
+    public ResponseEntity<ClientEntity> buy(String email, AchatEntity achatEntity) {
+        int amount = calculateTotalAmount(achatEntity);
+
+        return clientRepository.findByEmail(email)
+                .map(client -> updateClientBalance(client, amount))
+                .orElseGet(() -> ResponseEntity.badRequest().body(null));
     }
+
+    private int calculateTotalAmount(AchatEntity achatEntity) {
+        return achatEntity.getCartItems().stream()
+                .mapToInt(Product::getPrice)
+                .sum();
+    }
+
+    private ResponseEntity<ClientEntity> updateClientBalance(ClientEntity client, int amount) {
+        CardEntity card = client.getCardEntity();
+        if (card.getMontant() < amount) {
+            return ResponseEntity.badRequest().build();
+        }
+        updateCardBalance(card, amount);
+        updateClientFidelityPoints(client, amount);
+        ClientEntity updatedClient = clientRepository.save(client);
+        return ResponseEntity.ok(updatedClient);
+    }
+
+    private void updateCardBalance(CardEntity card, int amount) {
+        card.setMontant(card.getMontant() - amount);
+        cardRepository.save(card);
+    }
+
+    private void updateClientFidelityPoints(ClientEntity client, int amount) {
+        client.setFidelityPoints(client.getFidelityPoints() + amount);
+    }
+
+}
 
 
 
