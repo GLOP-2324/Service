@@ -32,8 +32,29 @@ public class CardServiceImpl implements CardService {
         return cardRepository.save(card);
     }
 
+
     @Override
-    public ResponseEntity<ClientEntity> buy(String email, AchatEntity achatEntity) {
+    public ResponseEntity<ClientEntity> buyWithCreditCard(String email, AchatEntity achatEntity) {
+        var products = achatEntity.getCartItems();
+        int amount = 0;
+        for (var product : products) {
+            amount += product.getPrice();
+        }
+        var optionalClient = clientRepository.findByEmail(email);
+        if (optionalClient.isPresent()) {
+            ClientEntity clientToUpdate = optionalClient.get();
+            Optional<CardEntity> clientCard = cardRepository.findById(clientToUpdate.getCardEntity().getId());
+            if (clientCard.get().getMontant() > 0) {
+                clientCard.get().setMontant(clientCard.get().getMontant() - amount);
+                cardRepository.save(clientCard.get());
+                ClientEntity updatedClient = clientRepository.save(clientToUpdate);
+                return ResponseEntity.ok(updatedClient);
+            } else return ResponseEntity.badRequest().build();
+        } else return ResponseEntity.badRequest().build();
+    }
+
+    @Override
+    public ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity) {
         var products = achatEntity.getCartItems();
         int amount = 0;
         for (var product : products) {
