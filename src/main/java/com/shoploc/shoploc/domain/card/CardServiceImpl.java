@@ -4,6 +4,7 @@ import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
+import com.shoploc.shoploc.domain.product.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
