@@ -21,28 +21,19 @@ public class Store {
 
     private String name;
 
-    private Double longitude;
-    private Double latitude;
+    private String address;
     //todo : longitude and lan
     @Lob
     private String image;
 
     private String email;
 
-    public Double getLongitude() {
-        return longitude;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Integer getId() {

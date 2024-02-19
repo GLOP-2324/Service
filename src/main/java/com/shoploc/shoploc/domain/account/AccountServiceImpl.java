@@ -46,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void createAccount(String firstname,String lastname,String email ,Integer roleId,MultipartFile image,Double longitude,Double latitude) throws InsertionFailedException, IOException {
+    public void createAccount(String firstname,String lastname,String email ,Integer roleId,MultipartFile image, String address) throws InsertionFailedException, IOException {
         if (accountRepository.findByEmail(email) != null){
             throw new InsertionFailedException("Ce compte existe déja");
         } else {
@@ -62,7 +62,7 @@ public class AccountServiceImpl implements AccountService {
             accountEntity.setEmail(email);
             accountEntity.setPassword(bCryptPasswordEncoder.encode(encodedPassword));
             if(role.getRole_id()==2){
-                storeService.createStore(firstname, email, image,longitude,latitude);
+                storeService.createStore(firstname, email, image, address);
             }
 
             if(image==null){
