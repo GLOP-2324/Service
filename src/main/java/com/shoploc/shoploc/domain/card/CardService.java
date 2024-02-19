@@ -10,7 +10,5 @@ public interface CardService {
     CardEntity createCard (AccountEntity accountEntity);
 
     ResponseEntity<ClientEntity> debitCard(String email, AchatEntity achatEntity);
-
-    ResponseEntity<ClientEntity> creditCard(String email);
-
+    ResponseEntity<ClientEntity> creditCard(String email, Double amount);
 }
