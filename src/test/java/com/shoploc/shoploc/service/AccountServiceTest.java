@@ -22,6 +22,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -60,7 +61,7 @@ class AccountServiceImplTest {
         when(roleRepository.getReferenceById(anyLong())).thenReturn(new RoleEntity(1L,"test")); // Mocking the role retrieval
 
         // When
-        accountService.createAccount("Nadine", "Saadi", "nad@yahoo.com", 1, null, 0, 0);
+        accountService.createAccount("Nadine", "Saadi", "nad@yahoo.com", 1, (MultipartFile) null, (double) 0, (double) 0);
 
         // Then
         verify(accountRepository).save(any(AccountEntity.class));
