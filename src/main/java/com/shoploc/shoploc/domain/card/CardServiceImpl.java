@@ -5,6 +5,7 @@ import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -34,50 +35,34 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public ResponseEntity<ClientEntity> buy(String email, AchatEntity achatEntity) {
-        int amount = calculateTotalAmount(achatEntity);
-
-        return clientRepository.findByEmail(email)
-                .map(client -> updateClientBalance(client, amount))
-                .orElseGet(() -> ResponseEntity.badRequest().body(null));
-    }
-
-    private int calculateTotalAmount(AchatEntity achatEntity) {
-        return achatEntity.getCartItems().stream()
-                .mapToInt(Product::getPrice)
-                .sum();
-    }
-
-    private ResponseEntity<ClientEntity> updateClientBalance(ClientEntity client, int amount) {
-        CardEntity card = client.getCardEntity();
-        if (card.getMontant() < amount) {
-            return ResponseEntity.badRequest().build();
+        var products = achatEntity.getCartItems();
+        int amount = 0;
+        for (var product : products) {
+            amount += product.getPrice();
         }
-        updateCardBalance(card, amount);
-        updateClientFidelityPoints(client, amount);
-        ClientEntity updatedClient = clientRepository.save(client);
-        return ResponseEntity.ok(updatedClient);
-    }
-
-    private void updateCardBalance(CardEntity card, int amount) {
-        card.setMontant(card.getMontant() - amount);
-        cardRepository.save(card);
-    }
-
-    private void updateClientFidelityPoints(ClientEntity client, int amount) {
-        client.setFidelityPoints(client.getFidelityPoints() + amount);
-    }
-
-}
-
-
-
-    @Override
-    public ResponseEntity<ClientEntity> creditCard(String email, Double amount) {
         var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
-            Optional<CardEntity> card = cardRepository.findById(clientToUpdate.getCardEntity().getId());
-            card.get().setMontant(card.get().getMontant() + amount);
+            Optional<CardEntity> clientCard = cardRepository.findById(clientToUpdate.getCardEntity().getId());
+            if (clientCard.get().getMontant() > 0) {
+                clientCard.get().setMontant(clientCard.get().getMontant() - amount);
+                cardRepository.save(clientCard.get());
+                clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
+                ClientEntity updatedClient = clientRepository.save(clientToUpdate);
+                return ResponseEntity.ok(updatedClient);
+            } else return ResponseEntity.badRequest().build();
+        } else return ResponseEntity.badRequest().build();
+    }
+
+
+    @Override
+    public ResponseEntity<ClientEntity> creditCard(String email) {
+        int amount = 0;
+        var optionalClient = clientRepository.findByEmail(email);
+        if (optionalClient.isPresent()) {
+            ClientEntity clientToUpdate = optionalClient.get();
+            CardEntity card = new CardEntity(clientToUpdate.getAccount_id(), clientToUpdate.getCardEntity().getMontant() + amount);
+            clientToUpdate.setCardEntity(card);
             ClientEntity updatedClient = clientRepository.save(clientToUpdate);
             return ResponseEntity.ok(updatedClient);
 
