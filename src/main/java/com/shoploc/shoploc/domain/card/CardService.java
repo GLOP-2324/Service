@@ -6,11 +6,13 @@ import com.shoploc.shoploc.domain.client.ClientEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.function.DoubleConsumer;
+
 public interface CardService {
     CardEntity createCard (AccountEntity accountEntity);
 
     ResponseEntity<ClientEntity> buy(String email, AchatEntity achatEntity);
 
-    ResponseEntity<ClientEntity> creditCard(String email);
+    ResponseEntity<ClientEntity> creditCard(String email, Double amount);
 
 }
