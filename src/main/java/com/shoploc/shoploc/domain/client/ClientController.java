@@ -31,11 +31,13 @@ public class ClientController {
     }
 */
     @PostMapping("{email}/card")
-    public ResponseEntity<ClientEntity> creditClient(@PathVariable String email,@RequestParam Double amount, @RequestBody AchatEntity achatEntity) {
-        if (amount!=null)
-            return cardService.creditCard(email,amount);
-        else
-            return cardService.buy(email, achatEntity);
+    public ResponseEntity<ClientEntity> creditClient(@PathVariable String email, @RequestParam(required = false) Double amount, @RequestBody(required = false) AchatEntity achatEntity,@RequestParam(required = false) boolean creditCard)  {
+        if (achatEntity == null && amount != null) {
+                return cardService.creditCard(email, amount);
+        } else if (!creditCard){
+            return cardService.buyWithFidelityCard(email, achatEntity);
+        }
+        return cardService.buyWithCreditCard(email, achatEntity);
     }
     //todo buy with credit card
 }
