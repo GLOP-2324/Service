@@ -51,7 +51,11 @@ public class StoreController {
             @RequestParam("email") String email
     ) throws IOException {
          storeService.createStore(
+<<<<<<< HEAD
               name,email,image,"exemple"
+=======
+              name,email,image,null
+>>>>>>> 8dac102 (creditCard)
 
         );
         return new ResponseEntity<>( HttpStatus.CREATED);

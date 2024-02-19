@@ -61,7 +61,11 @@ class AccountServiceImplTest {
         when(roleRepository.getReferenceById(anyLong())).thenReturn(new RoleEntity(1L,"test")); // Mocking the role retrieval
 
         // When
+<<<<<<< HEAD
         accountService.createAccount("Nadine", "Saadi", "nad@yahoo.com", 1, (MultipartFile) null, "");
+=======
+        accountService.createAccount("Nadine", "Saadi", "nad@yahoo.com", 1, (MultipartFile) null, null);
+>>>>>>> 8dac102 (creditCard)
 
         // Then
         verify(accountRepository).save(any(AccountEntity.class));
