@@ -13,7 +13,6 @@ public interface CardService {
 
     ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity);
     ResponseEntity<ClientEntity> buyWithCreditCard(String email, AchatEntity achatEntity);
-
     ResponseEntity<ClientEntity> creditCard(String email, Double amount);
 
 }
