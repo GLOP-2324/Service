@@ -35,7 +35,7 @@ public class ClientController {
     }
 */
     @PostMapping("{email}/card")
-    public ResponseEntity<ClientEntity> creditClient(@PathVariable String email, @RequestParam(required = false) Double amount, @RequestBody(required = false) AchatEntity achatEntity,@RequestParam(required = false) boolean creditCard)  {
+    public ResponseEntity<ClientEntity> creditOrBuy(@PathVariable String email, @RequestParam(required = false) Double amount, @RequestBody(required = false) AchatEntity achatEntity,@RequestParam(required = false) boolean creditCard)  {
         if (achatEntity == null && amount != null) {
                 return cardService.creditCard(email, amount);
         } else if (!creditCard){

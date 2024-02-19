@@ -1,8 +1,6 @@
 package com.shoploc.shoploc.domain.historique;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 
@@ -13,6 +11,7 @@ import java.util.Date;
 @Table(name = "historique_achat")
 public class HistoriqueAchat {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Getter
