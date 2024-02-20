@@ -1,6 +1,7 @@
 package com.shoploc.shoploc.domain.client;
 
 import com.shoploc.shoploc.domain.achat.AchatEntity;
+import com.shoploc.shoploc.domain.card.CardEntity;
 import com.shoploc.shoploc.domain.card.CardService;
 import com.shoploc.shoploc.domain.historique.HistoriqueAchatService;
 import org.springframework.http.ResponseEntity;
@@ -46,4 +47,10 @@ public class ClientController {
         return cardService.buyWithCreditCard(email, achatEntity);
     }
     //todo buy with credit card
+
+    @GetMapping("{email}/card")
+    public ResponseEntity<CardEntity> creditOrBuy(@PathVariable String email)  {
+        return cardService.getCardInformation(email);
+    }
+
 }
