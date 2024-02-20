@@ -49,7 +49,7 @@ public class ClientController {
     //todo buy with credit card
 
     @GetMapping("{email}/card")
-    public ResponseEntity<CardEntity> creditOrBuy(@PathVariable String email)  {
+    public ResponseEntity<CardEntity> getCardInfo(@PathVariable String email)  {
         return cardService.getCardInformation(email);
     }
 
