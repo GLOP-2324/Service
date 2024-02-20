@@ -4,7 +4,6 @@ import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
-import com.shoploc.shoploc.domain.product.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -86,6 +85,17 @@ public class CardServiceImpl implements CardService {
             card.get().setMontant(card.get().getMontant() + amount);
             ClientEntity updatedClient = clientRepository.save(clientToUpdate);
             return ResponseEntity.ok(updatedClient);
+
+        } else return ResponseEntity.badRequest().build();
+    }
+    @Override
+    public ResponseEntity<CardEntity> getCardInformation(String email) {
+        var optionalClient = clientRepository.findByEmail(email);
+        if (optionalClient.isPresent()) {
+            ClientEntity clientToUpdate = optionalClient.get();
+            Optional<CardEntity> card = cardRepository.findById(clientToUpdate.getCardEntity().getId());
+            CardEntity cardEntity = card.get();
+            return ResponseEntity.ok(cardEntity);
 
         } else return ResponseEntity.badRequest().build();
     }
