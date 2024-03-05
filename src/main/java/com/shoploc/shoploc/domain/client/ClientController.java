@@ -23,18 +23,6 @@ public class ClientController {
     }
 
 
-    /*
-    When charging the card we put charging to true, when buying we set it to false
-    Post 1/card?amount=2&charging=true
-    * */
- /*   @PostMapping("{email}/card")
-    public ResponseEntity<ClientEntity> creditClient(@PathVariable String email, @RequestParam Integer amount, @RequestParam boolean charging) {
-        if (charging)
-            return cardService.creditCard(email, amount);
-        else
-            return cardService.debitCard(email, amount);
-    }
-*/
     @PostMapping("{email}/card")
     public ResponseEntity<ClientEntity> creditOrBuy(@PathVariable String email, @RequestParam(required = false) Double amount, @RequestBody(required = false) AchatEntity achatEntity,@RequestParam(required = false) boolean creditCard)  {
         if (achatEntity == null && amount != null) {
@@ -46,11 +34,16 @@ public class ClientController {
         this.historiqueAchatService.fillHistory(achatEntity);
         return cardService.buyWithCreditCard(email, achatEntity);
     }
-    //todo buy with credit card
+
 
     @GetMapping("{email}/card")
     public ResponseEntity<CardEntity> getCardInfo(@PathVariable String email)  {
         return cardService.getCardInformation(email);
+    }
+
+    @PatchMapping("{email}/card")
+    public ResponseEntity<CardEntity> buyWithFidelityPoints(@PathVariable String email, @RequestParam(required = false) Double amount)  {
+        return cardService.buyWithFidelityPoints(email, amount);
     }
 
 }
