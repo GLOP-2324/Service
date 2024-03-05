@@ -99,4 +99,20 @@ public class CardServiceImpl implements CardService {
 
         } else return ResponseEntity.badRequest().build();
     }
+
+    @Override
+    public ResponseEntity<CardEntity> buyWithFidelityPoints(String email, Double amount) {
+        var optionalClient = clientRepository.findByEmail(email);
+        if (optionalClient.isPresent()) {
+            ClientEntity clientToUpdate = optionalClient.get();
+            Optional<CardEntity> card = cardRepository.findById(clientToUpdate.getCardEntity().getId());
+            if (card.get().getMontant() > 0) {
+                card.get().setMontant(card.get().getMontant() - amount);
+                clientToUpdate.setFidelityPoints(0);
+                clientToUpdate.setCardEntity(card.get());
+                clientRepository.save(clientToUpdate);
+                return ResponseEntity.ok(card.get());
+            } else return ResponseEntity.badRequest().build();
+        } else return ResponseEntity.badRequest().build();
+    }
 }
