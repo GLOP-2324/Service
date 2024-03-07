@@ -27,13 +27,14 @@ public class ClientController {
     public ResponseEntity<ClientEntity> creditOrBuy(@PathVariable String email,
                                                     @RequestParam(required = false) Double amount,
                                                     @RequestBody(required = false) AchatEntity achatEntity,
-                                                    @RequestParam(required = false) boolean creditCard) {
+                                                    @RequestParam(required = false) boolean creditCard,
+                                                    @RequestParam(required = false) boolean buyWithfidelityPoints) {
         ResponseEntity<ClientEntity> responseEntity;
 
         if (achatEntity == null && amount != null && creditCard) {
             responseEntity = cardService.creditCard(email, amount);
         } else if (!creditCard) {
-            responseEntity = cardService.buyWithFidelityCard(email, achatEntity);
+            responseEntity = cardService.buyWithFidelityCard(email, achatEntity, buyWithfidelityPoints);
         } else {
             responseEntity = cardService.buyWithCreditCard(email, achatEntity);
         }
@@ -49,9 +50,5 @@ public class ClientController {
         return cardService.getCardInformation(email);
     }
 
-    @PatchMapping("{email}/card")
-    public ResponseEntity<CardEntity> buyWithFidelityPoints(@PathVariable String email, @RequestParam(required = false) Double amount) {
-        return cardService.buyWithFidelityPoints(email, amount);
-    }
 
 }

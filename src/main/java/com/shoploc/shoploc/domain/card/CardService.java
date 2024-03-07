@@ -11,11 +11,9 @@ import java.util.function.DoubleConsumer;
 public interface CardService {
     CardEntity createCard (AccountEntity accountEntity);
 
-    ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity);
+    ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity,Boolean buyWithfidelityPoints);
     ResponseEntity<ClientEntity> buyWithCreditCard(String email, AchatEntity achatEntity);
     ResponseEntity<ClientEntity> creditCard(String email, Double amount);
 
     ResponseEntity<CardEntity> getCardInformation(String email);
-    ResponseEntity<CardEntity> buyWithFidelityPoints(String email,Double amount);
-
 }
