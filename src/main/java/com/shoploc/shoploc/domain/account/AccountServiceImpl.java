@@ -57,7 +57,6 @@ public class AccountServiceImpl implements AccountService {
             ClientEntity accountEntity= new ClientEntity();
             accountEntity.setFirstname(firstname);
             accountEntity.setLastname(lastname);
-
             accountEntity.setRole(role);
             accountEntity.setEmail(email);
             accountEntity.setPassword(bCryptPasswordEncoder.encode(encodedPassword));

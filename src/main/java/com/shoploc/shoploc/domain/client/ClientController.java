@@ -30,14 +30,14 @@ public class ClientController {
                                                     @RequestParam(required = false) boolean creditCard) {
         ResponseEntity<ClientEntity> responseEntity;
 
-        if (achatEntity == null && amount != null) {
+        if (achatEntity == null && amount != null && creditCard) {
             responseEntity = cardService.creditCard(email, amount);
         } else if (!creditCard) {
             responseEntity = cardService.buyWithFidelityCard(email, achatEntity);
         } else {
             responseEntity = cardService.buyWithCreditCard(email, achatEntity);
         }
-        if (!creditCard && responseEntity.getStatusCode().is2xxSuccessful()) {
+        if (achatEntity != null && !creditCard && responseEntity.getStatusCode().is2xxSuccessful()) {
             this.historiqueAchatService.fillHistory(achatEntity);
         }
         return responseEntity;
