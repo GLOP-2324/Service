@@ -19,6 +19,7 @@ public class HistoriqueAchat {
     private String clientEmail;
     private Integer productId;
     private Date date;
+    private Integer quantity;
 
     public Long getId() {
         return id;
@@ -44,17 +45,29 @@ public class HistoriqueAchat {
         return date;
     }
 
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+
     public void setStoreId(Integer storeId) {
         this.storeId = storeId;
     }
+
     public void setClientEmail(String clientEmail) {
         this.clientEmail = clientEmail;
     }
+
     public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
-    public void setDate(Date date){
-        this.date=date;
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

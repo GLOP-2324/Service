@@ -18,14 +18,6 @@ public class Product {
     //todo qte
     private double price;
 
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
-
     private Integer points;
     @Lob
     private String image;
@@ -50,6 +42,13 @@ public class Product {
 
     private Integer stock;
 
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
 
     public Long getId() {
         return id;
