@@ -61,7 +61,8 @@ public class ProductController {
             @RequestParam("store") Long storeId,
             @RequestParam("points") Integer points,
             @RequestParam(name = "id", required = false) Integer id,
-            @RequestParam("benefitsActivated") Boolean benefitsActivated
+            @RequestParam("benefitsActivated") Boolean benefitsActivated,
+            @RequestParam("stock") Integer stock
 
     ) throws IOException {
         Product product = new Product();
@@ -78,6 +79,7 @@ public class ProductController {
         product.setStore(store);
         product.setPoints(points);
         product.setBenefitsActivated(benefitsActivated);
+        product.setStock(stock);
 
         if (id == null) {
             Product createdProduct = productService.createProduct(product);
