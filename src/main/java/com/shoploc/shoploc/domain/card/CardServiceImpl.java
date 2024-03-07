@@ -44,11 +44,16 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity) {
+    public ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity,Boolean buyWithfidelityPoints) {
         var products = achatEntity.getCartItems();
         int amount = 0;
+        int pointsTotal = 0;
         for (var product : products) {
             amount += product.getPrice();
+            if(buyWithfidelityPoints)
+                pointsTotal += product.getPoints();
+                amount-=product.getPoints();
+
         }
         var optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent()) {
@@ -57,13 +62,13 @@ public class CardServiceImpl implements CardService {
             if (clientCard.get().getMontant() > 0 && clientCard.get().getMontant() >= amount) {
                 clientCard.get().setMontant(clientCard.get().getMontant() - amount);
                 cardRepository.save(clientCard.get());
+                clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() - pointsTotal);
                 clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
                 ClientEntity updatedClient = clientRepository.save(clientToUpdate);
                 return ResponseEntity.ok(updatedClient);
             } else return ResponseEntity.badRequest().build();
         } else return ResponseEntity.badRequest().build();
     }
-
 
 
     @Override
@@ -90,19 +95,4 @@ public class CardServiceImpl implements CardService {
         } else return ResponseEntity.badRequest().build();
     }
 
-    @Override
-    public ResponseEntity<CardEntity> buyWithFidelityPoints(String email, Double amount) {
-        var optionalClient = clientRepository.findByEmail(email);
-        if (optionalClient.isPresent()) {
-            ClientEntity clientToUpdate = optionalClient.get();
-            Optional<CardEntity> card = cardRepository.findById(clientToUpdate.getCardEntity().getId());
-            if (card.get().getMontant() > 0) {
-                card.get().setMontant(card.get().getMontant() - amount);
-                clientToUpdate.setFidelityPoints(0);
-                clientToUpdate.setCardEntity(card.get());
-                clientRepository.save(clientToUpdate);
-                return ResponseEntity.ok(card.get());
-            } else return ResponseEntity.badRequest().build();
-        } else return ResponseEntity.badRequest().build();
-    }
 }
