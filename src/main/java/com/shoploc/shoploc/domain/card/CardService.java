@@ -16,4 +16,6 @@ public interface CardService {
     ResponseEntity<ClientEntity> creditCard(String email, Double amount);
 
     ResponseEntity<CardEntity> getCardInformation(String email);
+    ResponseEntity<CardEntity> buyWithFidelityPoints(String email,Double amount);
+
 }
