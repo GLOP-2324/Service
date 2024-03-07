@@ -48,6 +48,8 @@ public class Product {
 
     private Boolean benefitsActivated = false;
 
+    private Integer stock;
+
 
     public Long getId() {
         return id;
@@ -104,7 +106,16 @@ public class Product {
         this.store = store;
     }
 
-    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store, Integer points, Boolean benefitsActivated) {
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+
+    public Product(Long id, String libelle, String description, double price, String image, TypeProduct type, Store store, Integer points, Boolean benefitsActivated, Integer stock) {
         this.id = id;
         this.libelle = libelle;
         this.description = description;
@@ -114,6 +125,7 @@ public class Product {
         this.store = store;
         this.benefitsActivated = benefitsActivated;
         this.points = points;
+        this.stock = stock;
     }
 
     public Product(){}
