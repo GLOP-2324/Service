@@ -20,6 +20,8 @@ public class HistoriqueAchat {
     private int productId;
     private Date date;
     private int quantity;
+    @Getter
+    private double spentMoney;
 
     public Long getId() {
         return id;
@@ -69,5 +71,9 @@ public class HistoriqueAchat {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setSpentMoney(double spentMoney) {
+        this.spentMoney = spentMoney;
     }
 }

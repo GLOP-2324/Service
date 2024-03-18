@@ -46,6 +46,7 @@ public class HistoriqueAchatServiceImpl implements HistoriqueAchatService {
             historiqueAchat.setDate(new Date());
             historiqueAchat.setProductId(Math.toIntExact(productId));
             historiqueAchat.setQuantity(quantity);
+            historiqueAchat.setSpentMoney(quantity*productRepository.getReferenceById(productId).getPrice());
             this.historiqueAchatRepository.save(historiqueAchat);
         });
     }
