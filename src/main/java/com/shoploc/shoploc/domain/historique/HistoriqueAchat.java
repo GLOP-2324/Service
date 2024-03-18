@@ -15,11 +15,11 @@ public class HistoriqueAchat {
     private Long id;
 
     @Getter
-    private Integer storeId;
+    private int storeId;
     private String clientEmail;
-    private Integer productId;
+    private int productId;
     private Date date;
-    private Integer quantity;
+    private int quantity;
 
     public Long getId() {
         return id;

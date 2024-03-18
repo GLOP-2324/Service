@@ -34,11 +34,18 @@ public class AccountController {
                                                 @RequestParam ("email")String email,
                                                 @RequestParam ("roleId")Integer roleId,
                                                 @RequestParam(name="image",required=false) MultipartFile image,
-                                                @RequestParam(name="address") String address) throws InsertionFailedException, IOException {
-
-        System.out.println(image+"****************************************************************");
-        this.accountService.createAccount(firstname,lastname,email,roleId,image,address);
-        return ResponseEntity.status(HttpStatus.OK).body("Le compte à été crée avec succès");
+                                                @RequestParam(name="address",required=false) String address) throws InsertionFailedException, IOException {
+        if(firstname == null || lastname == null || email == null || roleId ==null ) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Required params missing");
+        }
+        try {
+            this.accountService.createAccount(firstname, lastname, email, roleId, image, address);
+            return ResponseEntity.status(HttpStatus.OK).body("Account created successfully");
+        } catch (InsertionFailedException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create account: " + e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process image: " + e.getMessage());
+        }
     }
 
     @PostMapping("/password")

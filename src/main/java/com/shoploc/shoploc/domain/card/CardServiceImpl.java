@@ -4,6 +4,7 @@ import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
+import com.shoploc.shoploc.domain.product.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -46,24 +47,19 @@ public class CardServiceImpl implements CardService {
     @Override
     public ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity,Boolean buyWithfidelityPoints) {
         var products = achatEntity.getCartItems();
-        int amount = 0;
-        int pointsTotal = 0;
-        for (var product : products) {
-            amount += product.getPrice();
-            if(buyWithfidelityPoints)
-                pointsTotal += product.getPoints();
-                amount-=product.getPoints();
-
-        }
         var optionalClient = clientRepository.findByEmail(email);
+        double amount = products.stream().mapToDouble(Product::getPrice).sum();
+        int fidelityPointsTotal = buyWithfidelityPoints ?
+                products.stream().filter(p-> p.getPoints()!=null).mapToInt(Product::getPoints).sum()
+        : 0 ;
+        amount -= fidelityPointsTotal;
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
             Optional<CardEntity> clientCard = cardRepository.findById(clientToUpdate.getCardEntity().getId());
             if (clientCard.get().getMontant() > 0 && clientCard.get().getMontant() >= amount) {
                 clientCard.get().setMontant(clientCard.get().getMontant() - amount);
                 cardRepository.save(clientCard.get());
-                clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() - pointsTotal);
-                clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + amount);
+                clientToUpdate.setFidelityPoints(fidelityPointsTotal);
                 ClientEntity updatedClient = clientRepository.save(clientToUpdate);
                 return ResponseEntity.ok(updatedClient);
             } else return ResponseEntity.badRequest().build();
