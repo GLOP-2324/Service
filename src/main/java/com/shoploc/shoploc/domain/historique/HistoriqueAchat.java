@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -20,6 +22,16 @@ public class HistoriqueAchat {
     private int productId;
     private Date date;
     private int quantity;
+
+    private LocalDate purchaseDate;
+
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
 
     public Long getId() {
         return id;
@@ -44,7 +56,6 @@ public class HistoriqueAchat {
     public Date getDate() {
         return date;
     }
-
 
     public Integer getQuantity() {
         return quantity;
