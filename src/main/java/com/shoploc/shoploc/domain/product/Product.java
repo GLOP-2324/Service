@@ -18,7 +18,7 @@ public class Product {
     //todo qte
     private double price;
 
-    private Integer points;
+    private int points;
     @Lob
     private String image;
 
@@ -40,7 +40,7 @@ public class Product {
 
     private Boolean benefitsActivated = false;
 
-    private Integer stock;
+    private int stock;
 
     public Integer getPoints() {
         return points;

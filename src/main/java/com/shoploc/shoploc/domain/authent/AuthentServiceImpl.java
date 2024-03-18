@@ -37,15 +37,17 @@ public class AuthentServiceImpl implements AuthentService {
     public AccountDTO signIn(CredentialsDTO credentials) throws ObjectNotExistException {
         System.out.println(credentials.getEmail());
         AccountEntity account = this.accountRepository.findByEmail(credentials.getEmail());
-        AccountDTO accountToLogIn = accountMapper.toAccountDto(account);
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        if (bCryptPasswordEncoder.matches(credentials.getPassword(), account.getPassword())) {
-            accountToLogIn.setToken(createToken(accountToLogIn));
-            accountToLogIn.setRoleId(Math.toIntExact((account.getRole().getRole_id())));
-            accountToLogIn.setPassword("Tu ne trouveras rien ici :) ");
-            return accountToLogIn;
+        if(account !=null ) {
+            AccountDTO accountToLogIn = accountMapper.toAccountDto(account);
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            if (bCryptPasswordEncoder.matches(credentials.getPassword(), account.getPassword())) {
+                accountToLogIn.setToken(createToken(accountToLogIn));
+                accountToLogIn.setRoleId(Math.toIntExact((account.getRole().getRole_id())));
+                accountToLogIn.setPassword("Tu ne trouveras rien ici :) ");
+                return accountToLogIn;
+            }
         }
-        throw new ObjectNotExistException("Identifiant et/ou mot de passe incorrect");
+         throw new ObjectNotExistException("Identifiant et/ou mot de passe incorrect");
     }
 
     @Override

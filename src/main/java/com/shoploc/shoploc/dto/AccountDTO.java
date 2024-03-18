@@ -9,7 +9,7 @@ public class AccountDTO {
     private String email;
     private String password;
     private RoleEntity role;
-    private Integer roleId;
+    private int roleId;
     private String token;
     private String image;
 
