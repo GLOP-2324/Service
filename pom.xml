@@ -132,6 +132,10 @@
 			<version>2.2.224</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-core</artifactId>
+        </dependency>
 
     </dependencies>
 

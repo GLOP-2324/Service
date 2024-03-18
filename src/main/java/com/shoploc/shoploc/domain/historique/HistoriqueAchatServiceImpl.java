@@ -5,6 +5,7 @@ import com.shoploc.shoploc.domain.client.ClientRepository;
 import com.shoploc.shoploc.domain.product.Product;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,7 @@ public class HistoriqueAchatServiceImpl implements HistoriqueAchatService {
             historiqueAchat.setClientEmail(achatEntity.getEmailUser());
             historiqueAchat.setStoreId(achatEntity.getStoreId());
             historiqueAchat.setDate(new Date());
+            historiqueAchat.setPurchaseDate(LocalDate.now());
             historiqueAchat.setProductId(Math.toIntExact(productId));
             historiqueAchat.setQuantity(quantity);
             this.historiqueAchatRepository.save(historiqueAchat);

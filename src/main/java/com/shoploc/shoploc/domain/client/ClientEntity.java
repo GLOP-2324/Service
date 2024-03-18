@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,8 @@ import java.util.List;
 public class ClientEntity extends AccountEntity {
 
     private boolean status_vfp;
+
+    private LocalDate date_of_validity_vfp ;
 
     @OneToOne
     private CardEntity cardEntity;
@@ -71,6 +74,14 @@ public class ClientEntity extends AccountEntity {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public LocalDate getDate_of_validity_vfp() {
+        return date_of_validity_vfp;
+    }
+
+    public void setDate_of_validity_vfp(LocalDate date_of_validity_vfp) {
+        this.date_of_validity_vfp = date_of_validity_vfp;
     }
 
 }
