@@ -22,6 +22,7 @@ public class HistoriqueAchat {
     private int productId;
     private Date date;
     private int quantity;
+    private double spentMoney;
 
     private LocalDate purchaseDate;
 
@@ -57,6 +58,10 @@ public class HistoriqueAchat {
         return date;
     }
 
+    public double getSpentMoney() {
+        return spentMoney;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -74,11 +79,16 @@ public class HistoriqueAchat {
         this.clientEmail = clientEmail;
     }
 
+
     public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setSpentMoney(double spentMoney) {
+        this.spentMoney = spentMoney;
     }
 }

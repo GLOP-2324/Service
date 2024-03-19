@@ -61,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
             accountEntity.setEmail(email);
             accountEntity.setPassword(bCryptPasswordEncoder.encode(encodedPassword));
             if(role.getRole_id()==2){
-                storeService.createStore(firstname, email, image, address);
+                storeService.createStore(lastname+" "+firstname, email, image, address);
             }
 
             if(image==null){
