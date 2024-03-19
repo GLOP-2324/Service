@@ -23,7 +23,7 @@ public class ClientEntity extends AccountEntity {
     @OneToOne
     private CardEntity cardEntity;
 
-    private int fidelityPoints;
+    private Integer fidelityPoints;
 
     @OneToMany
     private List<Product> products;

@@ -30,7 +30,7 @@ public class VfpProcessor implements ItemProcessor<Pair<List<HistoriqueAchat>, C
         if (pair.getFirst().size() >= minimumOrdersToEnableVFP) {
             clientEntity.setStatus_vfp(true);
             clientEntity.setDate_of_validity_vfp(LocalDate.now().plusDays(7));
-        } else if (LocalDate.now().isBefore(clientEntity.getDate_of_validity_vfp())) {
+        } else if (clientEntity.isStatus_vfp() && clientEntity.getDate_of_validity_vfp() != null && LocalDate.now().isBefore(clientEntity.getDate_of_validity_vfp())) {
             clientEntity.setStatus_vfp(true);
         } else {
             clientEntity.setStatus_vfp(false);
