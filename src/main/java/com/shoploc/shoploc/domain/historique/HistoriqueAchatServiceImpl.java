@@ -3,35 +3,28 @@ package com.shoploc.shoploc.domain.historique;
 import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
 import com.shoploc.shoploc.domain.product.Product;
+import com.shoploc.shoploc.domain.product.ProductRepository;
+import com.shoploc.shoploc.domain.store.StoreRepository;
+import com.shoploc.shoploc.dto.HistoriqueAchatClientDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class HistoriqueAchatServiceImpl implements HistoriqueAchatService {
 
     private HistoriqueAchatRepository historiqueAchatRepository;
+    private StoreRepository storeRepository;
+    private ProductRepository productRepository;
 
-    public HistoriqueAchatServiceImpl(HistoriqueAchatRepository historiqueAchatRepository) {
+    @Autowired
+    public HistoriqueAchatServiceImpl(HistoriqueAchatRepository historiqueAchatRepository, StoreRepository storeRepository, ProductRepository productRepository){
         this.historiqueAchatRepository = historiqueAchatRepository;
+        this.productRepository = productRepository;
+        this.storeRepository = storeRepository;
     }
-
-    /*
-    @Override
-    public void fillHistory(AchatEntity achatEntity) {
-        HistoriqueAchat historiqueAchat = new HistoriqueAchat();
-        historiqueAchat.setClientEmail(achatEntity.getEmailUser());
-        historiqueAchat.setStoreId(achatEntity.getStoreId());
-        historiqueAchat.setDate(new Date());
-        achatEntity.getCartItems().forEach(product -> {
-            historiqueAchat.setProductId(Math.toIntExact(product.getId()));
-            this.historiqueAchatRepository.save(historiqueAchat);
-        });
-    }*/
 
     public void fillHistory(AchatEntity achatEntity) {
         // Création d'une carte des quantités par produit
@@ -46,8 +39,36 @@ public class HistoriqueAchatServiceImpl implements HistoriqueAchatService {
             historiqueAchat.setDate(new Date());
             historiqueAchat.setProductId(Math.toIntExact(productId));
             historiqueAchat.setQuantity(quantity);
-            historiqueAchat.setSpentMoney(quantity*productRepository.getReferenceById(productId).getPrice());
+            Optional<Product> product = productRepository.findById(productId);
+            if (product.isPresent()) {
+                Product product1 = product.get();
+                double price = product1.getPrice();
+                historiqueAchat.setSpentMoney(quantity * price);
+            }
             this.historiqueAchatRepository.save(historiqueAchat);
         });
+    }
+
+    @Override
+    public List<HistoriqueAchatClientDTO> getHistoriqueAchat(String clientEmail) {
+        List<HistoriqueAchat> historiqueAchatByClientId = this.historiqueAchatRepository.findByClientEmail(clientEmail);
+        List<HistoriqueAchatClientDTO> historiqueAchatClientDTOList = new ArrayList<>();
+        historiqueAchatByClientId.forEach(historiqueAchat -> {
+            String storeName = this.storeRepository.findById(Long.valueOf(historiqueAchat.getStoreId())).get().getName();
+            String productName = this.productRepository.findById(Long.valueOf(historiqueAchat.getProductId())).get().getLibelle();
+            historiqueAchatClientDTOList.add(getHistoriqueAchatClientDTO(historiqueAchat, productName, storeName));
+        });
+        return historiqueAchatClientDTOList;
+    }
+
+    private static HistoriqueAchatClientDTO getHistoriqueAchatClientDTO(HistoriqueAchat historiqueAchatByClientId, String productName, String storeName) {
+        HistoriqueAchatClientDTO historiqueAchatClientDTO = new HistoriqueAchatClientDTO();
+        historiqueAchatClientDTO.setClientEmail(historiqueAchatByClientId.getClientEmail());
+        historiqueAchatClientDTO.setDate(historiqueAchatByClientId.getDate().toString().substring(0,16));
+        historiqueAchatClientDTO.setProductName(productName);
+        historiqueAchatClientDTO.setStoreName(storeName);
+        historiqueAchatClientDTO.setQuantity(historiqueAchatByClientId.getQuantity());
+        historiqueAchatClientDTO.setMoneySpent(historiqueAchatByClientId.getSpentMoney());
+        return historiqueAchatClientDTO;
     }
 }

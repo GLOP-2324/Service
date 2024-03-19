@@ -20,7 +20,6 @@ public class HistoriqueAchat {
     private int productId;
     private Date date;
     private int quantity;
-    @Getter
     private double spentMoney;
 
     public Long getId() {
@@ -47,6 +46,9 @@ public class HistoriqueAchat {
         return date;
     }
 
+    public double getSpentMoney() {
+        return spentMoney;
+    }
 
     public Integer getQuantity() {
         return quantity;
@@ -64,6 +66,7 @@ public class HistoriqueAchat {
     public void setClientEmail(String clientEmail) {
         this.clientEmail = clientEmail;
     }
+
 
     public void setProductId(Integer productId) {
         this.productId = productId;
