@@ -1,4 +1,4 @@
-package com.shoploc.shoploc.domain.historique;
+package com.shoploc.shoploc.domain.historiqueAchat;
 
 import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.dto.HistoriqueAchatClientDTO;

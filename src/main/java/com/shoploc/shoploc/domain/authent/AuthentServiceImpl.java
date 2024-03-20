@@ -2,6 +2,8 @@ package com.shoploc.shoploc.domain.authent;
 
 import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.account.AccountRepository;
+import com.shoploc.shoploc.domain.historiqueConnexion.HistoriqueConnexion;
+import com.shoploc.shoploc.domain.historiqueConnexion.HistoriqueConnexionRepository;
 import com.shoploc.shoploc.dto.AccountDTO;
 import com.shoploc.shoploc.dto.CredentialsDTO;
 import com.shoploc.shoploc.exception.ObjectNotExistException;
@@ -21,15 +23,17 @@ import java.util.Date;
 @Service
 public class AuthentServiceImpl implements AuthentService {
 
-    private AccountMapper accountMapper;
-    private AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
+    private final AccountRepository accountRepository;
+    private HistoriqueConnexionRepository historiqueConnexionRepository;
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
     @Autowired
-    public AuthentServiceImpl(AccountMapper accountMapper, AccountRepository accountRepository) {
+    public AuthentServiceImpl(AccountMapper accountMapper, AccountRepository accountRepository, HistoriqueConnexionRepository historiqueConnexionRepository) {
         this.accountMapper = accountMapper;
         this.accountRepository=accountRepository;
+        this.historiqueConnexionRepository=historiqueConnexionRepository;
     }
 
     @Override
@@ -44,6 +48,11 @@ public class AuthentServiceImpl implements AuthentService {
                 accountToLogIn.setToken(createToken(accountToLogIn));
                 accountToLogIn.setRoleId(Math.toIntExact((account.getRole().getRole_id())));
                 accountToLogIn.setPassword("Tu ne trouveras rien ici :) ");
+
+                HistoriqueConnexion historiqueConnexion = new HistoriqueConnexion();
+                historiqueConnexion.setClientEmail(credentials.getEmail());
+                historiqueConnexion.setDate(new Date());
+                this.historiqueConnexionRepository.save(historiqueConnexion);
                 return accountToLogIn;
             }
         }

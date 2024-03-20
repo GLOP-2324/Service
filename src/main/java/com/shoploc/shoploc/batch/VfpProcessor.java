@@ -1,10 +1,8 @@
 package com.shoploc.shoploc.batch;
 
-import com.shoploc.shoploc.domain.client.ClientController;
 import com.shoploc.shoploc.domain.client.ClientEntity;
-import com.shoploc.shoploc.domain.historique.HistoriqueAchat;
+import com.shoploc.shoploc.domain.historiqueAchat.HistoriqueAchat;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
