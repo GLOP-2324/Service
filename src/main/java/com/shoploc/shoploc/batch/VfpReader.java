@@ -2,8 +2,8 @@ package com.shoploc.shoploc.batch;
 
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
-import com.shoploc.shoploc.domain.historique.HistoriqueAchat;
-import com.shoploc.shoploc.domain.historique.HistoriqueAchatRepository;
+import com.shoploc.shoploc.domain.historiqueAchat.HistoriqueAchat;
+import com.shoploc.shoploc.domain.historiqueAchat.HistoriqueAchatRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;

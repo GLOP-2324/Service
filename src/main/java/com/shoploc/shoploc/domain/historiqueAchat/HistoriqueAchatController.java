@@ -1,6 +1,5 @@
-package com.shoploc.shoploc.domain.historique;
+package com.shoploc.shoploc.domain.historiqueAchat;
 
-import com.shoploc.shoploc.domain.product.Product;
 import com.shoploc.shoploc.dto.HistoriqueAchatClientDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

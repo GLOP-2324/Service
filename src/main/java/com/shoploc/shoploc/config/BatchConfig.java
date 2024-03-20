@@ -4,7 +4,7 @@ import com.shoploc.shoploc.batch.VfpProcessor;
 import com.shoploc.shoploc.batch.VfpReader;
 import com.shoploc.shoploc.batch.VfpWriter;
 import com.shoploc.shoploc.domain.client.ClientEntity;
-import com.shoploc.shoploc.domain.historique.HistoriqueAchat;
+import com.shoploc.shoploc.domain.historiqueAchat.HistoriqueAchat;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;

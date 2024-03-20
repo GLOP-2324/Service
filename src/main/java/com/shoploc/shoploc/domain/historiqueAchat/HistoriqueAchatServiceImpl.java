@@ -1,7 +1,6 @@
-package com.shoploc.shoploc.domain.historique;
+package com.shoploc.shoploc.domain.historiqueAchat;
 
 import com.shoploc.shoploc.domain.achat.AchatEntity;
-import com.shoploc.shoploc.domain.client.ClientRepository;
 import com.shoploc.shoploc.domain.product.Product;
 import com.shoploc.shoploc.domain.product.ProductRepository;
 import com.shoploc.shoploc.domain.store.StoreRepository;

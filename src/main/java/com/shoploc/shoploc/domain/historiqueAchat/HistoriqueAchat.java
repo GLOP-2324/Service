@@ -1,12 +1,10 @@
-package com.shoploc.shoploc.domain.historique;
+package com.shoploc.shoploc.domain.historiqueAchat;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Objects;
 
 @Getter
 @Entity

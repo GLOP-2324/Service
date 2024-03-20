@@ -3,7 +3,7 @@ package com.shoploc.shoploc.domain.client;
 import com.shoploc.shoploc.domain.achat.AchatEntity;
 import com.shoploc.shoploc.domain.card.CardEntity;
 import com.shoploc.shoploc.domain.card.CardService;
-import com.shoploc.shoploc.domain.historique.HistoriqueAchatService;
+import com.shoploc.shoploc.domain.historiqueAchat.HistoriqueAchatService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
