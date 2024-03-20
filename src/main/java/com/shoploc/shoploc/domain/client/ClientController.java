@@ -38,7 +38,7 @@ public class ClientController {
         } else {
             responseEntity = cardService.buyWithCreditCard(email, achatEntity);
         }
-        if (achatEntity != null && !creditCard && responseEntity.getStatusCode().is2xxSuccessful()) {
+        if (achatEntity != null && responseEntity.getStatusCode().is2xxSuccessful()) {
             this.historiqueAchatService.fillHistory(achatEntity);
         }
         return responseEntity;
