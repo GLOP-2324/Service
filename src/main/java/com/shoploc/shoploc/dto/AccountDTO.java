@@ -12,7 +12,7 @@ public class AccountDTO {
     private int roleId;
     private String token;
     private String image;
-
+    private boolean vfp;
     public String getToken() {
         return token;
     }
@@ -78,5 +78,13 @@ public class AccountDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isVfp() {
+        return vfp;
+    }
+
+    public void setVfp(boolean vfp) {
+        this.vfp = vfp;
     }
 }
