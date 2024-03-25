@@ -12,6 +12,9 @@ public interface CardService {
     CardEntity createCard (AccountEntity accountEntity);
 
     ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity,Boolean buyWithfidelityPoints);
+
+    ResponseEntity<ClientEntity> buyWithFidelityPoints(String email, AchatEntity achatEntity);
+
     ResponseEntity<ClientEntity> buyWithCreditCard(String email, AchatEntity achatEntity);
     ResponseEntity<ClientEntity> creditCard(String email, Double amount);
 
