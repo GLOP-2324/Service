@@ -56,16 +56,15 @@ public class CardServiceImpl implements CardService {
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
             Optional<CardEntity> clientCard = cardRepository.findById(clientToUpdate.getCardEntity().getId());
-            if (clientCard.get().getMontant() > 0 && clientCard.get().getMontant() >= amount) {
+            if (clientCard.get().getMontant() > 0 && clientCard.get().getMontant() >= amount ) {
                 clientCard.get().setMontant(clientCard.get().getMontant() - amount);
                 cardRepository.save(clientCard.get());
-                clientToUpdate.setFidelityPoints(fidelityPointsTotal);
+                clientToUpdate.setFidelityPoints(clientToUpdate.getFidelityPoints() + fidelityPointsTotal);
                 ClientEntity updatedClient = clientRepository.save(clientToUpdate);
                 return ResponseEntity.ok(updatedClient);
             } else return ResponseEntity.badRequest().build();
         } else return ResponseEntity.badRequest().build();
     }
-
 
     @Override
     public ResponseEntity<ClientEntity> creditCard(String email, Double amount) {
