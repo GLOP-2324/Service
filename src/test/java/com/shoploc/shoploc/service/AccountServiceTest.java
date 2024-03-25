@@ -56,16 +56,19 @@ class AccountServiceImplTest {
     void createAccount_doSuccess() throws InsertionFailedException, IOException {
         // Given
         AccountEntity account = new AccountEntity();
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "content".getBytes());
+
         account.setEmail("test@example.com");
+
         // Mocking behavior using roleRepository
         when(roleRepository.getReferenceById(anyLong())).thenReturn(new RoleEntity(1L,"test")); // Mocking the role retrieval
-
         // When
-        accountService.createAccount("Nadine", "Saadi", "nad@yahoo.com", 1, (MultipartFile) null, "");
+        accountService.createAccount("Nadine", "Saadi", "nad@yahoo.com", 1, file, "");
 
         // Then
         verify(accountRepository).save(any(AccountEntity.class));
     }
+
 
     @Test
     void modifyPasswordAccount_success() throws ModificationFailedException {
