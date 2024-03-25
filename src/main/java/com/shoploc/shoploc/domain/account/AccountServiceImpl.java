@@ -10,11 +10,15 @@ import com.shoploc.shoploc.domain.store.StoreService;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
 import com.shoploc.shoploc.mapper.AccountMapper;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -100,10 +104,18 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Async
     public void sendMessageByEmail(AccountEntity account, String password) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(account.getEmail());
-        message.setSubject("Votre compte ShopLoc a été créé");
-        message.setText("Voici vos identifiants ShopLoc\n   Login : " + account.getEmail() + "\n  Mot de passe : " + password);
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message,true,"UTF-8");
+            helper.setText("Votre compte ShopLoc a été créé", true);
+            message.setText("Voici vos identifiants ShopLoc\n   Login : " + account.getEmail() + "\n  Mot de passe : " + password);
+            helper.setTo(account.getEmail());
+            helper.setSubject("Votre compte ShopLoc a été créé");
+            helper.setFrom(new InternetAddress("projet_etu_fil@univ-lille.fr"));
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
         this.javaMailSender.send(message);
     }
 
