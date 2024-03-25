@@ -8,6 +8,5 @@ public interface ClientService {
 
     ResponseEntity<ClientEntity> chooseAdvantage(String email, Integer Advantage);
 
-    ResponseEntity<ClientEntity> chooseAdvantage(String email, Integer Advantage);
 
 }

@@ -49,7 +49,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateProduct(Long id, Product product) {
         Product existingProduct = productRepository.findById(id).orElse(null);
-
         if (existingProduct != null) {
             existingProduct.setLibelle(product.getLibelle());
             existingProduct.setDescription(product.getDescription());
@@ -60,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setStore(product.getStore());
             existingProduct.setBenefitsActivated(product.getBenefitsActivated());
             existingProduct.setPoints(product.getPoints());
+            existingProduct.setStock(product.getStock());
             return productRepository.save(existingProduct);
         }
 
