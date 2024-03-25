@@ -1,13 +1,11 @@
 package com.shoploc.shoploc.domain.client;
 
+import com.shoploc.shoploc.avantage.AvantageEntity;
 import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.card.CardEntity;
 import com.shoploc.shoploc.domain.product.Product;
 import com.shoploc.shoploc.domain.role.RoleEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +25,10 @@ public class ClientEntity extends AccountEntity {
 
     @OneToMany
     private List<Product> products;
+
+    @ManyToOne
+    @JoinColumn(name = "avantage_id")
+    private AvantageEntity avantage;
 
     public ClientEntity(String firstname, String lastname, String email, String password, RoleEntity role, String image, boolean status_vfp, CardEntity cardEntity, Integer fidelityPoints, List<Product> products) {
         super(firstname, lastname, email, password, role, image);
@@ -84,4 +86,11 @@ public class ClientEntity extends AccountEntity {
         this.date_of_validity_vfp = date_of_validity_vfp;
     }
 
+    public AvantageEntity getAvantage() {
+        return avantage;
+    }
+
+    public void setAvantage(AvantageEntity avantage) {
+        this.avantage = avantage;
+    }
 }

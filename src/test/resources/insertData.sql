@@ -1,5 +1,6 @@
 
-
+DELETE FROM account;
+DELETE FROM role;
 
 INSERT INTO role (role_id,role_name) VALUES (1,'Admin'),(2,'Commerçant'),(3,'Client');
 

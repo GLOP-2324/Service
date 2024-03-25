@@ -2,6 +2,8 @@ package com.shoploc.shoploc.batch;
 
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.historiqueAchat.HistoriqueAchat;
+import com.shoploc.shoploc.domain.historiqueAvantageVfp.HistoriqueAvantageVfp;
+import com.shoploc.shoploc.domain.historiqueVfpAcquisitionAndExpiration.HistoriqueVfp;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
@@ -15,6 +17,8 @@ public class VfpProcessor implements ItemProcessor<Pair<List<HistoriqueAchat>, C
 
     @Value("${vfp.minus.orders}")
     private int minimumOrdersToEnableVFP;
+
+    private HistoriqueAvantageVfp historiqueAvantageVfp;
 
     @Override
     public ClientEntity process(Pair<List<HistoriqueAchat>, ClientEntity> pair)  {
