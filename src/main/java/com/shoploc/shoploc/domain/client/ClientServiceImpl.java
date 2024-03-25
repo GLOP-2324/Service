@@ -21,4 +21,10 @@ public class ClientServiceImpl implements ClientService {
         }
         return ResponseEntity.ok(clientRepository.save(client.get()));
     }
+
+    @Override
+    public Integer getFidelityPoints(String email) {
+        var client = clientRepository.findByEmail(email);
+        return client.get().getFidelityPoints();
+    }
 }

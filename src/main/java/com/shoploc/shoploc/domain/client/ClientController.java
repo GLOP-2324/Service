@@ -21,7 +21,10 @@ public class ClientController {
         this.cardService = cardService;
         this.historiqueAchatService = historiqueAchatService;
     }
-
+    @GetMapping("{email}/fidelityPoints")
+    public Integer getClientFidelityPoint(@PathVariable String email) {
+        return clientService.getFidelityPoints(email);
+    }
 
     @PostMapping("{email}/card")
     public ResponseEntity<ClientEntity> creditOrBuy(@PathVariable String email,

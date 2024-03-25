@@ -1,6 +1,8 @@
 package com.shoploc.shoploc.domain.store;
 
 import com.shoploc.shoploc.domain.account.AccountEntity;
+import com.shoploc.shoploc.domain.account.AccountRepository;
+import com.shoploc.shoploc.domain.account.AccountService;
 import com.shoploc.shoploc.domain.product.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,12 @@ import java.util.Optional;
 public class StoreServiceImpl implements StoreService {
 
     private StoreRepository storeRepository;
-
-    public StoreServiceImpl (StoreRepository storeRepository) {
+    private AccountRepository accountRepository;
+    public StoreServiceImpl (StoreRepository storeRepository ,AccountRepository accountService) {
         this.storeRepository = storeRepository;
+        this.accountRepository=accountService;
     }
-
+    @Transactional
     @Override
     public List<Store> getAllStores() {
         return (List<Store>) storeRepository.findAll();
@@ -36,6 +39,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Transactional
     public void createStore(String name, String email, MultipartFile image,String address) throws IOException {
         List<Product> products = new ArrayList<>();
         Store store= new Store();
@@ -48,7 +52,7 @@ public class StoreServiceImpl implements StoreService {
         storeRepository.save(store);
     }
 
-
+    @Transactional
     @Override
     public Store updateStore(Long id, Store store) {
         Store existingStore = storeRepository.findById(id).orElse(null);
@@ -62,11 +66,15 @@ public class StoreServiceImpl implements StoreService {
 
         return null;
     }
-
+    @Transactional
     @Override
-    public boolean deleteById(Long id) {
-        if (storeRepository.findById(id).isPresent()) {
-            storeRepository.deleteById(id);
+    public boolean deleteById(Integer id) {
+        if (storeRepository.findById(Long.valueOf(id)).isPresent()) {
+            Store store = storeRepository.findById(Long.valueOf(id)).orElse(null);
+            System.out.println(store.getEmail()+"********************");
+            AccountEntity accountEntity = accountRepository.findByEmail(store.getEmail());
+            accountRepository.deleteById(accountEntity.getAccount_id());
+            storeRepository.deleteById(Long.valueOf(id));
             return true;
         }
         else return false;

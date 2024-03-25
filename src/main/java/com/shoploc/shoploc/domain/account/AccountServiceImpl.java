@@ -5,6 +5,7 @@ import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import com.shoploc.shoploc.domain.role.RoleRepository;
+import com.shoploc.shoploc.domain.store.Store;
 import com.shoploc.shoploc.domain.store.StoreService;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
@@ -105,6 +106,21 @@ public class AccountServiceImpl implements AccountService {
         message.setText("Voici vos identifiants ShopLoc\n   Login : " + account.getEmail() + "\n  Mot de passe : " + password);
         this.javaMailSender.send(message);
     }
+
+    @Override
+    public boolean deleteById(Integer id) {
+        if(accountRepository.findById(Long.valueOf(id)).isPresent()){
+            accountRepository.deleteById(Long.valueOf(id));
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public AccountEntity findByEmail(String email) {
+        return accountRepository.findByEmail(email);
+    }
+
     private String convertToBase64(MultipartFile file) throws IOException {
         byte[] byteContent = file.getBytes();
         return Base64.getEncoder().encodeToString(byteContent);
