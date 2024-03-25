@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Date;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -60,6 +61,7 @@ public class AccountServiceImpl implements AccountService {
             accountEntity.setLastname(lastname);
             accountEntity.setRole(role);
             accountEntity.setEmail(email);
+            accountEntity.setDate_of_creation(new Date());
             accountEntity.setPassword(bCryptPasswordEncoder.encode(encodedPassword));
             if(role.getRole_id()==2){
                 storeService.createStore(lastname+" "+firstname, email, image, address);

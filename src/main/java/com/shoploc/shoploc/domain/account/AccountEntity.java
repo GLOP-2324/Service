@@ -3,6 +3,8 @@ package com.shoploc.shoploc.domain.account;
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name="account")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -23,6 +25,8 @@ public class AccountEntity {
     @Column(nullable = false)
 
     private String password;
+
+    private Date date_of_creation;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -85,6 +89,14 @@ public class AccountEntity {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Date getDate_of_creation() {
+        return date_of_creation;
+    }
+
+    public void setDate_of_creation(Date date_of_creation) {
+        this.date_of_creation = date_of_creation;
     }
 
     public AccountEntity() {
