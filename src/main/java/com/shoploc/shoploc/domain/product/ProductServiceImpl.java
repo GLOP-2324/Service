@@ -54,7 +54,9 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setLibelle(product.getLibelle());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setPrice(product.getPrice());
-            existingProduct.setImage(product.getImage());
+            if(product.getImage()!=null){
+                existingProduct.setImage(product.getImage());
+            }
             existingProduct.setStore(product.getStore());
             existingProduct.setBenefitsActivated(product.getBenefitsActivated());
             existingProduct.setPoints(product.getPoints());

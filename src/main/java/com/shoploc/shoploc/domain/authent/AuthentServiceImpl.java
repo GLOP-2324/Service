@@ -2,6 +2,8 @@ package com.shoploc.shoploc.domain.authent;
 
 import com.shoploc.shoploc.domain.account.AccountEntity;
 import com.shoploc.shoploc.domain.account.AccountRepository;
+import com.shoploc.shoploc.domain.client.ClientEntity;
+import com.shoploc.shoploc.domain.client.ClientRepository;
 import com.shoploc.shoploc.domain.historiqueConnexion.HistoriqueConnexion;
 import com.shoploc.shoploc.domain.historiqueConnexion.HistoriqueConnexionRepository;
 import com.shoploc.shoploc.dto.AccountDTO;
@@ -25,15 +27,17 @@ public class AuthentServiceImpl implements AuthentService {
 
     private final AccountMapper accountMapper;
     private final AccountRepository accountRepository;
+    private final ClientRepository clientRepository;
     private HistoriqueConnexionRepository historiqueConnexionRepository;
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
     @Autowired
-    public AuthentServiceImpl(AccountMapper accountMapper, AccountRepository accountRepository, HistoriqueConnexionRepository historiqueConnexionRepository) {
+    public AuthentServiceImpl(AccountMapper accountMapper, AccountRepository accountRepository, HistoriqueConnexionRepository historiqueConnexionRepository,ClientRepository clientRepository) {
         this.accountMapper = accountMapper;
         this.accountRepository=accountRepository;
         this.historiqueConnexionRepository=historiqueConnexionRepository;
+        this.clientRepository=clientRepository;
     }
 
     @Override
@@ -41,12 +45,14 @@ public class AuthentServiceImpl implements AuthentService {
     public AccountDTO signIn(CredentialsDTO credentials) throws ObjectNotExistException {
         System.out.println(credentials.getEmail());
         AccountEntity account = this.accountRepository.findByEmail(credentials.getEmail());
+        ClientEntity clientEntity = this.clientRepository.findByEmail(credentials.getEmail()).orElse(null);
         if(account !=null ) {
             AccountDTO accountToLogIn = accountMapper.toAccountDto(account);
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
             if (bCryptPasswordEncoder.matches(credentials.getPassword(), account.getPassword())) {
                 accountToLogIn.setToken(createToken(accountToLogIn));
                 accountToLogIn.setRoleId(Math.toIntExact((account.getRole().getRole_id())));
+                accountToLogIn.setVfp(clientEntity.isStatus_vfp());
                 accountToLogIn.setPassword("Tu ne trouveras rien ici :) ");
 
                 HistoriqueConnexion historiqueConnexion = new HistoriqueConnexion();

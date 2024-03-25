@@ -16,7 +16,7 @@ public interface StoreService {
 
     Store updateStore (Long id, Store store);
 
-    boolean deleteById (Long id);
+    boolean deleteById (Integer id);
 
     Store findByEmail(String email);
 }
