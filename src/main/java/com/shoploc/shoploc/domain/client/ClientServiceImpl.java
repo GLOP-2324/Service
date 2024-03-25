@@ -32,8 +32,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-=======
->>>>>>> Stashed changes
     public ResponseEntity<ClientEntity> chooseAdvantage(String email, Integer advantage) {
         var client = clientRepository.findByEmail(email);
         if (client.isPresent()) {

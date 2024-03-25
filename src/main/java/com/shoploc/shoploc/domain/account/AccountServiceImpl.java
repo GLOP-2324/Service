@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
 
     private AvantageRepository avantageRepository;
     @Autowired
-    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, StoreService storeService,CardService cardService,ClientRepository clientRepository) {
+    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, StoreService storeService,CardService cardService,ClientRepository clientRepository, AvantageRepository avantageRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
