@@ -52,7 +52,9 @@ public class AuthentServiceImpl implements AuthentService {
             if (bCryptPasswordEncoder.matches(credentials.getPassword(), account.getPassword())) {
                 accountToLogIn.setToken(createToken(accountToLogIn));
                 accountToLogIn.setRoleId(Math.toIntExact((account.getRole().getRole_id())));
-                accountToLogIn.setVfp(clientEntity.isStatus_vfp());
+                if (accountToLogIn.getRole().getRole_id() == 3){
+                    accountToLogIn.setVfp(clientEntity.isStatus_vfp());
+                }
                 accountToLogIn.setPassword("Tu ne trouveras rien ici :) ");
 
                 HistoriqueConnexion historiqueConnexion = new HistoriqueConnexion();
