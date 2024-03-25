@@ -13,6 +13,17 @@ public class AccountDTO {
     private String token;
     private String image;
     private boolean vfp;
+
+    private Long avantage;
+
+    public Long getAvantage() {
+        return avantage;
+    }
+
+    public void setAvantage(Long avantage) {
+        this.avantage = avantage;
+    }
+
     public String getToken() {
         return token;
     }

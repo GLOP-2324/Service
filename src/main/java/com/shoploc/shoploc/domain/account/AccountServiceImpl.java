@@ -1,5 +1,7 @@
 package com.shoploc.shoploc.domain.account;
 
+import com.shoploc.shoploc.avantage.AvantageEntity;
+import com.shoploc.shoploc.avantage.AvantageRepository;
 import com.shoploc.shoploc.domain.card.CardService;
 import com.shoploc.shoploc.domain.client.ClientEntity;
 import com.shoploc.shoploc.domain.client.ClientRepository;
@@ -34,6 +36,8 @@ public class AccountServiceImpl implements AccountService {
     private JavaMailSender javaMailSender;
 
     private ClientRepository clientRepository;
+
+    private AvantageRepository avantageRepository;
     @Autowired
     public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, AccountRepository accountRepository, JavaMailSender javaMailSender, StoreService storeService,CardService cardService,ClientRepository clientRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -43,6 +47,7 @@ public class AccountServiceImpl implements AccountService {
         this.javaMailSender = javaMailSender;
         this.cardService = cardService;
         this.clientRepository =clientRepository;
+        this.avantageRepository = avantageRepository;
     }
 
     @Override
@@ -74,10 +79,13 @@ public class AccountServiceImpl implements AccountService {
             }
              this.accountRepository.save(accountEntity);
             if(role.getRole_id()==3){
+                AvantageEntity avantage = avantageRepository.getById(1);
                 ClientEntity client = new ClientEntity(firstname,lastname,email,encodedPassword,role,accountEntity.getImage());
                 var card  =cardService.createCard(client);
                 accountEntity.setCardEntity(card);
                 accountEntity.setFidelityPoints(0);
+                accountEntity.setAvantage(avantage);
+                System.out.println("VIENT ICI CA MARCHE" + (avantage.getAvantage_name()));
                 this.clientRepository.save(accountEntity);
             }
             System.out.println(encodedPassword + " debug 1");

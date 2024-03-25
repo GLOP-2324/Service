@@ -53,5 +53,9 @@ public class ClientController {
         return cardService.getCardInformation(email);
     }
 
+    @PutMapping("{email}")
+    public ResponseEntity<ClientEntity> chooseAvantage (@PathVariable String email, @RequestParam(required = true) Integer avantage) {
+        return clientService.chooseAdvantage(email,avantage);
+    }
 
 }

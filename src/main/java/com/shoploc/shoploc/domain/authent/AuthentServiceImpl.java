@@ -54,6 +54,7 @@ public class AuthentServiceImpl implements AuthentService {
                 accountToLogIn.setRoleId(Math.toIntExact((account.getRole().getRole_id())));
                 if (accountToLogIn.getRole().getRole_id() == 3){
                     accountToLogIn.setVfp(clientEntity.isStatus_vfp());
+                    accountToLogIn.setAvantage(clientEntity.getAvantage().getAvantage_id());
                 }
                 accountToLogIn.setPassword("Tu ne trouveras rien ici :) ");
 

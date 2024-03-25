@@ -2,6 +2,12 @@ INSERT INTO role (role_name) SELECT 'Admin' WHERE NOT EXISTS (SELECT 1 FROM role
 INSERT INTO role (role_name) SELECT 'Commerçant' WHERE NOT EXISTS (SELECT 1 FROM role WHERE role_name = 'Commerçant');
 INSERT INTO role (role_name) SELECT 'Client' WHERE NOT EXISTS (SELECT 1 FROM role WHERE role_name = 'Client');
 
+-- Insérer les différents avantages dans une table dédiée
+INSERT INTO avantage (avantage_name) SELECT 'Aucune avantage' WHERE NOT EXISTS (SELECT 1 FROM avantage WHERE avantage_name = 'Aucune avantage');
+INSERT INTO avantage (avantage_name) SELECT 'Parking' WHERE NOT EXISTS (SELECT 1 FROM avantage WHERE avantage_name = 'Parking');
+INSERT INTO avantage (avantage_name) SELECT 'Transport commun' WHERE NOT EXISTS (SELECT 1 FROM avantage WHERE avantage_name = 'Transport commun');
+
+
 -- Batch tables :
 DROP SEQUENCE IF EXISTS BATCH_STEP_EXECUTION_SEQ CASCADE;
 DROP SEQUENCE IF EXISTS BATCH_JOB_EXECUTION_SEQ CASCADE;
