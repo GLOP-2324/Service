@@ -43,10 +43,10 @@ public class CardServiceImpl implements CardService {
     public ResponseEntity<ClientEntity> buyWithFidelityPoints(String email, AchatEntity achatEntity) {
         var optionalClient = clientRepository.findByEmail(email);
         var products = achatEntity.getCartItems();
-        double nbPoints = products.stream().mapToDouble(Product::getPoints).sum();
+        int nbPoints = products.stream().mapToInt(Product::getPoints).sum();
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
-            clientToUpdate.setFidelityPoints((int) (clientToUpdate.getFidelityPoints() - nbPoints));
+            clientToUpdate.setFidelityPoints( (clientToUpdate.getFidelityPoints() - nbPoints));
             ClientEntity updatedClient = clientRepository.save(clientToUpdate);
             Map<Long, Integer> quantityPerProduct = achatEntity.getCartItems().stream()
                     .collect(Collectors.groupingBy(Product::getId, Collectors.summingInt(prod -> 1)));
