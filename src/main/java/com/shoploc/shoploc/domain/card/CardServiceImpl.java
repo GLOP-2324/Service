@@ -40,19 +40,40 @@ public class CardServiceImpl implements CardService {
 
 
     @Override
+    public ResponseEntity<ClientEntity> buyWithFidelityPoints(String email, AchatEntity achatEntity) {
+        var optionalClient = clientRepository.findByEmail(email);
+        var products = achatEntity.getCartItems();
+        int nbPoints = products.stream().mapToInt(Product::getPoints).sum();
+        if (optionalClient.isPresent()) {
+            ClientEntity clientToUpdate = optionalClient.get();
+            clientToUpdate.setFidelityPoints( (clientToUpdate.getFidelityPoints() - nbPoints));
+            ClientEntity updatedClient = clientRepository.save(clientToUpdate);
+            Map<Long, Integer> quantityPerProduct = achatEntity.getCartItems().stream()
+                    .collect(Collectors.groupingBy(Product::getId, Collectors.summingInt(prod -> 1)));
+            quantityPerProduct.forEach((productId, quantity) -> {
+                Product productToEdit = this.productRepository.findById(productId).get();
+                productToEdit.setStock(productToEdit.getStock() - quantity);
+                productRepository.save(productToEdit);
+            });
+            return ResponseEntity.ok(updatedClient);
+        } else return ResponseEntity.badRequest().build();
+    }
+
+
+    @Override
     public ResponseEntity<ClientEntity> buyWithCreditCard(String email, AchatEntity achatEntity) {
         var optionalClient = clientRepository.findByEmail(email);
         var products = achatEntity.getCartItems();
         double amount = products.stream().mapToDouble(Product::getPrice).sum();
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
-            clientToUpdate.setFidelityPoints((int) (clientToUpdate.getFidelityPoints()+amount));
+            clientToUpdate.setFidelityPoints((int) (clientToUpdate.getFidelityPoints() + amount));
             ClientEntity updatedClient = clientRepository.save(clientToUpdate);
             Map<Long, Integer> quantityPerProduct = achatEntity.getCartItems().stream()
                     .collect(Collectors.groupingBy(Product::getId, Collectors.summingInt(prod -> 1)));
             quantityPerProduct.forEach((productId, quantity) -> {
                 Product productToEdit = this.productRepository.findById(productId).get();
-                productToEdit.setStock(productToEdit.getStock()-quantity);
+                productToEdit.setStock(productToEdit.getStock() - quantity);
                 productRepository.save(productToEdit);
             });
             return ResponseEntity.ok(updatedClient);
@@ -60,13 +81,13 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity,Boolean buyWithfidelityPoints) {
+    public ResponseEntity<ClientEntity> buyWithFidelityCard(String email, AchatEntity achatEntity, Boolean buyWithfidelityPoints) {
         var products = achatEntity.getCartItems();
         var optionalClient = clientRepository.findByEmail(email);
         double amount = products.stream().mapToDouble(Product::getPrice).sum();
         int fidelityPointsTotal = buyWithfidelityPoints ?
-                products.stream().filter(p-> p.getPoints()!=null).mapToInt(Product::getPoints).sum()
-        : 0 ;
+                products.stream().filter(p -> p.getPoints() != null).mapToInt(Product::getPoints).sum()
+                : 0;
         amount -= fidelityPointsTotal;
         if (optionalClient.isPresent()) {
             ClientEntity clientToUpdate = optionalClient.get();
@@ -74,13 +95,13 @@ public class CardServiceImpl implements CardService {
             if (clientCard.get().getMontant() > 0 && clientCard.get().getMontant() >= amount) {
                 clientCard.get().setMontant(clientCard.get().getMontant() - amount);
                 cardRepository.save(clientCard.get());
-                clientToUpdate.setFidelityPoints((int) (clientToUpdate.getFidelityPoints()+amount));
+                clientToUpdate.setFidelityPoints((int) (clientToUpdate.getFidelityPoints() + amount));
                 ClientEntity updatedClient = clientRepository.save(clientToUpdate);
                 Map<Long, Integer> quantityPerProduct = achatEntity.getCartItems().stream()
                         .collect(Collectors.groupingBy(Product::getId, Collectors.summingInt(prod -> 1)));
                 quantityPerProduct.forEach((productId, quantity) -> {
                     Product productToEdit = this.productRepository.findById(productId).get();
-                    productToEdit.setStock(productToEdit.getStock()-quantity);
+                    productToEdit.setStock(productToEdit.getStock() - quantity);
                     productRepository.save(productToEdit);
                 });
                 return ResponseEntity.ok(updatedClient);
@@ -101,6 +122,7 @@ public class CardServiceImpl implements CardService {
 
         } else return ResponseEntity.badRequest().build();
     }
+
     @Override
     public ResponseEntity<CardEntity> getCardInformation(String email) {
         var optionalClient = clientRepository.findByEmail(email);

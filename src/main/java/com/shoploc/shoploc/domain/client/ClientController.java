@@ -38,6 +38,8 @@ public class ClientController {
             responseEntity = cardService.creditCard(email, amount);
         } else if (!creditCard) {
             responseEntity = cardService.buyWithFidelityCard(email, achatEntity, buyWithfidelityPoints);
+        } else if (buyWithfidelityPoints){
+            responseEntity = cardService.buyWithFidelityPoints(email, achatEntity);
         } else {
             responseEntity = cardService.buyWithCreditCard(email, achatEntity);
         }
