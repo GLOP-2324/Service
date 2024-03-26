@@ -97,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
                 this.clientRepository.save(accountEntity);
             }
             System.out.println(encodedPassword + " debug 1");
-            //sendMessageByEmail(accountEntity, encodedPassword);
+            sendMessageByEmail(accountEntity, encodedPassword);
         }
     }
 
