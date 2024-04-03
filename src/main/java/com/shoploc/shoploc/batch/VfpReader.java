@@ -28,17 +28,13 @@ public class VfpReader implements ItemReader<Pair<List<HistoriqueAchat>, ClientE
     }
 
     public void init () {
-        this.clients = this.clientRepository.findAll();
-        this.clientIterator = clients.iterator();
+        this.clientIterator = this.clientRepository.findAll().iterator();
     }
 
     @Override
     @Transactional
     public Pair<List<HistoriqueAchat>, ClientEntity> read() {
-        System.out.println("toto");
-        if (clients == null || !clientIterator.hasNext()) {
-            System.out.println("tata");
-            this.init();
+        if (!clientIterator.hasNext()) {
             return null;
         }
 

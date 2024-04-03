@@ -1,5 +1,6 @@
 package com.shoploc.shoploc.config;
 
+import com.shoploc.shoploc.batch.VfpJobListener;
 import com.shoploc.shoploc.batch.VfpProcessor;
 import com.shoploc.shoploc.batch.VfpReader;
 import com.shoploc.shoploc.batch.VfpWriter;
@@ -30,11 +31,14 @@ public class BatchConfig {
 
     private final VfpWriter vfpWriter;
 
+    private final VfpJobListener vfpJobListener;
+
     @Autowired
-    public BatchConfig(VfpReader vfpReader, VfpProcessor vfpProcessor, VfpWriter vfpWriter) {
+    public BatchConfig(VfpReader vfpReader, VfpProcessor vfpProcessor, VfpWriter vfpWriter, VfpJobListener vfpJobListener) {
         this.vfpReader = vfpReader;
         this.vfpProcessor = vfpProcessor;
         this.vfpWriter = vfpWriter;
+        this.vfpJobListener = vfpJobListener;
     }
 
     @Bean
@@ -45,7 +49,7 @@ public class BatchConfig {
     @Bean
     public Job processVFPStatusJob (JobRepository jobRepository) {
         return new JobBuilder("VFP Status JOB", jobRepository)
-                .flow(processVFPStatusStep(jobRepository)).end().build();
+                .listener(this.vfpJobListener).flow(processVFPStatusStep(jobRepository)).end().build();
     }
 
     @Bean

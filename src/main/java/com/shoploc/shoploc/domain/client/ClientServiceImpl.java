@@ -1,6 +1,7 @@
 package com.shoploc.shoploc.domain.client;
 
 import com.shoploc.shoploc.avantage.AvantageRepository;
+import com.shoploc.shoploc.domain.store.Store;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,13 @@ public class ClientServiceImpl implements ClientService {
         this.avantageRepository = avantageRepository;
     }
 
+
     @Override
     public ResponseEntity<ClientEntity> addPoints(Long id, Integer amount) {
         var client = clientRepository.findById(id);
         if(client.isPresent())
         {
+            System.out.println("VOICI LES POINTS DU CLIENTS 1" + client.get().getFidelityPoints());
             client.get().setFidelityPoints(client.get().getFidelityPoints() + amount);
         }
         return ResponseEntity.ok(clientRepository.save(client.get()));

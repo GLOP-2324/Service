@@ -27,16 +27,31 @@ public class VfpProcessor implements ItemProcessor<Pair<List<HistoriqueAchat>, C
 
     public ClientEntity getCustomer(Pair<List<HistoriqueAchat>, ClientEntity> pair, int minimumOrdersToEnableVFP) {
         ClientEntity clientEntity = pair.getSecond();
-        System.out.println("ClientVFP" + clientEntity.isStatus_vfp());
-        System.out.println("ClientOrders" + pair.getFirst().size());
+
+        System.out.println("ClientVFP (before): " + clientEntity.isStatus_vfp());
+        System.out.println("ClientOrders: " + pair.getFirst().size());
+        System.out.println("ClientEntityPoints (before): " + clientEntity.getFidelityPoints());
+
+        boolean updateStatus = false;
+        LocalDate newValidityDate = null;
+
         if (pair.getFirst().size() >= minimumOrdersToEnableVFP) {
-            clientEntity.setStatus_vfp(true);
-            clientEntity.setDate_of_validity_vfp(LocalDate.now().plusDays(7));
+            updateStatus = true;
+            newValidityDate = LocalDate.now().plusDays(7);
         } else if (clientEntity.isStatus_vfp() && clientEntity.getDate_of_validity_vfp() != null && LocalDate.now().isBefore(clientEntity.getDate_of_validity_vfp())) {
+            updateStatus = true; // Keep existing status_vfp as true
+        }
+
+        if (updateStatus) {
             clientEntity.setStatus_vfp(true);
+            clientEntity.setDate_of_validity_vfp(newValidityDate);
+            System.out.println("VOICI LES POINTS DU CLIENTS if true: " + clientEntity.getFidelityPoints()); // Print for informational purposes only
         } else {
             clientEntity.setStatus_vfp(false);
+            System.out.println("VOICI LES POINTS DU CLIENTS if false: " + clientEntity.getFidelityPoints()); // Print for informational purposes only
         }
+
         return clientEntity;
     }
+
 }
