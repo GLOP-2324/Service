@@ -136,7 +136,7 @@ jobs:
           ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker image prune -af '
 
   discord-notification:
-    needs: build
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Discord notification
