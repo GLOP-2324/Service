@@ -134,4 +134,14 @@ jobs:
       - name: Delete unused images
         run: |
           ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker image prune -af '
-    
+
+  discord-notification:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been successfully built and deployed.'
