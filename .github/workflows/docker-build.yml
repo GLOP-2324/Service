@@ -16,16 +16,9 @@ env:
 jobs:
   compile:
     runs-on: ubuntu-latest
-    name: Maven ${{ matrix.maven }} sample
-
     steps:
-
       - name: Setup Maven Action
-        uses: s4u/setup-maven-action@3.9.6
-        with:
-          java-version: 17
-          maven-version: 3.8.8
-
+        uses: s4u/setup-maven-action@< version >
       - run: mvn compile
   test:
     needs: compile
