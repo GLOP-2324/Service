@@ -16,23 +16,19 @@ env:
 jobs:
   compile:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        maven: [ '3.8.8', '3.9.6' ]
-
     name: Maven ${{ matrix.maven }} sample
 
     steps:
 
       - name: Setup Maven Action
-        uses: s4u/setup-maven-action@< version >
+        uses: s4u/setup-maven-action@3.9.6
         with:
           java-version: 17
-          maven-version: ${{ matrix.maven }}
+          maven-version: 3.8.8
 
       - run: mvn compile
   test:
+    needs: compile
     name: test and analyse
     runs-on: ubuntu-latest
     steps:
@@ -61,7 +57,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=GLOP-2324_Service
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
   build:
+    needs: dependency-review
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -141,10 +145,3 @@ jobs:
         run: |
           ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker image prune -af '
     
-  dependency-review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout Repository'
-        uses: actions/checkout@v4
-      - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v4
