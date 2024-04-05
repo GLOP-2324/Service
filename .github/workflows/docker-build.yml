@@ -14,17 +14,24 @@ env:
   IP_BE_ADDRESS: ${{ secrets.IP_BE_ADDRESS }}
 
 jobs:
-  compile_and_build:
-    name: Compile and Build Job
+  compile:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    strategy:
+      matrix:
+        maven: [ '3.8.8', '3.9.6' ]
 
-      - name: Compile code and build
-        id: compile_and_build
-        uses: ./.github/actions/compile-and-build
+    name: Maven ${{ matrix.maven }} sample
+
+    steps:
+
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@< version >
+        with:
+          java-version: 17
+          maven-version: ${{ matrix.maven }}
+
+      - run: mvn compile
   test:
     name: test and analyse
     runs-on: ubuntu-latest
@@ -134,3 +141,10 @@ jobs:
         run: |
           ssh -i shoploc.pem -o StrictHostKeyChecking=no ubuntu@$IP_BE_ADDRESS 'sudo docker image prune -af '
     
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
