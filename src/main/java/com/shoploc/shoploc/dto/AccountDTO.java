@@ -9,6 +9,37 @@ public class AccountDTO {
     private String email;
     private String password;
     private RoleEntity role;
+    private int roleId;
+    private String token;
+    private String image;
+    private boolean vfp;
+
+    private Long avantage;
+
+    public Long getAvantage() {
+        return avantage;
+    }
+
+    public void setAvantage(Long avantage) {
+        this.avantage = avantage;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
 
     public String getFirstname() {
         return firstname;
@@ -52,5 +83,19 @@ public class AccountDTO {
         this.role = role;
     }
 
+    public String getImage() {
+        return image;
+    }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isVfp() {
+        return vfp;
+    }
+
+    public void setVfp(boolean vfp) {
+        this.vfp = vfp;
+    }
 }

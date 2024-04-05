@@ -2,14 +2,15 @@ package com.shoploc.shoploc.domain.account;
 
 import com.shoploc.shoploc.domain.role.RoleEntity;
 import jakarta.persistence.*;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Entity
 @Table(name="account")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long account_id;
     @Column(nullable = false)
 
@@ -24,9 +25,15 @@ public class AccountEntity {
     @Column(nullable = false)
 
     private String password;
+
+    private Date date_of_creation;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;
+
+    @Lob
+    private String image;
 
     public Long getAccount_id() {
         return account_id;
@@ -74,5 +81,33 @@ public class AccountEntity {
 
     public void setRole(RoleEntity role) {
         this.role = role;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Date getDate_of_creation() {
+        return date_of_creation;
+    }
+
+    public void setDate_of_creation(Date date_of_creation) {
+        this.date_of_creation = date_of_creation;
+    }
+
+    public AccountEntity() {
+    }
+
+    public AccountEntity(String firstname, String lastname, String email, String password, RoleEntity role, String image) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.image = image;
     }
 }

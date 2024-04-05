@@ -1,26 +1,34 @@
 package com.shoploc.shoploc.domain.product;
 
 
+import com.shoploc.shoploc.domain.store.StoreRepository;
+import com.shoploc.shoploc.domain.type.TypeProductRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    @Autowired
+    private StoreRepository storeRepository;
 
+    @Autowired
+    private TypeProductRepository typeProductRepository;
     private ProductRepository productRepository;
+
 
     public ProductServiceImpl(ProductRepository productRepository){
         this.productRepository = productRepository;
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return (List<Product>) productRepository.findAll();
+    @Transactional
+    public List<Product> getAllProducts(Integer idStore) {
+        return (List<Product>) productRepository.findByStoreId(idStore);
     }
 
     @Override
@@ -32,23 +40,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(String name, String description, Double price) {
-        Product product = new Product();
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-
+    @Transactional
+    public Product createProduct(Product product) {
         return productRepository.save(product);
     }
+
 
     @Override
     public Product updateProduct(Long id, Product product) {
         Product existingProduct = productRepository.findById(id).orElse(null);
-
         if (existingProduct != null) {
-            existingProduct.setName(product.getName());
+            existingProduct.setLibelle(product.getLibelle());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setPrice(product.getPrice());
+            if(product.getImage()!=null){
+                existingProduct.setImage(product.getImage());
+            }
+            existingProduct.setStore(product.getStore());
+            existingProduct.setBenefitsActivated(product.getBenefitsActivated());
+            existingProduct.setPoints(product.getPoints());
+            existingProduct.setStock(product.getStock());
             return productRepository.save(existingProduct);
         }
 
@@ -58,8 +69,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean deleteById(Long id) {
         if(productRepository.findById(id).isPresent()){
-                productRepository.deleteById(id);
-                return true;
+            productRepository.deleteById(id);
+            return true;
         }
         else return false;
     }

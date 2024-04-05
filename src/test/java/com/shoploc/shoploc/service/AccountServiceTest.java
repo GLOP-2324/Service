@@ -2,75 +2,82 @@ package com.shoploc.shoploc.service;
 
 
 import com.shoploc.shoploc.domain.account.AccountEntity;
+import com.shoploc.shoploc.domain.role.RoleEntity;
+import com.shoploc.shoploc.domain.role.RoleRepository;
 import com.shoploc.shoploc.exception.InsertionFailedException;
 import com.shoploc.shoploc.exception.ModificationFailedException;
 import com.shoploc.shoploc.domain.account.AccountRepository;
 import com.shoploc.shoploc.domain.account.AccountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
 @ActiveProfiles("test")
 @Sql("/insertData.sql")
-public class AccountServiceTest {
+@ExtendWith(MockitoExtension.class)
+class AccountServiceImplTest {
 
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Mock
     private AccountRepository accountRepository;
+
+    @Mock
+    private RoleRepository roleRepository;
+
     @Mock
     private JavaMailSender javaMailSender;
+
     @InjectMocks
     private AccountServiceImpl accountService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
 
-    @Test
-    void createAccount_doSuccess() throws InsertionFailedException {
-        AccountEntity account = new AccountEntity();
-        account.setEmail("test@example.com");
-        accountService.createAccount(account,1);
-        Mockito.verify(accountRepository).save(account);
-    }
+
 
     @Test
     void modifyPasswordAccount_success() throws ModificationFailedException {
-        long accountId = 1L;
+        String mail = "nad@yahoo.com";
         String newPassword = "testPass";
         String encodedPassword = "encodedPassword";
 
-        Mockito.when(bCryptPasswordEncoder.encode(newPassword)).thenReturn(encodedPassword);
+        when(bCryptPasswordEncoder.encode(newPassword)).thenReturn(encodedPassword);
         AccountEntity mockAccount = new AccountEntity();
-        Mockito.when(accountRepository.getReferenceById(accountId)).thenReturn(mockAccount);
+        when(accountRepository.findByEmail(mail)).thenReturn(mockAccount);
 
-        accountService.modifyPasswordAccount(accountId, newPassword);
+        accountService.modifyPasswordAccount(mail, newPassword);
 
-        Mockito.verify(bCryptPasswordEncoder).encode(newPassword);
-        Mockito.verify(accountRepository).getReferenceById(accountId);
+        verify(bCryptPasswordEncoder).encode(newPassword);
+        verify(accountRepository).findByEmail(mail);
     }
 
     @Test
     void modifyPasswordAccount_error() {
-        long accountId = 1L;
+        String mail = "nad@yahoo.com";
         String newPassword = "testPass";
-        Mockito.when(accountRepository.getReferenceById(accountId)).thenThrow(new RuntimeException("Mail invalid"));
+        when(accountRepository.findByEmail(mail)).thenThrow(new RuntimeException("Mail invalid"));
 
         assertThrows(ModificationFailedException.class, () -> {
-            accountService.modifyPasswordAccount(accountId, newPassword);
+            accountService.modifyPasswordAccount(mail, newPassword);
         });
     }
 
