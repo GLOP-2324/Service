@@ -14,6 +14,17 @@ env:
   IP_BE_ADDRESS: ${{ secrets.IP_BE_ADDRESS }}
 
 jobs:
+  compile_and_build:
+    name: Compile and Build Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile code and build
+        id: compile_and_build
+        uses: ./.github/actions/compile-and-build
   test:
     name: test and analyse
     runs-on: ubuntu-latest
