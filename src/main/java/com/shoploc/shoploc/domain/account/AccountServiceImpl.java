@@ -59,7 +59,6 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void createAccount(String firstname,String lastname,String email ,Integer roleId,MultipartFile image, String address) throws InsertionFailedException, IOException {
         if (accountRepository.findByEmail(email) != null){
-            System.out.println("-------------------------------> arrive ici");
             throw new InsertionFailedException("Ce compte existe déja");
 
         } else {
@@ -93,10 +92,8 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setCardEntity(card);
                 accountEntity.setFidelityPoints(0);
                 accountEntity.setAvantage(avantage);
-                System.out.println("VIENT ICI CA MARCHE" + (avantage.getAvantage_name()));
                 this.clientRepository.save(accountEntity);
             }
-            System.out.println(encodedPassword + " debug 1");
             sendMessageByEmail(accountEntity, encodedPassword);
         }
     }
@@ -117,7 +114,6 @@ public class AccountServiceImpl implements AccountService {
     @Async
     public void sendMessageByEmail(AccountEntity account, String password) {
         MimeMessage message = javaMailSender.createMimeMessage();
-        System.out.println("-----------------------------> toto");
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message,true,"UTF-8");
             helper.setText("Votre compte ShopLoc a été créé", true);
@@ -127,7 +123,6 @@ public class AccountServiceImpl implements AccountService {
             helper.setFrom(new InternetAddress("projet_etu_fil@univ-lille.fr"));
 
         } catch (MessagingException e) {
-            System.out.println("-----------------------------> toto");
         }
         this.javaMailSender.send(message);
     }

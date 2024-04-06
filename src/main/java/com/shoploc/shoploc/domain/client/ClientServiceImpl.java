@@ -22,7 +22,6 @@ public class ClientServiceImpl implements ClientService {
         var client = clientRepository.findById(id);
         if(client.isPresent())
         {
-            System.out.println("VOICI LES POINTS DU CLIENTS 1" + client.get().getFidelityPoints());
             client.get().setFidelityPoints(client.get().getFidelityPoints() + amount);
         }
         return ResponseEntity.ok(clientRepository.save(client.get()));
