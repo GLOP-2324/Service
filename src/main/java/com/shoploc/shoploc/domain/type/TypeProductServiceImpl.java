@@ -21,13 +21,13 @@ public class TypeProductServiceImpl implements TypeProductService {
         return typeProductRepository.findAll();
     }
 
-    /*@Override
+    @Override
     public TypeProduct createType(String libelle) {
         TypeProduct typeProduct = new TypeProduct();
         typeProduct.setLibelle(libelle);
         return typeProductRepository.save(typeProduct);
 
-    }*/
+    }
 
     @Override
     public TypeProduct getById(Integer id) {
