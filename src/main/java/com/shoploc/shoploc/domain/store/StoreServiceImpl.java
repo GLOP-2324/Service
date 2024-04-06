@@ -71,7 +71,6 @@ public class StoreServiceImpl implements StoreService {
     public boolean deleteById(Integer id) {
         if (storeRepository.findById(Long.valueOf(id)).isPresent()) {
             Store store = storeRepository.findById(Long.valueOf(id)).orElse(null);
-            System.out.println(store.getEmail()+"********************");
             AccountEntity accountEntity = accountRepository.findByEmail(store.getEmail());
             accountRepository.deleteById(accountEntity.getAccount_id());
             storeRepository.deleteById(Long.valueOf(id));
