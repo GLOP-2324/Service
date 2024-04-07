@@ -127,6 +127,7 @@ class CardServiceImplTest {
         Double amount = 100.0;
 
         // Stubbing behavior
+        AchatEntity achatEntity = new AchatEntity();
         ClientEntity clientEntity = new ClientEntity();
         clientEntity.setEmail(email);
         CardEntity cardEntity = new CardEntity();
@@ -145,5 +146,96 @@ class CardServiceImplTest {
         assertEquals(ResponseEntity.ok(cardEntity), response);
         verify(clientRepository, times(1)).findByEmail(email);
         verify(cardRepository, times(1)).findById(anyLong());
+    }
+
+    @Test
+    void testBuyWithCreditCard_ClientExists() {
+        // Mock dependencies
+        ClientRepository clientRepository = mock(ClientRepository.class);
+        ProductRepository productRepository = mock(ProductRepository.class);
+        CardRepository cardRepository = mock(CardRepository.class);
+        CardServiceImpl cardService = new CardServiceImpl(cardRepository, clientRepository, productRepository);
+
+        // Test data
+        String email = "test@example.com";
+        Double amount = 100.0;
+        List<Product> products = new ArrayList<>();
+        // Adding sample products to the list
+        Product product1 = new Product();
+        product1.setId(1L);
+        product1.setPoints(10); // Set some points for the product
+        // Add more products as needed
+        products.add(product1);
+
+        // Stubbing behavior
+        AchatEntity achatEntity = new AchatEntity();
+        achatEntity.setCartItems(products);
+        when(productRepository.findById(anyLong())).thenReturn(Optional.of(new Product()));
+
+        ClientEntity clientEntity = new ClientEntity();
+        clientEntity.setEmail(email);
+        CardEntity cardEntity = new CardEntity();
+        cardEntity.setId(1l);
+        cardEntity.setMontant(1000);
+        cardEntity.setDate(null);
+        clientEntity.setCardEntity(cardEntity); // Set card entity to null
+        clientEntity.setFidelityPoints(100);// Set card entity to null
+
+        Optional<ClientEntity> optionalClient = Optional.of(clientEntity);
+        when(clientRepository.findByEmail(email)).thenReturn(optionalClient);
+        Optional<CardEntity> card = Optional.of(cardEntity);
+        when(cardRepository.findById(1L)).thenReturn(card);
+
+        // Call method under test
+        ResponseEntity<ClientEntity> response = cardService.buyWithCreditCard(email, achatEntity);
+
+        // Verify behavior
+        assertEquals(ResponseEntity.ok().build(), response);
+        // Add more assertions as needed
+    }
+
+    @Test
+    void testBuyWithFidelityCard_ClientExists() {
+        // Mock dependencies
+        ClientRepository clientRepository = mock(ClientRepository.class);
+        ProductRepository productRepository = mock(ProductRepository.class);
+        CardRepository cardRepository = mock(CardRepository.class);
+        CardServiceImpl cardService = new CardServiceImpl(cardRepository, clientRepository, productRepository);
+
+        // Test data
+        String email = "test@example.com";
+        List<Product> products = new ArrayList<>();
+        // Adding sample products to the list
+        Product product1 = new Product();
+        product1.setId(1L);
+        product1.setPoints(10); // Set some points for the product
+        // Add more products as needed
+        products.add(product1);
+
+        AchatEntity achatEntity = new AchatEntity();
+
+        // Stubbing behavior
+        ClientEntity clientEntity = new ClientEntity();
+        clientEntity.setEmail(email);
+        achatEntity.setCartItems(products);
+        when(productRepository.findById(anyLong())).thenReturn(Optional.of(new Product()));
+
+        CardEntity cardEntity = new CardEntity();
+        cardEntity.setId(1l);
+        cardEntity.setMontant(1000);
+        cardEntity.setDate(null);
+        clientEntity.setCardEntity(cardEntity);
+        clientEntity.setFidelityPoints(100);// Set card entity to null
+        Optional<ClientEntity> optionalClient = Optional.of(clientEntity);
+        when(clientRepository.findByEmail(email)).thenReturn(optionalClient);
+        Optional<CardEntity> card = Optional.of(cardEntity);
+        when(cardRepository.findById(1L)).thenReturn(card);
+
+        // Call method under test
+        ResponseEntity<ClientEntity> response = cardService.buyWithFidelityCard(email, achatEntity, false); // Assuming not using fidelity points
+
+        // Verify behavior
+        assertEquals(ResponseEntity.ok().build(), response);
+        // Add more assertions as needed
     }
 }
